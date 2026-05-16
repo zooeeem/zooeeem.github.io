@@ -831,6 +831,22 @@
     }, { threshold: 0.1 });
     reveals.forEach(el => obs.observe(el));
 
+    // CARD EXIT ANIMATION ON SCROLL
+    const exitDirections = [
+      { x: -120, y: -80,  rot: -25 },
+      { x: -40,  y: -120, rot: -10 },
+      { x:  40,  y: -120, rot:  10 },
+      { x:  120, y: -80,  rot:  25 },
+    ];
+
+    let scrollProgress = 0;
+    const heroEl = document.getElementById('hero');
+
+    window.addEventListener('scroll', () => {
+      const heroHeight = heroEl.offsetHeight;
+      scrollProgress = Math.min(window.scrollY / (heroHeight * 0.5), 1);
+    });
+
     // HERO CARDS — 3D tilt + parallax + spring + neighbor reaction
     const cards = document.querySelectorAll('.hero-card');
 
@@ -862,9 +878,20 @@
 
     function applyTransform(card, i, s) {
       const b = baseTransforms[i];
+      const dir = exitDirections[i];
+
+      const ex = dir.x * scrollProgress;
+      const ey = dir.y * scrollProgress;
+      const er = dir.rot * scrollProgress;
+      const exitScale = 1 - scrollProgress * 0.15;
+      const opacity = Math.max(1 - scrollProgress * 1.6, 0);
+
       card.style.transform =
-        `translateX(${b.tx}px) translateY(${s.ty}px) rotate(${b.rotate}deg) ` +
-        `rotateX(${s.rotX}deg) rotateY(${s.rotY}deg) scale(${s.scale})`;
+        `translateX(${b.tx + ex}px) translateY(${s.ty + ey}px) ` +
+        `rotate(${b.rotate + er}deg) ` +
+        `rotateX(${s.rotX}deg) rotateY(${s.rotY}deg) ` +
+        `scale(${s.scale * exitScale})`;
+      card.style.opacity = opacity;
     }
 
     function animate() {
