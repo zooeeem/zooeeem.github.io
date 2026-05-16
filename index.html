@@ -128,35 +128,69 @@
       display: flex;
       justify-content: center;
       align-items: flex-end;
-      gap: -20px;
       padding: 28px 0 0;
       position: relative;
-      height: 240px;
+      height: 260px;
+      perspective: 1000px;
     }
     .hero-card {
       width: 180px;
       height: 220px;
-      border-radius: 20px;
+      border-radius: 22px;
       position: absolute;
       bottom: 0;
       display: flex;
-      align-items: center;
-      justify-content: center;
+      align-items: flex-end;
+      justify-content: flex-start;
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.1rem;
+      font-size: 1rem;
       letter-spacing: 0.08em;
       color: white;
-      text-align: center;
-      padding: 20px;
+      padding: 18px;
       line-height: 1.3;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
-      transition: transform 0.4s ease;
+      cursor: pointer;
+      will-change: transform;
+      /* Spring-like transition using cubic-bezier */
+      transition:
+        transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.4s ease,
+        filter 0.4s ease,
+        z-index 0s;
+      /* Glassmorphism overlay via pseudo */
+      overflow: hidden;
     }
-    .hero-card:hover { transform: translateY(-12px) rotate(0deg) !important; }
-    .hc1 { background: var(--accent); transform: rotate(-8deg) translateX(-180px); z-index: 1; }
-    .hc2 { background: var(--accent2); transform: rotate(-3deg) translateX(-60px); z-index: 2; }
-    .hc3 { background: var(--accent3); color: var(--black); transform: rotate(2deg) translateX(60px); z-index: 3; }
-    .hc4 { background: var(--accent4); color: var(--black); transform: rotate(7deg) translateX(180px); z-index: 2; }
+    /* Shine overlay */
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 60%);
+      border-radius: inherit;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    /* Cinematic inner glow edge */
+    .hero-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      border: 1px solid rgba(255,255,255,0.35);
+      pointer-events: none;
+    }
+    .hc1 { background: linear-gradient(145deg, #ff8a80, #ff5252); box-shadow: 0 16px 40px rgba(255,82,82,0.35); transform: rotate(-8deg) translateX(-180px); z-index: 1; }
+    .hc2 { background: linear-gradient(145deg, #80d8ff, #40c4ff); color: #0d2a3a; box-shadow: 0 16px 40px rgba(64,196,255,0.35); transform: rotate(-3deg) translateX(-60px); z-index: 2; }
+    .hc3 { background: linear-gradient(145deg, #ccff90, #76ff03); color: #1a3300; box-shadow: 0 16px 40px rgba(118,255,3,0.35); transform: rotate(2deg) translateX(60px); z-index: 3; }
+    .hc4 { background: linear-gradient(145deg, #ffe57f, #ffd740); color: #3a2800; box-shadow: 0 16px 40px rgba(255,215,64,0.35); transform: rotate(7deg) translateX(180px); z-index: 2; }
+
+    /* Hovered state — JS adds this class */
+    .hero-card.is-hovered {
+      z-index: 10;
+      filter: brightness(1.08);
+    }
+    .hero-card.is-neighbor {
+      filter: brightness(0.92) saturate(0.85);
+    }
     .hero-ghost {
       font-family: 'Bebas Neue', sans-serif;
       font-size: clamp(3.5rem, 10vw, 8rem);
@@ -797,18 +831,116 @@
     }, { threshold: 0.1 });
     reveals.forEach(el => obs.observe(el));
 
-    // HERO CARDS subtle float
+    // HERO CARDS — 3D tilt + parallax + spring + neighbor reaction
     const cards = document.querySelectorAll('.hero-card');
-    let t = 0;
-    function floatCards() {
-      t += 0.01;
-      cards.forEach((c, i) => {
-        const offset = Math.sin(t + i * 0.8) * 8;
-        c.style.marginBottom = offset + 'px';
-      });
-      requestAnimationFrame(floatCards);
+
+    // Base transforms for each card (resting state)
+    const baseTransforms = [
+      { rotate: -8, tx: -180, tz: 0 },
+      { rotate: -3, tx: -60,  tz: 0 },
+      { rotate:  2, tx:  60,  tz: 0 },
+      { rotate:  7, tx:  180, tz: 0 },
+    ];
+
+    // Spring state per card
+    const spring = Array.from(cards).map(() => ({
+      rotX: 0, rotY: 0, ty: 0, scale: 1,
+      vRotX: 0, vRotY: 0, vTy: 0, vScale: 0,
+    }));
+
+    // Target state per card
+    const target = Array.from(cards).map(() => ({
+      rotX: 0, rotY: 0, ty: 0, scale: 1,
+    }));
+
+    let hoveredIndex = -1;
+
+    const STIFFNESS = 0.18;
+    const DAMPING   = 0.72;
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    function applyTransform(card, i, s) {
+      const b = baseTransforms[i];
+      card.style.transform =
+        `translateX(${b.tx}px) translateY(${s.ty}px) rotate(${b.rotate}deg) ` +
+        `rotateX(${s.rotX}deg) rotateY(${s.rotY}deg) scale(${s.scale})`;
     }
-    floatCards();
+
+    function animate() {
+      cards.forEach((card, i) => {
+        const s = spring[i];
+        const t = target[i];
+
+        // Spring physics
+        s.vRotX  = s.vRotX  * DAMPING + (t.rotX  - s.rotX)  * STIFFNESS;
+        s.vRotY  = s.vRotY  * DAMPING + (t.rotY  - s.rotY)  * STIFFNESS;
+        s.vTy    = s.vTy    * DAMPING + (t.ty    - s.ty)    * STIFFNESS;
+        s.vScale = s.vScale * DAMPING + (t.scale - s.scale) * STIFFNESS;
+
+        s.rotX  += s.vRotX;
+        s.rotY  += s.vRotY;
+        s.ty    += s.vTy;
+        s.scale += s.vScale;
+
+        applyTransform(card, i, s);
+
+        // Shadow intensity based on lift
+        const lift = Math.max(0, -s.ty);
+        const shadowColors = [
+          `rgba(255,82,82,`,
+          `rgba(64,196,255,`,
+          `rgba(118,255,3,`,
+          `rgba(255,215,64,`,
+        ];
+        const spread = 16 + lift * 0.6;
+        const blur   = 40 + lift * 1.2;
+        const alpha  = 0.35 + lift * 0.003;
+        card.style.boxShadow = `0 ${spread}px ${blur}px ${shadowColors[i]}${Math.min(alpha, 0.7)})`;
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    cards.forEach((card, i) => {
+      card.addEventListener('mouseenter', () => {
+        hoveredIndex = i;
+        card.classList.add('is-hovered');
+        cards.forEach((c, j) => {
+          if (j !== i) c.classList.add('is-neighbor');
+        });
+        target[i].ty    = -28;
+        target[i].scale = 1.07;
+        // Neighbor cards shift slightly away
+        cards.forEach((_, j) => {
+          if (j !== i) {
+            const dist = j - i;
+            target[j].ty = dist < 0 ? 6 : 6;
+          }
+        });
+      });
+
+      card.addEventListener('mouseleave', () => {
+        hoveredIndex = -1;
+        card.classList.remove('is-hovered');
+        cards.forEach(c => c.classList.remove('is-neighbor'));
+        cards.forEach((_, j) => {
+          target[j].ty    = 0;
+          target[j].scale = 1;
+          target[j].rotX  = 0;
+          target[j].rotY  = 0;
+        });
+      });
+
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        // Normalize -1 to 1
+        const nx = ((e.clientX - rect.left) / rect.width  - 0.5) * 2;
+        const ny = ((e.clientY - rect.top)  / rect.height - 0.5) * 2;
+        target[i].rotY =  nx * 14;
+        target[i].rotX = -ny * 10;
+      });
+    });
   </script>
 </body>
 </html>
