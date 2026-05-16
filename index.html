@@ -53,6 +53,14 @@
       transition: all 0.15s ease;
       opacity: 0.4;
     }
+    /* Cursor layer sits outside body zoom */
+    #cursor-layer {
+      position: fixed;
+      top: 0; left: 0;
+      width: 0; height: 0;
+      zoom: 1.25;
+      z-index: 9999;
+    }
     body:hover .cursor { opacity: 1; }
 
     /* NAV */
@@ -487,8 +495,11 @@
 </head>
 <body>
 
-  <div class="cursor" id="cursor"></div>
-  <div class="cursor-ring" id="cursorRing"></div>
+  <!-- Cursor layer outside body zoom -->
+  <div id="cursor-layer">
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+  </div>
 
   <!-- NAV -->
   <nav>
@@ -722,11 +733,9 @@
     const ring = document.getElementById('cursorRing');
     let mx = 0, my = 0, rx = 0, ry = 0;
     const ZOOM = 0.8;
-
     document.addEventListener('mousemove', e => {
-      // Compensate for body zoom so cursor reaches full screen width
-      mx = e.clientX / ZOOM;
-      my = e.clientY / ZOOM;
+      mx = e.clientX;
+      my = e.clientY;
       cursor.style.left = mx + 'px';
       cursor.style.top = my + 'px';
     });
