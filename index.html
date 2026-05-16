@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Althea Zoe Anasco</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --white: #ffffff;
+      --black: #0d0d0d;
+      --ghost: #e8e8e8;
+      --muted: #999;
+      --accent: #ff6b6b;
+      --accent2: #6bcfff;
+      --accent3: #a8ff78;
+      --accent4: #ffd93d;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--white);
+      color: var(--black);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+      cursor: none;
+      zoom: 0.8;
+    }
+
+    /* CURSOR */
+    .cursor {
+      width: 12px; height: 12px;
+      background: var(--black);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
+    }
+    .cursor-ring {
+      width: 40px; height: 40px;
+      border: 1.5px solid var(--black);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: all 0.15s ease;
+      opacity: 0.4;
+    }
+    body:hover .cursor { opacity: 1; }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 24px 52px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.08em;
+      color: var(--black);
+    }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--black); }
+
+    /* HERO */
+    #hero {
+      padding-top: 100px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-top {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 28px 0 16px;
+    }
+    .hero-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 11vw, 10rem);
+      line-height: 0.92;
+      letter-spacing: 0.01em;
+      color: var(--black);
+      padding: 0 40px;
+      white-space: nowrap;
+      animation: fadeDown 0.9s ease forwards;
+    }
+    .hero-cards {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: -20px;
+      padding: 28px 0 0;
+      position: relative;
+      height: 240px;
+    }
+    .hero-card {
+      width: 180px;
+      height: 220px;
+      border-radius: 20px;
+      position: absolute;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.08em;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      line-height: 1.3;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+      transition: transform 0.4s ease;
+    }
+    .hero-card:hover { transform: translateY(-12px) rotate(0deg) !important; }
+    .hc1 { background: var(--accent); transform: rotate(-8deg) translateX(-180px); z-index: 1; }
+    .hc2 { background: var(--accent2); transform: rotate(-3deg) translateX(-60px); z-index: 2; }
+    .hc3 { background: var(--accent3); color: var(--black); transform: rotate(2deg) translateX(60px); z-index: 3; }
+    .hc4 { background: var(--accent4); color: var(--black); transform: rotate(7deg) translateX(180px); z-index: 2; }
+    .hero-ghost {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      color: var(--ghost);
+      letter-spacing: 0.04em;
+      line-height: 1;
+      padding: 20px 40px 0;
+      animation: fadeUp 1s ease 0.3s both;
+    }
+    .hero-clients {
+      padding: 20px 0 50px;
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .hero-clients span { color: var(--black); font-weight: 500; margin-right: 6px; }
+
+    /* MARQUEE */
+    .marquee-wrap {
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+      padding: 16px 0;
+      overflow: hidden;
+      background: var(--black);
+    }
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 18s linear infinite;
+    }
+    .marquee-item {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.1em;
+      color: white;
+      padding: 0 30px;
+      white-space: nowrap;
+      opacity: 0.7;
+    }
+    .marquee-item.dot { color: var(--accent); opacity: 1; font-size: 0.8rem; }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* SECTIONS */
+    section { padding: 100px 60px; }
+
+    .section-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .section-heading {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 7vw, 6rem);
+      line-height: 1;
+      letter-spacing: 0.02em;
+      margin-bottom: 60px;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.85s ease, transform 0.85s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ABOUT */
+    #about {
+      border-top: 1px solid #eee;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .about-big {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 7vw, 6rem);
+      line-height: 1;
+      letter-spacing: 0.02em;
+    }
+    .about-big .ghost { color: var(--ghost); }
+    .about-text {
+      font-size: 0.95rem;
+      line-height: 1.9;
+      color: #555;
+      margin-bottom: 24px;
+    }
+    .stats-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 44px;
+    }
+    .stat {
+      border-top: 2px solid var(--black);
+      padding-top: 16px;
+    }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.5rem;
+      line-height: 1;
+      display: block;
+    }
+    .stat-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* EDUCATION */
+    #education { border-top: 1px solid #eee; }
+    .edu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .edu-card {
+      border: 1.5px solid #eee;
+      border-radius: 16px;
+      padding: 44px 40px;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+    .edu-card:hover {
+      border-color: var(--black);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.07);
+    }
+    .edu-flag {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      display: block;
+    }
+    .edu-period {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+    .edu-school {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+    .edu-degree {
+      font-size: 0.82rem;
+      color: #666;
+      line-height: 1.7;
+    }
+
+    /* CERTIFICATIONS */
+    #certifications { border-top: 1px solid #eee; }
+    .cert-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+    }
+    .cert-card {
+      border-radius: 16px;
+      padding: 32px 30px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .cert-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.1);
+    }
+    .cc1 { background: #fff0f0; }
+    .cc2 { background: #f0f8ff; }
+    .cc3 { background: #f5fff0; }
+    .cc4 { background: #fffbf0; }
+    .cert-issuer {
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .cert-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.15rem;
+      line-height: 1.4;
+      margin-bottom: 16px;
+      color: var(--black);
+    }
+    .cert-meta {
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+    .cert-badge {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 5px 14px;
+      background: white;
+      border-radius: 100px;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--black);
+      font-weight: 500;
+    }
+    .cert-icon {
+      position: absolute;
+      top: 24px; right: 24px;
+      font-size: 1.6rem;
+      opacity: 0.25;
+    }
+
+    /* SKILLS */
+    #skills { border-top: 1px solid #eee; }
+    .skills-ghost {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 8vw, 7rem);
+      color: var(--ghost);
+      line-height: 1;
+      margin-bottom: 50px;
+      letter-spacing: 0.02em;
+    }
+    .skills-tiles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .skill-tile {
+      padding: 16px 28px;
+      border: 1.5px solid #eee;
+      border-radius: 100px;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      transition: background 0.25s, border-color 0.25s, transform 0.2s;
+      cursor: default;
+    }
+    .skill-tile:hover {
+      background: var(--black);
+      color: white;
+      border-color: var(--black);
+      transform: scale(1.04);
+    }
+
+    /* CONTACT */
+    #contact {
+      border-top: 1px solid #eee;
+      text-align: center;
+      padding: 100px 60px;
+    }
+    .contact-ghost {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 14vw, 12rem);
+      color: var(--ghost);
+      line-height: 0.9;
+      letter-spacing: 0.02em;
+      margin-bottom: -20px;
+    }
+    .contact-heading {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 9vw, 8rem);
+      line-height: 1;
+      letter-spacing: 0.02em;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 24px;
+    }
+    .contact-sub {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.8;
+      max-width: 380px;
+      margin: 0 auto 44px;
+    }
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .contact-btn {
+      padding: 14px 32px;
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 100px;
+      transition: all 0.25s;
+    }
+    .contact-btn.filled {
+      background: var(--black);
+      color: white;
+    }
+    .contact-btn.filled:hover { background: #333; transform: translateY(-2px); }
+    .contact-btn.outline {
+      border: 1.5px solid #ddd;
+      color: #555;
+    }
+    .contact-btn.outline:hover { border-color: var(--black); color: var(--black); transform: translateY(-2px); }
+
+    footer {
+      border-top: 1px solid #eee;
+      padding: 28px 52px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer span { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+
+    /* ANIMATIONS */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 20px 24px; }
+      .nav-links { display: none; }
+      section { padding: 70px 24px; }
+      #about { grid-template-columns: 1fr; gap: 40px; }
+      .edu-grid { grid-template-columns: 1fr; }
+      .hero-cards { display: none; }
+      .hero-ghost { padding-top: 40px; }
+      footer { flex-direction: column; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Althea Zoe</div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#certifications">Certs</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-top">
+      <span>Taiwan &amp; Philippines</span>
+      <span>·</span>
+      <span>aaltheazoe@gmail.com</span>
+    </div>
+    <h1 class="hero-name">ALTHEA ZOE ANASCO</h1>
+
+    <!-- Floating cards -->
+    <div class="hero-cards">
+      <div class="hero-card hc1">Cybersecurity<br/>Specialist</div>
+      <div class="hero-card hc2">Python<br/>Developer</div>
+      <div class="hero-card hc3">Database<br/>Admin</div>
+      <div class="hero-card hc4">Cloud<br/>Computing</div>
+    </div>
+
+    <div class="hero-ghost">CSIE STUDENT,<br/>TWIN COUNTRIES</div>
+    <p class="hero-clients">
+      <span>Certifications from</span> IBM · GOOGLE · CERTIPORT · AWS
+    </p>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span class="marquee-item">Cybersecurity</span>
+      <span class="marquee-item dot">✦</span>
+      <span class="marquee-item">Python</span>
+      <span class="marquee-item dot">✦</span>
+      <span class="marquee-item">Database Administration</span>
+      <span class="marquee-item dot">✦</span>
+      <span class="marquee-item">Network Security</span>
+      <span class="marquee-item dot">✦</span>
+      <span class="marquee-item">Cloud Computing</span>
+      <span class="marquee-item dot">✦</span>
+      <span class="marquee-item">JavaScript</span>
+      <span class="marquee-item dot">✦</span>
+      <span class="marquee-item">C#</span>
+      <span class="marquee-item dot">✦</span>
+      <span class="marquee-item">Cybersecurity</span>
+      <span class="marquee-item dot">✦</span>
+      <span class="marquee-item">Python</span>
+      <span class="marquee-item dot">✦</span>
+      <span class="marquee-item">Database Administration</span>
+      <span class="marquee-item dot">✦</span>
+      <span class="marquee-item">Network Security</span>
+      <span class="marquee-item dot">✦</span>
+      <span class="marquee-item">Cloud Computing</span>
+      <span class="marquee-item dot">✦</span>
+      <span class="marquee-item">JavaScript</span>
+      <span class="marquee-item dot">✦</span>
+      <span class="marquee-item">C#</span>
+      <span class="marquee-item dot">✦</span>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="reveal">
+      <p class="section-label">01 — About</p>
+      <div class="about-big">
+        WHO<br/>I <span class="ghost">AM</span>
+      </div>
+      <div class="stats-row">
+        <div class="stat">
+          <span class="stat-num">8</span>
+          <span class="stat-label">Certifications</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">10</span>
+          <span class="stat-label">Skills</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">2</span>
+          <span class="stat-label">Universities</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">3rd</span>
+          <span class="stat-label">Year Student</span>
+        </div>
+      </div>
+    </div>
+    <div class="reveal" style="transition-delay:0.12s; padding-top: 80px;">
+      <p class="about-text">
+        I'm a third-year Computer Science &amp; Information Engineering student pursuing a dual degree between 明新科技大學 (Ming Hsin University of Science &amp; Technology) in Taiwan and Adamson University in the Philippines.
+      </p>
+      <p class="about-text">
+        My academic work spans software development and cybersecurity, backed by certifications in Python, database administration, network security, and cloud fundamentals.
+      </p>
+      <p class="about-text">
+        Through coursework and hands-on projects, I've built a foundation in writing clean code and understanding how systems stay secure. I'm actively seeking opportunities where I can contribute to both sides.
+      </p>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <p class="section-label reveal">02 — Education</p>
+    <h2 class="section-heading reveal">ACADEMIC<br/>PATH</h2>
+    <div class="edu-grid">
+      <div class="edu-card reveal">
+        <span class="edu-flag">🇹🇼</span>
+        <p class="edu-period">Sep 2025 – Jul 2027</p>
+        <h3 class="edu-school">明新科技大學<br/>Ming Hsin</h3>
+        <p class="edu-degree">B.S. Computer Science &amp; Information Engineering<br/>Hsinchu, Taiwan</p>
+      </div>
+      <div class="edu-card reveal" style="transition-delay:0.12s">
+        <span class="edu-flag">🇵🇭</span>
+        <p class="edu-period">Aug 2023 – Dec 2027</p>
+        <h3 class="edu-school">Adamson<br/>University</h3>
+        <p class="edu-degree">Dual Degree – B.S. Computer Science &amp; Information Engineering<br/>Manila, Philippines</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS -->
+  <section id="certifications">
+    <p class="section-label reveal">03 — Credentials</p>
+    <h2 class="section-heading reveal">LICENSES &amp;<br/>CERTIFICATIONS</h2>
+    <div class="cert-grid">
+      <div class="cert-card cc1 reveal">
+        <span class="cert-icon">🛡️</span>
+        <p class="cert-issuer">IBM</p>
+        <p class="cert-name">Introduction to Cybersecurity Tools &amp; Cyberattacks V3</p>
+        <p class="cert-meta">Issued Dec 2025</p>
+        <span class="cert-badge">Cybersecurity</span>
+      </div>
+      <div class="cert-card cc2 reveal" style="transition-delay:0.06s">
+        <span class="cert-icon">🐍</span>
+        <p class="cert-issuer">Certiport</p>
+        <p class="cert-name">IT Specialist — Python</p>
+        <p class="cert-meta">Issued Nov 2025 · Expires Nov 2030</p>
+        <span class="cert-badge">Python</span>
+      </div>
+      <div class="cert-card cc3 reveal" style="transition-delay:0.12s">
+        <span class="cert-icon">🔐</span>
+        <p class="cert-issuer">Google</p>
+        <p class="cert-name">Play It Safe: Manage Security Risks</p>
+        <p class="cert-meta">Issued May 2025</p>
+        <span class="cert-badge">Cybersecurity</span>
+      </div>
+      <div class="cert-card cc4 reveal" style="transition-delay:0.18s">
+        <span class="cert-icon">🔒</span>
+        <p class="cert-issuer">Google</p>
+        <p class="cert-name">Foundations of Cybersecurity</p>
+        <p class="cert-meta">Issued Mar 2025</p>
+        <span class="cert-badge">Cybersecurity</span>
+      </div>
+      <div class="cert-card cc1 reveal" style="transition-delay:0.24s">
+        <span class="cert-icon">🌐</span>
+        <p class="cert-issuer">Google</p>
+        <p class="cert-name">Connect and Protect: Networks &amp; Network Security</p>
+        <p class="cert-meta">Issued Jun 2025</p>
+        <span class="cert-badge">Networking</span>
+      </div>
+      <div class="cert-card cc2 reveal" style="transition-delay:0.30s">
+        <span class="cert-icon">🗄️</span>
+        <p class="cert-issuer">Certiport</p>
+        <p class="cert-name">IT Specialist — Databases</p>
+        <p class="cert-meta">Issued May 2025</p>
+        <span class="cert-badge">Database Admin</span>
+      </div>
+      <div class="cert-card cc3 reveal" style="transition-delay:0.36s">
+        <span class="cert-icon">☁️</span>
+        <p class="cert-issuer">AWS Cloud Club</p>
+        <p class="cert-name">Skill Builder: Introduction to Cybersecurity</p>
+        <p class="cert-meta">Issued Mar 2025 · Adamson University</p>
+        <span class="cert-badge">Cybersecurity</span>
+      </div>
+      <div class="cert-card cc4 reveal" style="transition-delay:0.42s">
+        <span class="cert-icon">🤖</span>
+        <p class="cert-issuer">AWS / ULSA</p>
+        <p class="cert-name">AWS Cloud Clubs Generative AI Camper</p>
+        <p class="cert-meta">Issued Oct 2024</p>
+        <span class="cert-badge">Gen AI</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <p class="section-label reveal">04 — Skills</p>
+    <div class="skills-ghost reveal">WHAT I<br/>BRING</div>
+    <div class="skills-tiles reveal">
+      <div class="skill-tile">Python</div>
+      <div class="skill-tile">Database Administration</div>
+      <div class="skill-tile">C#</div>
+      <div class="skill-tile">JavaScript</div>
+      <div class="skill-tile">Ubuntu</div>
+      <div class="skill-tile">Identity &amp; Access Management</div>
+      <div class="skill-tile">Cybersecurity</div>
+      <div class="skill-tile">Network Security</div>
+      <div class="skill-tile">Communication</div>
+      <div class="skill-tile">English</div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-ghost reveal">HELLO</div>
+    <h2 class="contact-heading reveal">LET'S<br/>CONNECT</h2>
+    <p class="contact-sub reveal">Open to opportunities, collaborations, and conversations. Reach out anytime.</p>
+    <div class="contact-links reveal">
+      <a href="mailto:aaltheazoe@gmail.com" class="contact-btn filled">✉ Email Me</a>
+      <a href="https://github.com/zooeeem" target="_blank" class="contact-btn outline">GitHub ↗</a>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 Althea Zoe Anasco</span>
+    <span>CSIE · Taiwan &amp; Philippines</span>
+  </footer>
+
+  <script>
+    // CURSOR
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx + 'px';
+      cursor.style.top = my + 'px';
+    });
+    function animRing() {
+      rx += (mx - rx) * 0.13;
+      ry += (my - ry) * 0.13;
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
+      requestAnimationFrame(animRing);
+    }
+    animRing();
+
+    // Cursor scale on hover
+    const hoverEls = document.querySelectorAll('a, button, .skill-tile, .cert-card, .edu-card');
+    hoverEls.forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.width = '6px';
+        cursor.style.height = '6px';
+        ring.style.width = '60px';
+        ring.style.height = '60px';
+        ring.style.opacity = '0.25';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.width = '12px';
+        cursor.style.height = '12px';
+        ring.style.width = '40px';
+        ring.style.height = '40px';
+        ring.style.opacity = '0.4';
+      });
+    });
+
+    // SCROLL REVEAL
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => obs.observe(el));
+
+    // HERO CARDS subtle float
+    const cards = document.querySelectorAll('.hero-card');
+    let t = 0;
+    function floatCards() {
+      t += 0.01;
+      cards.forEach((c, i) => {
+        const offset = Math.sin(t + i * 0.8) * 8;
+        c.style.marginBottom = offset + 'px';
+      });
+      requestAnimationFrame(floatCards);
+    }
+    floatCards();
+  </script>
+</body>
+</html>
