@@ -152,16 +152,13 @@
       line-height: 1.3;
       cursor: pointer;
       will-change: transform;
-      /* Spring-like transition using cubic-bezier */
       transition:
         transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
         box-shadow 0.4s ease,
         filter 0.4s ease,
         z-index 0s;
-      /* Glassmorphism overlay via pseudo */
       overflow: hidden;
     }
-    /* Shine overlay */
     .hero-card::before {
       content: '';
       position: absolute;
@@ -171,7 +168,6 @@
       pointer-events: none;
       transition: opacity 0.3s ease;
     }
-    /* Cinematic inner glow edge */
     .hero-card::after {
       content: '';
       position: absolute;
@@ -185,7 +181,6 @@
     .hc3 { background: linear-gradient(145deg, #ccff90, #76ff03); color: #1a3300; box-shadow: 0 16px 40px rgba(118,255,3,0.35); transform: rotate(2deg) translateX(60px); z-index: 3; }
     .hc4 { background: linear-gradient(145deg, #ffe57f, #ffd740); color: #3a2800; box-shadow: 0 16px 40px rgba(255,215,64,0.35); transform: rotate(7deg) translateX(180px); z-index: 2; }
 
-    /* Hovered state — JS adds this class */
     .hero-card.is-hovered {
       z-index: 10;
       filter: brightness(1.08);
@@ -327,11 +322,6 @@
       transform: translateY(-6px);
       box-shadow: 0 20px 50px rgba(0,0,0,0.07);
     }
-    .edu-flag {
-      font-size: 2rem;
-      margin-bottom: 20px;
-      display: block;
-    }
     .edu-period {
       font-size: 0.68rem;
       letter-spacing: 0.18em;
@@ -358,34 +348,116 @@
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 16px;
     }
+
+    /* Flip card container */
     .cert-card {
       border-radius: 16px;
-      padding: 32px 30px;
-      transition: transform 0.3s, box-shadow 0.3s;
       position: relative;
+      height: 240px;
+      perspective: 1000px;
+      cursor: pointer;
+    }
+    .cert-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+    }
+    .cert-card:hover .cert-card-inner {
+      transform: rotateY(180deg);
+    }
+    .cert-front, .cert-back {
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .cert-front {
+      padding: 32px 30px;
+      background: #ffffff;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: box-shadow 0.3s;
+    }
+    .cert-card:hover .cert-front {
+      box-shadow: 0 24px 60px rgba(0,0,0,0.12);
+    }
+    .cert-back {
+      transform: rotateY(180deg);
+      background: #1d1d1f;
       overflow: hidden;
     }
-    .cert-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 24px 60px rgba(0,0,0,0.1);
+    .cert-back img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 16px;
+      display: block;
     }
-    .cc1 { background: #ffffff; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
-    .cc2 { background: #ffffff; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
-    .cc3 { background: #ffffff; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
-    .cc4 { background: #ffffff; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+    .cert-back::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 60%;
+      border-radius: 0 0 16px 16px;
+      background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .cert-back::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.12);
+      pointer-events: none;
+      z-index: 2;
+    }
+    .cert-glass {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      right: 16px;
+      z-index: 3;
+      background: rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 12px;
+      padding: 12px 16px;
+    }
+    .cert-glass-issuer {
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 4px;
+    }
+    .cert-glass-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 0.9rem;
+      color: #ffffff;
+      line-height: 1.3;
+    }
     .cert-issuer {
       font-size: 0.65rem;
       letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
     .cert-name {
       font-family: 'DM Serif Display', serif;
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       line-height: 1.4;
-      margin-bottom: 16px;
+      margin-bottom: 8px;
       color: var(--black);
+      flex: 1;
     }
     .cert-meta {
       font-size: 0.72rem;
@@ -393,7 +465,7 @@
     }
     .cert-badge {
       display: inline-block;
-      margin-top: 16px;
+      margin-top: 12px;
       padding: 5px 14px;
       background: #f5f5f7;
       border-radius: 100px;
@@ -402,12 +474,6 @@
       text-transform: uppercase;
       color: var(--black);
       font-weight: 500;
-    }
-    .cert-icon {
-      position: absolute;
-      top: 24px; right: 24px;
-      font-size: 1.6rem;
-      opacity: 0.25;
     }
 
     /* SKILLS */
@@ -534,7 +600,6 @@
       .edu-grid { grid-template-columns: 1fr; }
       footer { flex-direction: column; gap: 8px; }
 
-      /* Show cards on mobile as a horizontal scroll strip */
       .hero-cards {
         position: static;
         display: flex;
@@ -563,13 +628,11 @@
 </head>
 <body>
 
-  <!-- Cursor layer outside body zoom -->
   <div id="cursor-layer">
     <div class="cursor" id="cursor"></div>
     <div class="cursor-ring" id="cursorRing"></div>
   </div>
 
-  <!-- NAV -->
   <nav>
     <div class="nav-logo">Althea Zoe</div>
     <ul class="nav-links">
@@ -581,28 +644,23 @@
     </ul>
   </nav>
 
-  <!-- HERO -->
   <section id="hero">
     <div class="hero-top">
-      <span>Taiwan &amp; Philippines</span>
+      <span>Philippines &amp; Taiwan</span>
     </div>
     <h1 class="hero-name">ALTHEA ZOE ANASCO</h1>
-
-    <!-- Floating cards -->
     <div class="hero-cards">
       <div class="hero-card hc1">Cybersecurity</div>
       <div class="hero-card hc2">Database<br/>Admin</div>
       <div class="hero-card hc3">IT /<br/>Networking</div>
       <div class="hero-card hc4">Cloud<br/>Computing</div>
     </div>
-
-    <div class="hero-ghost">CSIE STUDENT,<br/>PHILIPPINES & TAIWAN</div>
+    <div class="hero-ghost">CSIE STUDENT,<br/>PHILIPPINES &amp; TAIWAN</div>
     <p class="hero-clients">
       <span>Certifications from</span> CERTIPORT · AWS
     </p>
   </section>
 
-  <!-- MARQUEE -->
   <div class="marquee-wrap">
     <div class="marquee-track">
       <span class="marquee-item">Python</span>
@@ -636,7 +694,6 @@
     </div>
   </div>
 
-  <!-- ABOUT -->
   <section id="about">
     <div class="reveal">
       <p class="section-label">01 — About</p>
@@ -675,7 +732,6 @@
     </div>
   </section>
 
-  <!-- EDUCATION -->
   <section id="education">
     <p class="section-label reveal">02 — Education</p>
     <h2 class="section-heading reveal">ACADEMIC<br/>PATH</h2>
@@ -693,51 +749,146 @@
     </div>
   </section>
 
-  <!-- CERTIFICATIONS -->
   <section id="certifications">
     <p class="section-label reveal">03 — Credentials</p>
     <h2 class="section-heading reveal">LICENSES &amp;<br/>CERTIFICATIONS</h2>
     <div class="cert-grid">
-      <div class="cert-card cc1 reveal">
-        <p class="cert-issuer">Certiport</p>
-        <p class="cert-name">IT Specialist — Python</p>
-        <p class="cert-meta">Issued Nov 2025 · Expires Nov 2030</p>
-        <span class="cert-badge">Python</span>
+
+      <div class="cert-card reveal">
+        <div class="cert-card-inner">
+          <div class="cert-front">
+            <div>
+              <p class="cert-issuer">Certiport</p>
+              <p class="cert-name">IT Specialist — Python</p>
+            </div>
+            <div>
+              <p class="cert-meta">Issued Nov 2025 · Expires Nov 2030</p>
+              <span class="cert-badge">Python</span>
+            </div>
+          </div>
+          <div class="cert-back">
+            <img src="python certificate.jpg" alt="IT Specialist Python Certificate" />
+            <div class="cert-glass">
+              <p class="cert-glass-issuer">Certiport</p>
+              <p class="cert-glass-name">IT Specialist — Python</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="cert-card cc2 reveal" style="transition-delay:0.06s">
-        <p class="cert-issuer">Certiport</p>
-        <p class="cert-name">IT Specialist — Databases</p>
-        <p class="cert-meta">Issued May 2025</p>
-        <span class="cert-badge">Database Admin</span>
+
+      <div class="cert-card reveal" style="transition-delay:0.06s">
+        <div class="cert-card-inner">
+          <div class="cert-front">
+            <div>
+              <p class="cert-issuer">Certiport</p>
+              <p class="cert-name">IT Specialist — Databases</p>
+            </div>
+            <div>
+              <p class="cert-meta">Issued May 2025</p>
+              <span class="cert-badge">Database Admin</span>
+            </div>
+          </div>
+          <div class="cert-back">
+            <img src="databases certificate.jpg" alt="IT Specialist Databases Certificate" />
+            <div class="cert-glass">
+              <p class="cert-glass-issuer">Certiport</p>
+              <p class="cert-glass-name">IT Specialist — Databases</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="cert-card cc3 reveal" style="transition-delay:0.12s">
-        <p class="cert-issuer">AWS Cloud Club</p>
-        <p class="cert-name">Generative AI Camp</p>
-        <p class="cert-meta">Oct 2024 · T.I.P. Manila</p>
-        <span class="cert-badge">Gen AI</span>
+
+      <div class="cert-card reveal" style="transition-delay:0.12s">
+        <div class="cert-card-inner">
+          <div class="cert-front">
+            <div>
+              <p class="cert-issuer">AWS Cloud Club</p>
+              <p class="cert-name">Generative AI Camp</p>
+            </div>
+            <div>
+              <p class="cert-meta">Oct 2024 · T.I.P. Manila</p>
+              <span class="cert-badge">Gen AI</span>
+            </div>
+          </div>
+          <div class="cert-back">
+            <img src="generative ai camp.jpg" alt="Generative AI Camp Certificate" />
+            <div class="cert-glass">
+              <p class="cert-glass-issuer">AWS Cloud Club</p>
+              <p class="cert-glass-name">Generative AI Camp</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="cert-card cc4 reveal" style="transition-delay:0.18s">
-        <p class="cert-issuer">Xaltius</p>
-        <p class="cert-name">Web Development 101: Building Your First Front-End</p>
-        <p class="cert-meta">Jan 2024</p>
-        <span class="cert-badge">Web Dev</span>
+
+      <div class="cert-card reveal" style="transition-delay:0.18s">
+        <div class="cert-card-inner">
+          <div class="cert-front">
+            <div>
+              <p class="cert-issuer">Xaltius</p>
+              <p class="cert-name">Web Development 101: Building Your First Front-End</p>
+            </div>
+            <div>
+              <p class="cert-meta">Jan 2024</p>
+              <span class="cert-badge">Web Dev</span>
+            </div>
+          </div>
+          <div class="cert-back">
+            <img src="webdev certificate.jpg" alt="Web Development Certificate" />
+            <div class="cert-glass">
+              <p class="cert-glass-issuer">Xaltius</p>
+              <p class="cert-glass-name">Web Development 101</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="cert-card cc1 reveal" style="transition-delay:0.24s">
-        <p class="cert-issuer">DOST-NCR</p>
-        <p class="cert-name">NCR TBI Summit 2024</p>
-        <p class="cert-meta">Oct 2024 · Novotel Manila</p>
-        <span class="cert-badge">Tech Industry</span>
+
+      <div class="cert-card reveal" style="transition-delay:0.24s">
+        <div class="cert-card-inner">
+          <div class="cert-front">
+            <div>
+              <p class="cert-issuer">DOST-NCR</p>
+              <p class="cert-name">NCR TBI Summit 2024</p>
+            </div>
+            <div>
+              <p class="cert-meta">Oct 2024 · Novotel Manila</p>
+              <span class="cert-badge">Tech Industry</span>
+            </div>
+          </div>
+          <div class="cert-back">
+            <img src="tbiNCR summit.jpg" alt="NCR TBI Summit 2024" />
+            <div class="cert-glass">
+              <p class="cert-glass-issuer">DOST-NCR</p>
+              <p class="cert-glass-name">NCR TBI Summit 2024</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="cert-card cc2 reveal" style="transition-delay:0.30s">
-        <p class="cert-issuer">AdU GAME</p>
-        <p class="cert-name">3D Game: Design, Develop, Deploy – Animation in Action</p>
-        <p class="cert-meta">Oct 2024</p>
-        <span class="cert-badge">Game Dev</span>
+
+      <div class="cert-card reveal" style="transition-delay:0.30s">
+        <div class="cert-card-inner">
+          <div class="cert-front">
+            <div>
+              <p class="cert-issuer">AdU GAME</p>
+              <p class="cert-name">3D Game: Design, Develop, Deploy – Animation in Action</p>
+            </div>
+            <div>
+              <p class="cert-meta">Oct 2024</p>
+              <span class="cert-badge">Game Dev</span>
+            </div>
+          </div>
+          <div class="cert-back">
+            <img src="game design.jpg" alt="3D Game Design Certificate" />
+            <div class="cert-glass">
+              <p class="cert-glass-issuer">AdU GAME</p>
+              <p class="cert-glass-name">3D Game: Design, Develop, Deploy</p>
+            </div>
+          </div>
+        </div>
       </div>
+
     </div>
   </section>
 
-  <!-- SKILLS -->
   <section id="skills">
     <p class="section-label reveal">04 — Skills</p>
     <div class="skills-ghost reveal">WHAT I<br/>BRING</div>
@@ -761,7 +912,6 @@
     </div>
   </section>
 
-  <!-- CONTACT -->
   <section id="contact">
     <div class="contact-scale-wrap" id="contactScaleWrap">
       <span class="contact-big">CONTACT</span>
@@ -777,14 +927,11 @@
   </section>
 
   <script>
-    // CURSOR
     const cursor = document.getElementById('cursor');
     const ring = document.getElementById('cursorRing');
     let mx = 0, my = 0, rx = 0, ry = 0;
-    const ZOOM = 0.8;
     document.addEventListener('mousemove', e => {
-      mx = e.clientX;
-      my = e.clientY;
+      mx = e.clientX; my = e.clientY;
       cursor.style.left = mx + 'px';
       cursor.style.top = my + 'px';
     });
@@ -797,125 +944,83 @@
     }
     animRing();
 
-    // Cursor scale on hover
     const hoverEls = document.querySelectorAll('a, button, .skill-tile, .cert-card, .edu-card');
     hoverEls.forEach(el => {
       el.addEventListener('mouseenter', () => {
-        cursor.style.width = '6px';
-        cursor.style.height = '6px';
-        ring.style.width = '60px';
-        ring.style.height = '60px';
+        cursor.style.width = '6px'; cursor.style.height = '6px';
+        ring.style.width = '60px'; ring.style.height = '60px';
         ring.style.opacity = '0.25';
       });
       el.addEventListener('mouseleave', () => {
-        cursor.style.width = '12px';
-        cursor.style.height = '12px';
-        ring.style.width = '40px';
-        ring.style.height = '40px';
+        cursor.style.width = '12px'; cursor.style.height = '12px';
+        ring.style.width = '40px'; ring.style.height = '40px';
         ring.style.opacity = '0.4';
       });
     });
 
-    // SCROLL REVEAL
     const reveals = document.querySelectorAll('.reveal');
     const obs = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
     }, { threshold: 0.1 });
     reveals.forEach(el => obs.observe(el));
 
-    // CARD EXIT ANIMATION ON SCROLL
     const exitDirections = [
       { x: -120, y: -80,  rot: -25 },
       { x: -40,  y: -120, rot: -10 },
       { x:  40,  y: -120, rot:  10 },
       { x:  120, y: -80,  rot:  25 },
     ];
-
     let scrollProgress = 0;
     const heroEl = document.getElementById('hero');
-
     window.addEventListener('scroll', () => {
-      const heroHeight = heroEl.offsetHeight;
-      scrollProgress = Math.min(window.scrollY / (heroHeight * 0.5), 1);
+      scrollProgress = Math.min(window.scrollY / (heroEl.offsetHeight * 0.5), 1);
     });
 
-    // HERO CARDS — 3D tilt + parallax + spring + neighbor reaction
     const cards = document.querySelectorAll('.hero-card');
-
-    // Base transforms for each card (resting state)
     const baseTransforms = [
-      { rotate: -8, tx: -180, tz: 0 },
-      { rotate: -3, tx: -60,  tz: 0 },
-      { rotate:  2, tx:  60,  tz: 0 },
-      { rotate:  7, tx:  180, tz: 0 },
+      { rotate: -8, tx: -180 },
+      { rotate: -3, tx: -60  },
+      { rotate:  2, tx:  60  },
+      { rotate:  7, tx:  180 },
     ];
-
-    // Spring state per card
     const spring = Array.from(cards).map(() => ({
       rotX: 0, rotY: 0, ty: 0, scale: 1,
       vRotX: 0, vRotY: 0, vTy: 0, vScale: 0,
     }));
-
-    // Target state per card
-    const target = Array.from(cards).map(() => ({
-      rotX: 0, rotY: 0, ty: 0, scale: 1,
-    }));
-
+    const target = Array.from(cards).map(() => ({ rotX: 0, rotY: 0, ty: 0, scale: 1 }));
     let hoveredIndex = -1;
-
-    const STIFFNESS = 0.18;
-    const DAMPING   = 0.72;
-
-    function lerp(a, b, t) { return a + (b - a) * t; }
+    const STIFFNESS = 0.18, DAMPING = 0.72;
 
     function applyTransform(card, i, s) {
       const b = baseTransforms[i];
       const dir = exitDirections[i];
-
       const ex = dir.x * scrollProgress;
       const ey = dir.y * scrollProgress;
       const er = dir.rot * scrollProgress;
       const exitScale = 1 - scrollProgress * 0.15;
-      const opacity = Math.max(1 - scrollProgress * 1.6, 0);
-
+      card.style.opacity = Math.max(1 - scrollProgress * 1.6, 0);
       card.style.transform =
         `translateX(${b.tx + ex}px) translateY(${s.ty + ey}px) ` +
         `rotate(${b.rotate + er}deg) ` +
         `rotateX(${s.rotX}deg) rotateY(${s.rotY}deg) ` +
         `scale(${s.scale * exitScale})`;
-      card.style.opacity = opacity;
     }
 
     function animate() {
       cards.forEach((card, i) => {
-        const s = spring[i];
-        const t = target[i];
-
-        // Spring physics
+        const s = spring[i], t = target[i];
         s.vRotX  = s.vRotX  * DAMPING + (t.rotX  - s.rotX)  * STIFFNESS;
         s.vRotY  = s.vRotY  * DAMPING + (t.rotY  - s.rotY)  * STIFFNESS;
         s.vTy    = s.vTy    * DAMPING + (t.ty    - s.ty)    * STIFFNESS;
         s.vScale = s.vScale * DAMPING + (t.scale - s.scale) * STIFFNESS;
-
-        s.rotX  += s.vRotX;
-        s.rotY  += s.vRotY;
-        s.ty    += s.vTy;
-        s.scale += s.vScale;
-
+        s.rotX += s.vRotX; s.rotY += s.vRotY;
+        s.ty   += s.vTy;   s.scale += s.vScale;
         applyTransform(card, i, s);
-
-        // Shadow intensity based on lift
         const lift = Math.max(0, -s.ty);
-        const shadowColors = [
-          `rgba(255,82,82,`,
-          `rgba(64,196,255,`,
-          `rgba(118,255,3,`,
-          `rgba(255,215,64,`,
-        ];
-        const spread = 16 + lift * 0.6;
-        const blur   = 40 + lift * 1.2;
-        const alpha  = 0.35 + lift * 0.003;
-        card.style.boxShadow = `0 ${spread}px ${blur}px ${shadowColors[i]}${Math.min(alpha, 0.7)})`;
+        const sc = ['rgba(255,82,82,','rgba(64,196,255,','rgba(118,255,3,','rgba(255,215,64,'];
+        const spread = 16 + lift * 0.6, blur = 40 + lift * 1.2;
+        const alpha = Math.min(0.35 + lift * 0.003, 0.7);
+        card.style.boxShadow = `0 ${spread}px ${blur}px ${sc[i]}${alpha})`;
       });
       requestAnimationFrame(animate);
     }
@@ -925,57 +1030,34 @@
       card.addEventListener('mouseenter', () => {
         hoveredIndex = i;
         card.classList.add('is-hovered');
-        cards.forEach((c, j) => {
-          if (j !== i) c.classList.add('is-neighbor');
-        });
-        target[i].ty    = -28;
-        target[i].scale = 1.07;
-        // Neighbor cards shift slightly away
-        cards.forEach((_, j) => {
-          if (j !== i) {
-            const dist = j - i;
-            target[j].ty = dist < 0 ? 6 : 6;
-          }
-        });
+        cards.forEach((c, j) => { if (j !== i) c.classList.add('is-neighbor'); });
+        target[i].ty = -28; target[i].scale = 1.07;
+        cards.forEach((_, j) => { if (j !== i) target[j].ty = 6; });
       });
-
       card.addEventListener('mouseleave', () => {
         hoveredIndex = -1;
         card.classList.remove('is-hovered');
         cards.forEach(c => c.classList.remove('is-neighbor'));
-        cards.forEach((_, j) => {
-          target[j].ty    = 0;
-          target[j].scale = 1;
-          target[j].rotX  = 0;
-          target[j].rotY  = 0;
-        });
+        cards.forEach((_, j) => { target[j].ty = 0; target[j].scale = 1; target[j].rotX = 0; target[j].rotY = 0; });
       });
-
       card.addEventListener('mousemove', e => {
         const rect = card.getBoundingClientRect();
-        // Normalize -1 to 1
         const nx = ((e.clientX - rect.left) / rect.width  - 0.5) * 2;
         const ny = ((e.clientY - rect.top)  / rect.height - 0.5) * 2;
-        target[i].rotY =  nx * 14;
-        target[i].rotX = -ny * 10;
+        target[i].rotY = nx * 14; target[i].rotX = -ny * 10;
       });
     });
-    // CONTACT SCROLL-SCALE (Spencer Gabor style)
+
     const contactSection = document.getElementById('contact');
-    const contactWrap    = document.getElementById('contactScaleWrap');
-
+    const contactWrap = document.getElementById('contactScaleWrap');
     function updateContactScale() {
-      const rect     = contactSection.getBoundingClientRect();
-      const vh       = window.innerHeight;
-      // progress: 0 when section top hits bottom of viewport → 1 when section fills viewport
+      const rect = contactSection.getBoundingClientRect();
+      const vh = window.innerHeight;
       const progress = Math.max(0, Math.min(1, (vh - rect.top) / vh));
-      const scale    = 0.55 + progress * 0.45; // grows from 55% → 100%
-      contactWrap.style.transform = `scale(${scale})`;
+      contactWrap.style.transform = `scale(${0.55 + progress * 0.45})`;
     }
-
     window.addEventListener('scroll', updateContactScale, { passive: true });
     updateContactScale();
-
   </script>
 </body>
 </html>
