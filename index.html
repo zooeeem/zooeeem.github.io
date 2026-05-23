@@ -5,1397 +5,789 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
   <title>Althea Zoe Anasco — CSIE Student &amp; Aspiring Security Engineer</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { bebas: ['Bebas Neue', 'sans-serif'], inter: ['Inter', 'sans-serif'], serif: ['DM Serif Display', 'serif'] },
+          colors: { primary: '#030014' },
+        }
+      }
+    }
+  </script>
   <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    /* ─── SCROLLBAR ─────────────────────────── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: #030014; }
+    ::-webkit-scrollbar-thumb { background: rgba(124,58,237,0.4); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(124,58,237,0.7); }
 
-    :root {
-      --bg:        #F8F5F0;
-      --bg2:       #F1EDE5;
-      --surface:   rgba(255,255,255,0.82);
-      --text:      #1C1916;
-      --muted:     #7A736A;
-      --dim:       #A89E94;
-      --border:    rgba(28,25,22,0.09);
-      --sage:      #7FA891;
-      --sky:       #6B9EC2;
-      --peach:     #D4906A;
-      --lavender:  #907DB8;
-      --mint:      #8FBFB0;
-      --sage-soft: rgba(127,168,145,0.12);
-      --sky-soft:  rgba(107,158,194,0.12);
-      --peach-soft:rgba(212,144,106,0.12);
-      --lav-soft:  rgba(144,125,184,0.12);
+    /* ─── GRID OVERLAY ──────────────────────── */
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 44px 44px;
     }
 
-    html { scroll-behavior: smooth; overflow-x: hidden; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      font-weight: 300;
-      overflow-x: hidden;
-      cursor: none;
-      zoom: 0.8;
-    }
-
-    /* ─── GRAIN TEXTURE ─────────────────────── */
-    body::after {
-      content: '';
-      position: fixed; inset: 0;
-      pointer-events: none;
-      z-index: 9990;
-      opacity: 0.032;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
-      background-repeat: repeat;
-      background-size: 300px 300px;
-    }
-
-    /* ─── CURSOR GLOW ───────────────────────── */
-    #cursorGlow {
-      position: fixed;
-      width: 700px; height: 700px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(127,168,145,0.10) 0%, rgba(107,158,194,0.06) 40%, transparent 70%);
-      pointer-events: none;
-      z-index: 1;
-      transform: translate(-50%, -50%);
-      transition: left 1.1s cubic-bezier(0.25,0.46,0.45,0.94),
-                  top  1.1s cubic-bezier(0.25,0.46,0.45,0.94);
-      will-change: left, top;
+    /* ─── AMBIENT GLOW ──────────────────────── */
+    .ambient-glow {
+      background: radial-gradient(ellipse 90% 55% at 50% -5%, rgba(120,119,198,0.13) 0%, transparent 70%);
     }
 
     /* ─── CURSOR ────────────────────────────── */
-    .cursor {
-      width: 10px; height: 10px;
-      background: var(--text);
+    .cursor-dot {
+      width: 8px; height: 8px;
+      background: #a78bfa;
       border-radius: 50%;
-      position: fixed;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      transition: width 0.2s, height 0.2s, background 0.2s, opacity 0.2s;
-      mix-blend-mode: multiply;
+      position: fixed; pointer-events: none;
+      z-index: 9999; transform: translate(-50%,-50%);
+      transition: width .2s, height .2s, opacity .2s;
+      opacity: 0;
     }
     .cursor-ring {
-      width: 38px; height: 38px;
-      border: 1.5px solid rgba(28,25,22,0.35);
+      width: 32px; height: 32px;
+      border: 1px solid rgba(167,139,250,0.5);
       border-radius: 50%;
-      position: fixed;
-      pointer-events: none;
-      z-index: 9998;
-      transform: translate(-50%, -50%);
-      transition: all 0.15s ease;
+      position: fixed; pointer-events: none;
+      z-index: 9998; transform: translate(-50%,-50%);
+      transition: all .12s ease;
+      opacity: 0;
     }
     #cursor-layer { position: fixed; top:0; left:0; width:0; height:0; zoom:1.25; z-index:9999; }
 
-    /* ─── NAV ───────────────────────────────── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 200;
-      padding: 18px 52px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(248,245,240,0.88);
-      backdrop-filter: blur(18px) saturate(1.4);
-      -webkit-backdrop-filter: blur(18px) saturate(1.4);
-      border-bottom: 1px solid var(--border);
-      transition: padding 0.3s, background 0.3s;
+    /* ─── ANIMATED GRADIENT BORDER BUTTON ───── */
+    .btn-glow {
+      position: relative; z-index: 0;
+      isolation: isolate;
     }
-    nav.scrolled { padding: 13px 52px; background: rgba(248,245,240,0.96); }
-    .nav-logo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.35rem;
-      letter-spacing: 0.08em;
-      color: var(--text);
-    }
-    .nav-right { display: flex; align-items: center; gap: 36px; }
-    .nav-links {
-      display: flex;
-      gap: 28px;
-      list-style: none;
-    }
-    .nav-links a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.7rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      transition: color 0.2s;
-      position: relative;
-    }
-    .nav-links a::after {
+    .btn-glow::before {
       content: '';
-      position: absolute;
-      bottom: -3px; left: 0;
-      width: 0; height: 1px;
-      background: var(--sage);
-      transition: width 0.3s ease;
-    }
-    .nav-links a:hover, .nav-links a.active { color: var(--text); }
-    .nav-links a.active::after, .nav-links a:hover::after { width: 100%; }
-    .nav-badge {
-      font-size: 0.58rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--sage);
-      background: var(--sage-soft);
-      border: 1px solid rgba(127,168,145,0.25);
-      border-radius: 100px;
-      padding: 5px 12px;
-      white-space: nowrap;
-    }
-    .nav-badge::before {
-      content: '';
-      display: inline-block;
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--sage);
-      margin-right: 6px;
-      vertical-align: middle;
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%,100% { opacity:1; transform:scale(1); }
-      50%      { opacity:0.5; transform:scale(0.7); }
-    }
-
-    /* ─── HERO ──────────────────────────────── */
-    #hero {
-      min-height: 125vh;
-      padding-top: 90px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* Animated blobs */
-    .blob-wrap {
-      position: absolute; inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-    }
-    .blob {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(72px);
-      opacity: 0.55;
-      will-change: transform;
-    }
-    .blob1 {
-      width: 520px; height: 520px;
-      background: radial-gradient(circle, rgba(127,168,145,0.5), rgba(127,168,145,0));
-      top: -80px; left: -100px;
-      animation: blobFloat1 14s ease-in-out infinite;
-    }
-    .blob2 {
-      width: 460px; height: 460px;
-      background: radial-gradient(circle, rgba(107,158,194,0.45), rgba(107,158,194,0));
-      top: 60px; right: -80px;
-      animation: blobFloat2 18s ease-in-out infinite;
-    }
-    .blob3 {
-      width: 380px; height: 380px;
-      background: radial-gradient(circle, rgba(144,125,184,0.35), rgba(144,125,184,0));
-      bottom: 100px; left: 30%;
-      animation: blobFloat3 22s ease-in-out infinite;
-    }
-    .blob4 {
-      width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(212,144,106,0.3), rgba(212,144,106,0));
-      bottom: 60px; right: 15%;
-      animation: blobFloat1 16s ease-in-out infinite reverse;
-    }
-    @keyframes blobFloat1 {
-      0%,100% { transform: translate(0,0) scale(1); }
-      33%      { transform: translate(28px,-22px) scale(1.06); }
-      66%      { transform: translate(-18px,16px) scale(0.96); }
-    }
-    @keyframes blobFloat2 {
-      0%,100% { transform: translate(0,0) scale(1); }
-      40%      { transform: translate(-32px,20px) scale(1.05); }
-      70%      { transform: translate(18px,-14px) scale(0.98); }
-    }
-    @keyframes blobFloat3 {
-      0%,100% { transform: translate(0,0) scale(1); }
-      30%      { transform: translate(20px,28px) scale(1.04); }
-      60%      { transform: translate(-24px,-10px) scale(0.95); }
-    }
-
-    .hero-inner { position: relative; z-index: 2; }
-    .hero-top {
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      font-size: 0.66rem;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      color: var(--dim);
-      padding: 28px 0 12px;
-    }
-    .hero-name {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(3rem, 11vw, 10rem);
-      line-height: 0.92;
-      letter-spacing: 0.01em;
-      color: var(--text);
-      padding: 0 40px;
-      white-space: nowrap;
-      animation: heroFadeDown 1s cubic-bezier(0.22,1,0.36,1) forwards;
-      will-change: transform;
-    }
-    .hero-tagline {
-      font-family: 'DM Serif Display', serif;
-      font-style: italic;
-      font-size: clamp(0.9rem, 1.6vw, 1.25rem);
-      color: var(--muted);
-      margin-top: 14px;
-      animation: heroFadeUp 1s ease 0.15s both;
-    }
-    .hero-ctas {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      margin-top: 32px;
-      animation: heroFadeUp 1s ease 0.28s both;
-    }
-    .btn-primary {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 14px 32px;
-      background: var(--text);
-      color: var(--bg);
-      font-size: 0.72rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      text-decoration: none;
-      border-radius: 100px;
-      font-weight: 500;
-      border: 1.5px solid var(--text);
-      transition: background 0.25s, color 0.25s, transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s;
-      will-change: transform;
-    }
-    .btn-primary:hover {
-      background: var(--sage);
-      border-color: var(--sage);
-      color: white;
-      box-shadow: 0 8px 28px rgba(127,168,145,0.35);
-    }
-    .btn-outline {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 14px 32px;
-      background: transparent;
-      color: var(--text);
-      font-size: 0.72rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      text-decoration: none;
-      border-radius: 100px;
-      font-weight: 500;
-      border: 1.5px solid var(--border);
-      transition: background 0.25s, border-color 0.25s, transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s;
-      will-change: transform;
-      background: var(--surface);
-      backdrop-filter: blur(12px);
-    }
-    .btn-outline:hover {
-      border-color: var(--text);
-      box-shadow: 0 8px 24px rgba(28,25,22,0.08);
-    }
-
-    /* Hero cards — spring physics preserved */
-    .hero-cards {
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      padding: 36px 0 0;
-      position: relative;
-      height: 260px;
-      perspective: 1000px;
-    }
-    .hero-card {
-      width: 180px; height: 220px;
-      border-radius: 24px;
-      position: absolute; bottom: 0;
-      display: flex;
-      align-items: flex-end;
-      justify-content: flex-start;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1rem;
-      letter-spacing: 0.08em;
-      color: white;
-      padding: 20px;
-      line-height: 1.3;
-      cursor: pointer;
-      will-change: transform;
-      transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s, filter 0.4s;
-      overflow: hidden;
-    }
-    .hero-card::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(145deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 65%);
-      border-radius: inherit; pointer-events: none;
-    }
-    .hero-card::after {
-      content: '';
-      position: absolute; inset: 0;
+      position: absolute; inset: -1px;
       border-radius: inherit;
-      border: 1px solid rgba(255,255,255,0.3);
-      pointer-events: none;
+      background: linear-gradient(135deg, #7c3aed, #a78bfa, #60a5fa, #7c3aed);
+      background-size: 300% 300%;
+      animation: gradBorder 3.5s ease infinite;
+      z-index: -1;
     }
-    .hc1 { background: linear-gradient(145deg,#E8857A,#C94F42); box-shadow: 0 18px 44px rgba(201,79,66,0.38); transform: rotate(-8deg) translateX(-180px); z-index:1; }
-    .hc2 { background: linear-gradient(145deg,#7BBFDF,#4A9DC2); color:#0d2a3a; box-shadow: 0 18px 44px rgba(74,157,194,0.38); transform: rotate(-3deg) translateX(-60px); z-index:2; }
-    .hc3 { background: linear-gradient(145deg,#8DCFB8,#5BAA93); color:#0d2a1e; box-shadow: 0 18px 44px rgba(91,170,147,0.38); transform: rotate(2deg) translateX(60px); z-index:3; }
-    .hc4 { background: linear-gradient(145deg,#F0C87A,#D4A543); color:#3a2800; box-shadow: 0 18px 44px rgba(212,165,67,0.38); transform: rotate(7deg) translateX(180px); z-index:2; }
-    .hero-card.is-hovered { z-index:10; filter: brightness(1.07); }
-    .hero-card.is-neighbor { filter: brightness(0.93) saturate(0.82); }
-
-    .hero-ghost {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(3rem, 9vw, 7.5rem);
-      color: rgba(28,25,22,0.07);
-      letter-spacing: 0.04em;
-      line-height: 1;
-      padding: 24px 40px 0;
-      animation: heroFadeUp 1s ease 0.3s both;
-      pointer-events: none;
+    .btn-glow::after {
+      content: '';
+      position: absolute; inset: 1px;
+      border-radius: inherit;
+      background: #0d0920;
+      z-index: -1;
     }
-    .hero-clients {
-      padding: 20px 0 56px;
-      font-size: 0.66rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--dim);
-    }
-    .hero-clients strong { color: var(--muted); font-weight: 500; margin-right: 6px; }
-
-    @keyframes heroFadeDown {
-      from { opacity:0; transform: translateY(-24px); }
-      to   { opacity:1; transform: translateY(0); }
-    }
-    @keyframes heroFadeUp {
-      from { opacity:0; transform: translateY(24px); }
-      to   { opacity:1; transform: translateY(0); }
+    @keyframes gradBorder {
+      0%,100% { background-position: 0% 50%; }
+      50%      { background-position: 100% 50%; }
     }
 
-    /* ─── MARQUEE ───────────────────────────── */
-    .marquee-wrap {
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 14px 0;
-      overflow: hidden;
-      background: var(--text);
-      position: relative;
-      z-index: 10;
+    /* ─── PULSE DOT ──────────────────────────── */
+    .pulse-dot {
+      width: 6px; height: 6px;
+      background: #4ade80;
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 0 rgba(74,222,128,0.6);
+      animation: pulseGreen 2s ease infinite;
     }
-    .marquee-track {
-      display: flex; width: max-content;
-      animation: marquee 22s linear infinite;
-    }
-    .marquee-item {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1rem; letter-spacing: 0.1em;
-      color: rgba(248,245,240,0.6); padding: 0 28px;
-      white-space: nowrap;
-    }
-    .marquee-dot { color: var(--sage); opacity: 1; font-size: 0.7rem; padding: 0 6px; }
-    @keyframes marquee {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
+    @keyframes pulseGreen {
+      0%   { box-shadow: 0 0 0 0 rgba(74,222,128,0.5); }
+      70%  { box-shadow: 0 0 0 6px rgba(74,222,128,0); }
+      100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
     }
 
-    /* ─── SHARED SECTION STYLES ─────────────── */
-    section { padding: 110px 64px; position: relative; }
-    .section-label {
-      font-size: 0.62rem; letter-spacing: 0.3em;
-      text-transform: uppercase; color: var(--sage);
-      margin-bottom: 16px; font-weight: 500;
-    }
-    .section-heading {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(3rem, 6.5vw, 5.5rem);
-      line-height: 1; letter-spacing: 0.02em; margin-bottom: 64px;
-      color: var(--text);
-    }
-
-    /* REVEAL ANIMATIONS */
+    /* ─── SCROLL REVEAL ─────────────────────── */
     .reveal {
-      opacity: 0; transform: translateY(32px);
-      transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1),
-                  transform 0.9s cubic-bezier(0.22,1,0.36,1);
+      opacity: 0; transform: translateY(28px);
+      transition: opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1);
     }
-    .reveal.visible { opacity:1; transform: translateY(0); }
-    .reveal-scale {
-      opacity:0; transform: scale(0.94);
-      transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1),
-                  transform 0.9s cubic-bezier(0.22,1,0.36,1);
-    }
-    .reveal-scale.visible { opacity:1; transform: scale(1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
 
-    /* ─── ABOUT ─────────────────────────────── */
-    #about {
-      border-top: 1px solid var(--border);
-      display: grid; grid-template-columns: 1fr 1.1fr;
-      gap: 90px; align-items: start;
-      background: linear-gradient(135deg, transparent 0%, rgba(127,168,145,0.04) 100%);
-    }
-    .about-big {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(3.5rem, 6.5vw, 5.8rem);
-      line-height: 1; letter-spacing: 0.02em;
-    }
-    .about-big .ghost { color: rgba(28,25,22,0.12); }
-    .stats-row {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 20px; margin-top: 48px;
-    }
-    .stat {
-      border-top: 2px solid var(--border);
-      padding-top: 18px;
-      transition: border-color 0.3s;
-    }
-    .stat:hover { border-color: var(--sage); }
-    .stat-num {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 3.2rem; line-height: 1; display: block;
-      color: var(--text);
-    }
-    .stat-label {
-      font-size: 0.68rem; letter-spacing: 0.16em;
-      text-transform: uppercase; color: var(--muted); margin-top: 5px;
-    }
-    .about-text {
-      font-size: 0.95rem; line-height: 1.95; color: var(--muted);
-      margin-bottom: 22px;
-    }
-    .about-photo-wrap {
-      margin-top: 36px;
-      display: flex; align-items: center; gap: 20px;
-    }
-    .about-photo {
-      width: 68px; height: 68px;
-      border-radius: 50%;
-      background: var(--bg2);
-      border: 2px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      overflow: hidden; flex-shrink: 0;
-      box-shadow: 0 4px 16px rgba(28,25,22,0.08);
-    }
-    .about-photo img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
-    .photo-initials {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.5rem; color: var(--dim); letter-spacing: 0.05em;
-    }
-    .about-photo-name { font-weight: 500; font-size: 0.88rem; color: var(--text); }
-    .about-photo-role { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.05em; margin-top: 2px; }
-    .about-cta {
-      display: inline-flex; align-items: center; gap: 8px;
-      margin-top: 32px;
-      padding: 13px 28px;
-      border: 1.5px solid var(--text);
-      border-radius: 100px;
-      font-size: 0.7rem; letter-spacing: 0.16em;
-      text-transform: uppercase; color: var(--text);
-      text-decoration: none;
-      background: transparent;
-      transition: background 0.25s, color 0.25s, transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s;
-      will-change: transform;
-    }
-    .about-cta:hover {
-      background: var(--text); color: var(--bg);
-      box-shadow: 0 8px 28px rgba(28,25,22,0.15);
-    }
-
-    /* ─── EDUCATION ─────────────────────────── */
-    #education { border-top: 1px solid var(--border); }
-    .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-    .edu-card {
-      background: var(--surface);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--border);
-      border-radius: 20px; padding: 48px 44px;
-      transition: transform 0.35s cubic-bezier(0.22,1,0.36,1),
-                  box-shadow 0.35s, border-color 0.3s;
-      position: relative; overflow: hidden;
-    }
-    .edu-card::before {
-      content: '';
-      position: absolute; top: 0; right: 0;
-      width: 160px; height: 160px;
-      border-radius: 50%;
-      transform: translate(50%, -50%);
-      transition: opacity 0.3s;
-    }
-    .edu-card:nth-child(1)::before { background: radial-gradient(circle, var(--sky-soft), transparent 70%); }
-    .edu-card:nth-child(2)::before { background: radial-gradient(circle, var(--sage-soft), transparent 70%); }
-    .edu-card:hover {
-      transform: translateY(-7px);
-      box-shadow: 0 24px 56px rgba(28,25,22,0.09);
-      border-color: rgba(28,25,22,0.15);
-    }
-    .edu-period {
-      font-size: 0.65rem; letter-spacing: 0.2em;
-      text-transform: uppercase; color: var(--dim); margin-bottom: 16px;
-    }
-    .edu-school {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.9rem; line-height: 1.1; margin-bottom: 10px; color: var(--text);
-    }
-    .edu-degree { font-size: 0.82rem; color: var(--muted); line-height: 1.75; }
-
-    /* ─── PROJECTS ──────────────────────────── */
-    #projects { border-top: 1px solid var(--border); }
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 22px;
-    }
-    .project-card {
-      border: 1px solid var(--border);
+    /* ─── BENTO CARD ────────────────────────── */
+    .bento-card {
+      background: rgba(255,255,255,0.028);
+      border: 1px solid rgba(255,255,255,0.08);
       border-radius: 20px;
-      padding: 38px 34px 32px;
-      background: var(--surface);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      transition: transform 0.35s cubic-bezier(0.22,1,0.36,1),
-                  box-shadow 0.35s, border-color 0.3s;
-      display: flex; flex-direction: column;
-      gap: 14px;
-      position: relative; overflow: hidden;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: border-color .3s, background .3s, box-shadow .3s;
     }
-    .project-card::before {
-      content: '';
-      position: absolute; top: 0; right: 0;
-      width: 180px; height: 180px;
-      border-radius: 50%;
-      transform: translate(40%, -40%);
-      opacity: 0;
-      transition: opacity 0.4s;
+    .bento-card:hover {
+      border-color: rgba(167,139,250,0.25);
+      background: rgba(255,255,255,0.045);
+      box-shadow: 0 0 32px rgba(124,58,237,0.07);
     }
-    .project-card:hover::before { opacity: 1; }
-    .project-card:nth-child(1)::before { background: radial-gradient(circle, var(--sky-soft), transparent 70%); }
-    .project-card:nth-child(2)::before { background: radial-gradient(circle, var(--sage-soft), transparent 70%); }
-    .project-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 24px 56px rgba(28,25,22,0.09);
-      border-color: rgba(28,25,22,0.14);
-    }
-    .project-type {
-      font-size: 0.58rem; letter-spacing: 0.26em;
-      text-transform: uppercase; color: var(--dim);
-    }
-    .project-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.3rem; color: var(--text); line-height: 1.3;
-    }
-    .project-desc {
-      font-size: 0.86rem; line-height: 1.8; color: var(--muted); flex: 1;
-    }
-    .project-tags {
-      display: flex; flex-wrap: wrap; gap: 7px; margin-top: 4px;
-    }
-    .project-tag {
-      padding: 5px 13px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      font-size: 0.6rem; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--muted);
-      font-weight: 500;
-      transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
-    }
-    .project-card:hover .project-tag {
-      transform: translateY(0);
-    }
-    .project-tag:nth-child(1) { transition-delay: 0s; }
-    .project-tag:nth-child(2) { transition-delay: 0.04s; }
-    .project-tag:nth-child(3) { transition-delay: 0.08s; }
-    .project-tag:nth-child(4) { transition-delay: 0.12s; }
-    .project-tag:hover {
-      background: var(--text); color: var(--bg);
-      border-color: var(--text); transform: scale(1.05) !important;
-    }
-    .project-footer {
-      display: flex; align-items: center;
-      justify-content: space-between;
-      margin-top: 8px;
-      padding-top: 18px;
-      border-top: 1px solid var(--border);
-    }
-    .project-link {
-      font-size: 0.68rem; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--text);
-      text-decoration: none; font-weight: 500;
-      display: flex; align-items: center; gap: 6px;
-      transition: color 0.2s, gap 0.2s;
-    }
-    .project-link:hover { color: var(--sage); gap: 10px; }
-    .project-link svg { width: 13px; height: 13px; flex-shrink: 0; }
-    .project-status {
-      font-size: 0.6rem; letter-spacing: 0.14em;
-      text-transform: uppercase;
-      padding: 5px 12px;
-      border-radius: 100px;
-      background: rgba(127,168,145,0.12);
-      color: var(--sage);
-      border: 1px solid rgba(127,168,145,0.28);
-      font-weight: 500;
-    }
-    a.project-status { text-decoration: none; transition: background 0.2s; }
-    a.project-status:hover { background: var(--sage); color: white; }
 
-    /* Password project terminal preview */
-    .password-card .project-terminal {
-      background: rgba(28,25,22,0.94);
+    /* ─── SPEC PILL ─────────────────────────── */
+    .spec-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
       border-radius: 12px;
-      overflow: hidden;
-      margin-top: 4px;
-      max-height: 0;
-      opacity: 0;
-      transition: max-height 0.5s cubic-bezier(0.22,1,0.36,1),
-                  opacity 0.35s ease, margin-top 0.3s;
+      font-size: 0.82rem; font-weight: 500;
+      color: rgba(255,255,255,0.85);
+      transition: background .25s, border-color .25s, transform .3s cubic-bezier(.34,1.56,.64,1);
     }
-    .password-card:hover .project-terminal {
-      max-height: 180px;
-      opacity: 1;
-      margin-top: 10px;
+    .spec-pill:hover {
+      background: rgba(167,139,250,0.1);
+      border-color: rgba(167,139,250,0.3);
+      transform: translateY(-2px);
     }
-    .term-header {
-      background: rgba(255,255,255,0.06);
-      padding: 9px 14px;
-      display: flex; align-items: center; gap: 6px;
-    }
-    .term-dot { width: 9px; height: 9px; border-radius: 50%; }
-    .term-dot.r { background: #FF5F56; }
-    .term-dot.y { background: #FFBD2E; }
-    .term-dot.g { background: #27C93F; }
-    .term-title { font-size: 0.62rem; color: rgba(255,255,255,0.35); margin-left: 6px; letter-spacing: 0.08em; }
-    .term-body { padding: 12px 16px; font-family: 'SF Mono', 'Fira Code', monospace; }
-    .term-line {
-      font-size: 0.7rem; line-height: 1.7; color: rgba(255,255,255,0.55);
-      opacity: 0; transform: translateX(-8px);
-      transition: opacity 0.3s, transform 0.3s;
-    }
-    .password-card:hover .term-line { opacity: 1; transform: translateX(0); }
-    .password-card:hover .term-line:nth-child(1) { transition-delay: 0.1s; }
-    .password-card:hover .term-line:nth-child(2) { transition-delay: 0.25s; }
-    .password-card:hover .term-line:nth-child(3) { transition-delay: 0.4s; }
-    .password-card:hover .term-line:nth-child(4) { transition-delay: 0.55s; }
-    .term-line .t-green { color: #27C93F; }
-    .term-line .t-cyan  { color: #79e8ff; }
-    .term-line .t-dim   { color: rgba(255,255,255,0.3); }
-    .term-entropy {
-      display: flex; align-items: center; gap: 8px;
-      margin-top: 6px;
-      opacity: 0; transform: translateX(-8px);
-      transition: opacity 0.3s 0.7s, transform 0.3s 0.7s;
-    }
-    .password-card:hover .term-entropy { opacity: 1; transform: translateX(0); }
-    .term-e-label { font-size: 0.62rem; color: rgba(255,255,255,0.35); letter-spacing:0.08em; min-width: 54px; font-family: 'SF Mono', monospace; }
-    .term-e-track {
-      flex: 1; height: 4px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 4px; overflow: hidden;
-    }
-    .term-e-fill {
-      height: 100%; width: 0;
-      background: linear-gradient(90deg, var(--sage), var(--mint));
-      border-radius: 4px;
-      transition: width 1.2s cubic-bezier(0.22,1,0.36,1) 0.8s;
-    }
-    .password-card:hover .term-e-fill { width: 85%; }
-    .term-e-val { font-size: 0.62rem; color: var(--sage); font-family: 'SF Mono', monospace; letter-spacing:0.04em; }
 
-    /* ─── CERTIFICATIONS ────────────────────── */
-    #certifications { border-top: 1px solid var(--border); }
-    .cert-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 18px;
+    /* ─── TOOL CHIP ─────────────────────────── */
+    .tool-chip {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 6px;
+      padding: 14px 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px;
+      transition: background .25s, border-color .25s, transform .3s cubic-bezier(.34,1.56,.64,1);
     }
-    .cert-card {
-      border-radius: 20px; position: relative;
-      height: 268px; perspective: 1100px; cursor: pointer;
+    .tool-chip:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.16);
+      transform: translateY(-3px);
     }
-    .cert-card-inner {
-      position: relative; width:100%; height:100%;
-      transition: transform 0.7s cubic-bezier(0.4,0,0.2,1);
-      transform-style: preserve-3d;
+    .tool-chip svg { opacity: 0.75; }
+    .tool-chip:hover svg { opacity: 1; }
+
+    /* ─── SECTION LABEL ─────────────────────── */
+    .section-label {
+      font-size: .62rem; letter-spacing: .32em;
+      text-transform: uppercase; color: #a78bfa; font-weight: 600;
+      margin-bottom: 14px;
     }
-    .cert-card:hover .cert-card-inner { transform: rotateY(180deg); }
-    .cert-front, .cert-back {
-      position: absolute; inset: 0; border-radius: 20px;
-      backface-visibility: hidden; -webkit-backface-visibility: hidden;
+
+    /* ─── EDU / PROJECT CARD ────────────────── */
+    .content-card {
+      background: rgba(255,255,255,0.028);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      transition: border-color .3s, background .3s, transform .35s cubic-bezier(.22,1,.36,1), box-shadow .3s;
     }
-    .cert-front {
-      padding: 30px;
-      background: var(--surface);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--border);
-      box-shadow: 0 2px 16px rgba(28,25,22,0.05);
-      overflow: hidden;
-      display: flex; flex-direction: column;
-      transition: box-shadow 0.35s, border-color 0.3s;
+    .content-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(167,139,250,0.22);
+      background: rgba(255,255,255,0.045);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.4);
     }
-    .cert-card:hover .cert-front { box-shadow: 0 28px 64px rgba(28,25,22,0.12); border-color: rgba(28,25,22,0.14); }
-    .cert-front::before {
-      content: '';
-      position: absolute; top: 0; right: 0;
-      width: 120px; height: 120px;
-      border-radius: 50%;
-      transform: translate(40%,-40%);
-      opacity: 0.8;
-    }
-    .cert-card:nth-child(1) .cert-front::before { background: radial-gradient(circle, var(--sky-soft), transparent 70%); }
-    .cert-card:nth-child(2) .cert-front::before { background: radial-gradient(circle, var(--sage-soft), transparent 70%); }
-    .cert-card:nth-child(3) .cert-front::before { background: radial-gradient(circle, var(--lav-soft), transparent 70%); }
-    .cert-card:nth-child(4) .cert-front::before { background: radial-gradient(circle, var(--peach-soft), transparent 70%); }
-    .cert-card:nth-child(5) .cert-front::before { background: radial-gradient(circle, var(--sky-soft), transparent 70%); }
-    .cert-card:nth-child(6) .cert-front::before { background: radial-gradient(circle, var(--sage-soft), transparent 70%); }
-    .cert-back {
-      transform: rotateY(180deg);
-      background: #1C1916; overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.05);
-    }
-    .cert-back img {
-      width:100%; height:100%;
-      object-fit:cover; border-radius:20px; display:block;
-    }
-    .cert-back::before {
-      content: ''; position: absolute;
-      bottom:0; left:0; right:0; height:55%;
-      border-radius: 0 0 20px 20px;
-      background: linear-gradient(to top, rgba(28,25,22,0.65) 0%, transparent 100%);
-      pointer-events:none; z-index:1;
-    }
-    .cert-glass {
-      position:absolute; bottom:16px; left:16px; right:16px;
-      z-index:3;
-      background: rgba(255,255,255,0.12);
-      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 14px; padding: 13px 16px;
-    }
-    .cert-glass-issuer {
-      font-size: 0.56rem; letter-spacing: 0.22em;
-      text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 4px;
-    }
-    .cert-glass-name {
-      font-family: 'DM Serif Display', serif;
-      font-size: 0.88rem; color:#fff; line-height:1.3;
-    }
-    .cert-issuer {
-      font-size: 0.6rem; letter-spacing: 0.2em;
-      text-transform: uppercase; color: var(--sage); margin-bottom: 8px; font-weight: 500;
-    }
-    .cert-name {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1rem; line-height: 1.4;
-      color: var(--text); margin-bottom: 8px;
-    }
-    .cert-desc { font-size: 0.77rem; color: var(--muted); line-height: 1.65; flex: 1; }
-    .cert-footer {
-      margin-top: 14px;
-      display: flex; align-items: center;
-      justify-content: space-between;
-    }
-    .cert-meta { font-size: 0.68rem; color: var(--dim); }
-    .cert-badge {
-      display: inline-block;
-      padding: 4px 12px;
-      background: var(--bg);
-      border: 1px solid var(--border);
+
+    /* ─── SKILL TILE ────────────────────────── */
+    .skill-tile {
+      padding: 9px 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
       border-radius: 100px;
-      font-size: 0.58rem; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--muted); font-weight: 500;
+      font-size: .78rem;
+      color: rgba(255,255,255,0.7);
+      transition: all .25s;
+      cursor: default;
     }
-    .cert-hint {
-      font-size: 0.58rem; color: var(--dim);
-      letter-spacing: 0.1em; text-transform: uppercase;
-      margin-top: 10px;
+    .skill-group:nth-child(1) .skill-tile:hover { background:rgba(96,165,250,.12); border-color:rgba(96,165,250,.3); color:#93c5fd; transform:scale(1.04); }
+    .skill-group:nth-child(2) .skill-tile:hover { background:rgba(52,211,153,.12); border-color:rgba(52,211,153,.3); color:#6ee7b7; transform:scale(1.04); }
+    .skill-group:nth-child(3) .skill-tile:hover { background:rgba(167,139,250,.12); border-color:rgba(167,139,250,.3); color:#c4b5fd; transform:scale(1.04); }
+    .skill-group:nth-child(4) .skill-tile:hover { background:rgba(251,146,60,.12); border-color:rgba(251,146,60,.3); color:#fdba74; transform:scale(1.04); }
+
+    /* ─── CERT CARDS ────────────────────────── */
+    .cert-card { border-radius: 18px; position:relative; height:260px; perspective:1100px; cursor:pointer; }
+    .cert-card-inner { position:relative; width:100%; height:100%; transition:transform .7s cubic-bezier(.4,0,.2,1); transform-style:preserve-3d; }
+    .cert-card:hover .cert-card-inner { transform:rotateY(180deg); }
+    .cert-front, .cert-back { position:absolute; inset:0; border-radius:18px; backface-visibility:hidden; -webkit-backface-visibility:hidden; }
+    .cert-front {
+      padding: 28px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      display:flex; flex-direction:column;
+      transition: box-shadow .3s;
     }
+    .cert-card:hover .cert-front { box-shadow: 0 24px 56px rgba(0,0,0,0.5); }
+    .cert-back { transform:rotateY(180deg); background:#0d0920; overflow:hidden; border:1px solid rgba(167,139,250,0.15); }
+    .cert-back img { width:100%; height:100%; object-fit:cover; border-radius:18px; }
+    .cert-back::before { content:''; position:absolute; bottom:0; left:0; right:0; height:55%; background:linear-gradient(to top,rgba(13,9,32,.7),transparent); border-radius:0 0 18px 18px; pointer-events:none; z-index:1; }
+    .cert-glass { position:absolute; bottom:14px; left:14px; right:14px; z-index:3; background:rgba(255,255,255,0.08); backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,0.15); border-radius:12px; padding:12px 15px; }
 
     /* ─── TIMELINE ──────────────────────────── */
-    #timeline { border-top: 1px solid var(--border); }
-    .timeline-list {
-      position: relative;
-      padding-left: 36px;
-      max-width: 720px;
-    }
-    .timeline-list::before {
-      content: '';
-      position: absolute; left: 8px; top: 8px; bottom: 0;
-      width: 1px;
-      background: linear-gradient(to bottom, var(--sage) 0%, var(--border) 100%);
-    }
-    .timeline-item { position: relative; margin-bottom: 52px; }
-    .timeline-item:last-child { margin-bottom: 0; }
-    .timeline-dot {
-      position: absolute; left: -31px; top: 6px;
-      width: 13px; height: 13px;
-      border-radius: 50%;
-      border: 2px solid var(--border);
-      background: var(--bg);
-      transition: background 0.3s, border-color 0.3s, transform 0.3s;
-    }
-    .timeline-item.active .timeline-dot {
-      background: var(--sage); border-color: var(--sage);
-      box-shadow: 0 0 0 4px rgba(127,168,145,0.2);
-    }
-    .timeline-item.upcoming .timeline-dot {
-      border-color: var(--dim); border-style: dashed;
-    }
-    .timeline-item:hover .timeline-dot { transform: scale(1.3); }
-    .timeline-date {
-      font-size: 0.62rem; letter-spacing: 0.22em;
-      text-transform: uppercase; color: var(--sage);
-      margin-bottom: 8px; font-weight: 500;
-    }
-    .timeline-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.15rem; color: var(--text);
-      margin-bottom: 7px; line-height: 1.3;
-    }
-    .timeline-body { font-size: 0.86rem; color: var(--muted); line-height: 1.75; }
-    .timeline-tag {
-      display: inline-block; margin-top: 12px;
-      padding: 5px 13px;
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: 100px; font-size: 0.59rem;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--muted); font-weight: 500;
-    }
-    .timeline-item.active .timeline-tag {
-      background: var(--sage-soft); color: var(--sage);
-      border-color: rgba(127,168,145,0.3);
-    }
-
-    /* ─── SKILLS ────────────────────────────── */
-    #skills { border-top: 1px solid var(--border); }
-    .skills-ghost {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(3rem, 8vw, 6.5rem);
-      color: rgba(28,25,22,0.06);
-      line-height: 1; margin-bottom: 60px; letter-spacing: 0.02em;
-    }
-    .skills-groups { display: grid; grid-template-columns: 1fr 1fr; gap: 52px 64px; }
-    .skill-group-label {
-      font-size: 0.6rem; letter-spacing: 0.28em;
-      text-transform: uppercase; color: var(--muted);
-      margin-bottom: 18px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--border);
-    }
-    .skills-tiles { display: flex; flex-wrap: wrap; gap: 8px; }
-    .skill-tile {
-      padding: 10px 20px;
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      font-size: 0.78rem; letter-spacing: 0.03em;
-      transition: background 0.25s, border-color 0.25s, color 0.25s,
-                  transform 0.3s cubic-bezier(0.34,1.56,0.64,1),
-                  box-shadow 0.25s;
-      cursor: default;
-      background: var(--surface);
-      backdrop-filter: blur(8px);
-    }
-    .skill-group:nth-child(1) .skill-tile:hover { background: var(--sky); color:white; border-color:var(--sky); box-shadow: 0 6px 20px rgba(107,158,194,0.3); transform:scale(1.06); }
-    .skill-group:nth-child(2) .skill-tile:hover { background: var(--sage); color:white; border-color:var(--sage); box-shadow: 0 6px 20px rgba(127,168,145,0.3); transform:scale(1.06); }
-    .skill-group:nth-child(3) .skill-tile:hover { background: var(--lavender); color:white; border-color:var(--lavender); box-shadow: 0 6px 20px rgba(144,125,184,0.3); transform:scale(1.06); }
-    .skill-group:nth-child(4) .skill-tile:hover { background: var(--peach); color:white; border-color:var(--peach); box-shadow: 0 6px 20px rgba(212,144,106,0.3); transform:scale(1.06); }
+    .tl-line { position:absolute; left:8px; top:8px; bottom:0; width:1px; background:linear-gradient(to bottom, #7c3aed 0%, rgba(124,58,237,0.1) 100%); }
+    .tl-dot { position:absolute; left:-27px; top:6px; width:13px; height:13px; border-radius:50%; border:2px solid rgba(255,255,255,0.15); background:#030014; transition:background .3s, border-color .3s, transform .3s; }
+    .tl-item.active .tl-dot { background:#7c3aed; border-color:#7c3aed; box-shadow:0 0 0 4px rgba(124,58,237,.2); }
+    .tl-item:hover .tl-dot { transform:scale(1.3); }
 
     /* ─── CONTACT ───────────────────────────── */
-    /* PRESERVED EXACTLY — contact hover/scroll interaction */
     #contact {
-      background: #EAE6DF;
+      background: #050010;
       min-height: 100vh;
       display: flex; flex-direction: column;
       justify-content: center; align-items: center;
       position: relative; overflow: hidden; padding: 0;
     }
-    .contact-scale-wrap {
-      width: 100%;
-      display: flex; justify-content: center; align-items: center;
-      will-change: transform;
-    }
+    .contact-scale-wrap { width:100%; display:flex; justify-content:center; align-items:center; will-change:transform; }
     .contact-big {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 26vw; color: rgba(255,255,255,0.9);
-      line-height: 0.85; letter-spacing: -0.01em;
-      white-space: nowrap; user-select: none; pointer-events: none;
-      display: block; width: 100%; text-align: center;
+      font-size: 26vw; color: rgba(167,139,250,0.12);
+      line-height:.85; letter-spacing:-.01em;
+      white-space:nowrap; user-select:none; pointer-events:none;
+      display:block; width:100%; text-align:center;
     }
-    .contact-details {
-      position: absolute; bottom: 56px;
-      left: 0; right: 0; text-align: center; z-index: 2;
-    }
-    .contact-photo {
-      width: 60px; height: 60px;
-      border-radius: 50%;
-      margin: 0 auto 18px;
-      border: 2px solid rgba(255,255,255,0.35);
-      overflow: hidden; background: var(--bg2);
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 4px 20px rgba(28,25,22,0.12);
-    }
-    .contact-photo img { width:100%; height:100%; object-fit:cover; }
-    .contact-photo .photo-initials { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; color:var(--dim); }
-    .contact-email {
-      display: block; font-size: 0.7rem;
-      letter-spacing: 0.24em; text-transform: uppercase;
-      color: var(--muted); text-decoration: none; margin-bottom: 16px;
-      transition: color 0.2s;
-    }
-    .contact-email:hover { color: var(--text); }
-    .contact-socials { display: flex; justify-content: center; gap: 28px; }
-    .contact-socials a {
-      font-size: 0.66rem; letter-spacing: 0.2em;
-      text-transform: uppercase; color: var(--muted);
-      text-decoration: none; transition: color 0.2s;
-    }
-    .contact-socials a:hover { color: var(--text); }
+    .contact-details { position:absolute; bottom:56px; left:0; right:0; text-align:center; z-index:2; }
 
     /* ─── LIGHTBOX ──────────────────────────── */
-    .lightbox-overlay {
-      position: fixed; inset: 0; z-index: 9991;
-      display: flex; align-items: center; justify-content: center;
-      padding: 40px; opacity: 0; pointer-events: none;
-      transition: opacity 0.35s ease, background 0.35s;
-    }
-    .lightbox-overlay.open {
-      opacity: 1; pointer-events: all;
-      background: rgba(28,25,22,0.65);
-      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    }
-    .lightbox-card {
-      background: var(--bg); border-radius: 22px;
-      overflow: hidden; max-width: 720px; width: 100%;
-      max-height: 88vh;
-      box-shadow: 0 48px 120px rgba(28,25,22,0.4);
-      transform: scale(0.88) translateY(24px);
-      transition: transform 0.38s cubic-bezier(0.34,1.3,0.64,1);
-      border: 1px solid var(--border);
-    }
-    .lightbox-overlay.open .lightbox-card { transform: scale(1) translateY(0); }
-    .lightbox-card img {
-      width: 100%; height: auto; display: block;
-      max-height: 72vh; object-fit: contain; background: var(--bg2);
-    }
-    .lightbox-footer {
-      padding: 20px 28px;
-      display: flex; align-items: center; justify-content: space-between;
-      border-top: 1px solid var(--border);
-    }
-    .lightbox-label { font-family: 'DM Serif Display', serif; font-size: 1rem; color: var(--text); }
-    .lightbox-issuer { font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sage); margin-bottom: 4px; }
-    .lightbox-close {
-      width: 40px; height: 40px; border-radius: 50%;
-      border: 1px solid var(--border); background: var(--bg);
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
-      font-size: 1rem; color: var(--text);
-      transition: background 0.2s, border-color 0.2s, transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
-    }
-    .lightbox-close:hover { background: var(--text); color: var(--bg); transform: rotate(90deg) scale(1.1); }
+    .lightbox-overlay { position:fixed; inset:0; z-index:9991; display:flex; align-items:center; justify-content:center; padding:40px; opacity:0; pointer-events:none; transition:opacity .35s, background .35s; }
+    .lightbox-overlay.open { opacity:1; pointer-events:all; background:rgba(0,0,0,.8); backdrop-filter:blur(12px); }
+    .lightbox-card { background:#0d0920; border:1px solid rgba(167,139,250,.2); border-radius:20px; overflow:hidden; max-width:720px; width:100%; max-height:88vh; box-shadow:0 48px 120px rgba(0,0,0,.8); transform:scale(.88) translateY(24px); transition:transform .38s cubic-bezier(.34,1.3,.64,1); }
+    .lightbox-overlay.open .lightbox-card { transform:scale(1) translateY(0); }
+    .lightbox-card img { width:100%; height:auto; display:block; max-height:72vh; object-fit:contain; background:#080012; }
+    .lightbox-footer { padding:18px 26px; display:flex; align-items:center; justify-content:space-between; border-top:1px solid rgba(255,255,255,.06); }
+    .lb-close { width:38px; height:38px; border-radius:50%; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.04); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:.95rem; color:rgba(255,255,255,.7); transition:background .2s, transform .3s cubic-bezier(.34,1.56,.64,1); }
+    .lb-close:hover { background:rgba(167,139,250,.2); color:#fff; transform:rotate(90deg) scale(1.1); }
 
-    /* ─── FOOTER ────────────────────────────── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 26px 52px;
-      display: flex; justify-content: space-between; align-items: center;
-      background: var(--bg);
-    }
-    footer span { font-size: 0.68rem; color: var(--dim); letter-spacing: 0.1em; text-transform: uppercase; }
+    /* ─── MARQUEE ───────────────────────────── */
+    @keyframes marquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+    .marquee-track { display:flex; width:max-content; animation:marquee 24s linear infinite; }
 
-    /* ─── RESPONSIVE ────────────────────────── */
-    @media (max-width: 768px) {
-      nav { padding: 14px 24px; }
-      .nav-links, .nav-badge { display: none; }
-      section { padding: 72px 24px; }
-      #about { grid-template-columns: 1fr; gap: 44px; }
-      .edu-grid { grid-template-columns: 1fr; }
-      .projects-grid { grid-template-columns: 1fr; }
-      .skills-groups { grid-template-columns: 1fr; gap: 36px; }
-      footer { flex-direction: column; gap: 8px; }
-      .hero-cards {
-        position: static; display: flex; height: auto;
-        gap: 12px; overflow-x: auto;
-        justify-content: flex-start; padding: 24px 24px 8px;
-        scrollbar-width: none;
-      }
-      .hero-cards::-webkit-scrollbar { display: none; }
-      .hero-card {
-        position: static; transform: none !important; flex-shrink: 0;
-        width: 128px; height: 165px; border-radius: 18px; font-size: 0.7rem;
-      }
-      .hero-ctas { flex-direction: column; align-items: center; }
+    /* ─── MAGNETIC ──────────────────────────── */
+    .magnetic { will-change: transform; }
+
+    /* ─── PROJECT TAG ───────────────────────── */
+    .proj-tag { padding:4px 12px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.09); border-radius:100px; font-size:.6rem; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.5); font-weight:500; transition:all .2s; }
+    .proj-tag:hover { background:rgba(167,139,250,.12); border-color:rgba(167,139,250,.3); color:#c4b5fd; }
+
+    /* ─── ABOUT STAT ────────────────────────── */
+    .stat { border-top:1px solid rgba(255,255,255,0.08); padding-top:16px; transition:border-color .3s; }
+    .stat:hover { border-color:rgba(167,139,250,.4); }
+
+    /* ─── GRAIN ─────────────────────────────── */
+    body::after {
+      content:''; position:fixed; inset:0; pointer-events:none; z-index:9990; opacity:.022;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size:300px 300px;
+    }
+
+    /* ─── NAV ACTIVE ────────────────────────── */
+    .nav-link { position:relative; }
+    .nav-link::after { content:''; position:absolute; bottom:-3px; left:0; width:0; height:1px; background:#a78bfa; transition:width .3s ease; }
+    .nav-link:hover::after, .nav-link.active::after { width:100%; }
+
+    /* ─── PASSWORD TERMINAL ─────────────────── */
+    .proj-terminal { background:rgba(0,0,0,.7); border-radius:12px; overflow:hidden; max-height:0; opacity:0; transition:max-height .5s cubic-bezier(.22,1,.36,1), opacity .35s, margin-top .3s; }
+    .password-card:hover .proj-terminal { max-height:180px; opacity:1; margin-top:12px; }
+    .term-e-track { flex:1; height:3px; background:rgba(255,255,255,.1); border-radius:4px; overflow:hidden; }
+    .term-e-fill { height:100%; width:0; background:linear-gradient(90deg,#7c3aed,#a78bfa); border-radius:4px; transition:width 1.2s cubic-bezier(.22,1,.36,1) .8s; }
+    .password-card:hover .term-e-fill { width:85%; }
+
+    /* ─── HERO CURSOR GLOW ───────────────────── */
+    #cursorGlow {
+      position:fixed; width:600px; height:600px; border-radius:50%;
+      background:radial-gradient(circle, rgba(124,58,237,0.08) 0%, rgba(96,165,250,0.04) 40%, transparent 70%);
+      pointer-events:none; z-index:1; transform:translate(-50%,-50%);
+      transition:left 1.1s cubic-bezier(.25,.46,.45,.94), top 1.1s cubic-bezier(.25,.46,.45,.94);
+    }
+
+    @media (max-width:768px) {
+      .nav-links-wrap { display:none; }
+      section { padding:64px 20px !important; }
     }
   </style>
 </head>
-<body>
+<body class="bg-[#030014] text-white font-inter overflow-x-hidden cursor-none" style="zoom:0.8">
 
-  <!-- Cursor glow (soft ambient light) -->
+  <!-- Cursor glow -->
   <div id="cursorGlow"></div>
 
   <!-- Cursor -->
   <div id="cursor-layer">
-    <div class="cursor" id="cursor"></div>
+    <div class="cursor-dot" id="cursor"></div>
     <div class="cursor-ring" id="cursorRing"></div>
   </div>
 
+  <!-- Grid + Ambient overlay -->
+  <div class="fixed inset-0 grid-bg pointer-events-none z-0"></div>
+  <div class="fixed inset-0 ambient-glow pointer-events-none z-0"></div>
+
   <!-- ════ NAV ════════════════════════════════ -->
-  <nav id="mainNav">
-    <div class="nav-logo">Althea Zoe</div>
-    <div class="nav-right">
-      <ul class="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#education">Education</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#certifications">Certs</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#contact">Contact</a></li>
+  <nav id="mainNav" class="fixed top-0 left-0 right-0 z-[200] px-12 py-4 flex justify-between items-center transition-all duration-300"
+       style="background:rgba(3,0,20,0.82); backdrop-filter:blur(20px); border-bottom:1px solid rgba(255,255,255,0.06);">
+    <div class="font-bebas text-xl tracking-widest text-white">Althea Zoe</div>
+    <div class="nav-links-wrap flex items-center gap-8">
+      <ul class="flex gap-6 list-none">
+        <li><a href="#about"          class="nav-link text-white/60 hover:text-white text-[0.68rem] tracking-[.18em] uppercase transition-colors duration-200">About</a></li>
+        <li><a href="#education"      class="nav-link text-white/60 hover:text-white text-[0.68rem] tracking-[.18em] uppercase transition-colors duration-200">Education</a></li>
+        <li><a href="#projects"       class="nav-link text-white/60 hover:text-white text-[0.68rem] tracking-[.18em] uppercase transition-colors duration-200">Projects</a></li>
+        <li><a href="#certifications" class="nav-link text-white/60 hover:text-white text-[0.68rem] tracking-[.18em] uppercase transition-colors duration-200">Certs</a></li>
+        <li><a href="#skills"         class="nav-link text-white/60 hover:text-white text-[0.68rem] tracking-[.18em] uppercase transition-colors duration-200">Skills</a></li>
+        <li><a href="#contact"        class="nav-link text-white/60 hover:text-white text-[0.68rem] tracking-[.18em] uppercase transition-colors duration-200">Contact</a></li>
       </ul>
-      <span class="nav-badge">Available for internship</span>
+      <div class="w-px h-4 bg-white/10 flex-shrink-0"></div>
+      <span class="flex items-center gap-2 text-[0.58rem] tracking-[.14em] uppercase text-emerald-400 px-3 py-1.5 rounded-full"
+            style="background:rgba(52,211,153,0.08); border:1px solid rgba(52,211,153,0.22);">
+        <span class="pulse-dot"></span>Available for internship
+      </span>
     </div>
   </nav>
 
   <!-- ════ HERO ════════════════════════════════ -->
-  <section id="hero">
-    <!-- Animated gradient blobs -->
-    <div class="blob-wrap">
-      <div class="blob blob1"></div>
-      <div class="blob blob2"></div>
-      <div class="blob blob3"></div>
-      <div class="blob blob4"></div>
-    </div>
+  <section id="hero" class="relative min-h-screen flex flex-col items-center justify-center text-center pt-24 pb-8 px-6 overflow-hidden z-[2]">
+    <div class="max-w-5xl mx-auto w-full">
 
-    <div class="hero-inner">
-      <div class="hero-top">
-        <span>Philippines &amp; Taiwan</span>
-      </div>
-
-      <h1 class="hero-name" id="heroName">ALTHEA ZOE ANASCO</h1>
-      <p class="hero-tagline" id="heroTagline">Database-first. Security-minded. Always building.</p>
-
-      <div class="hero-ctas">
-        <a href="#projects" class="btn-primary magnetic">View Work</a>
-        <a href="#contact" class="btn-outline magnetic">Get in Touch</a>
-      </div>
-
-      <div class="hero-cards">
-        <div class="hero-card hc1">Cybersecurity</div>
-        <div class="hero-card hc2">Database<br/>Admin</div>
-        <div class="hero-card hc3">IT /<br/>Networking</div>
-        <div class="hero-card hc4">Cloud<br/>Computing</div>
-      </div>
-
-      <div class="hero-ghost">CSIE STUDENT,<br/>PHILIPPINES &amp; TAIWAN</div>
-      <p class="hero-clients">
-        <strong>Certifications from</strong> CERTIPORT &nbsp;·&nbsp; AWS
+      <!-- Context label -->
+      <p class="text-[0.65rem] tracking-[.32em] uppercase text-purple-400 font-semibold mb-5 opacity-0 animate-[fadeUp_.8s_.1s_ease_forwards]"
+         style="animation:heroFadeUp .8s .1s ease forwards;">
+        Computing &amp; Networks
       </p>
+
+      <!-- Main name -->
+      <h1 class="font-bebas text-[clamp(3.2rem,10vw,8.5rem)] leading-[.9] tracking-tight text-white mb-5"
+          id="heroName"
+          style="animation:heroFadeDown 1s cubic-bezier(.22,1,.36,1) forwards;">
+        Althea Zoe Anasco
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="text-[clamp(.8rem,1.4vw,.95rem)] text-white/55 font-light tracking-wide max-w-xl mx-auto mb-10 leading-relaxed"
+         style="animation:heroFadeUp .9s .2s ease both;">
+        Computer Science &amp; Information Engineering Student<br/>
+        <span class="text-white/35">Building Secure, Scalable Infrastructure</span>
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="flex items-center justify-center gap-4 mb-16" style="animation:heroFadeUp .9s .3s ease both;">
+        <a href="#projects"
+           class="btn-glow magnetic inline-flex items-center justify-content-center px-7 py-3 rounded-full text-[.7rem] font-semibold tracking-[.16em] uppercase text-white transition-all duration-300 hover:scale-105"
+           style="height:46px;">
+          View Work
+        </a>
+        <a href="#contact"
+           class="magnetic inline-flex items-center justify-center px-7 py-3 rounded-full text-[.7rem] font-semibold tracking-[.16em] uppercase text-white/80 hover:text-white transition-all duration-300 hover:scale-105"
+           style="height:46px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); backdrop-filter:blur(12px);">
+          Get in Touch
+        </a>
+      </div>
+
+      <!-- ── BENTO GRID ── -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5" style="animation:heroFadeUp .9s .42s ease both;">
+
+        <!-- Card 1: Core Specializations (2 cols) -->
+        <div class="bento-card md:col-span-2 p-7 text-left">
+          <p class="text-[.58rem] tracking-[.28em] uppercase text-purple-400/80 font-semibold mb-4">Core Specializations</p>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="spec-pill">
+              <svg class="w-4 h-4 flex-shrink-0" style="color:#a78bfa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Cybersecurity
+            </div>
+            <div class="spec-pill">
+              <svg class="w-4 h-4 flex-shrink-0" style="color:#60a5fa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4.03 3-9 3S3 13.66 3 12"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/></svg>
+              Database Admin
+            </div>
+            <div class="spec-pill">
+              <svg class="w-4 h-4 flex-shrink-0" style="color:#34d399" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+              IT / Networking
+            </div>
+            <div class="spec-pill">
+              <svg class="w-4 h-4 flex-shrink-0" style="color:#fb923c" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+              Cloud Computing
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Global Footprint (1 col) -->
+        <div class="bento-card p-7 text-left flex flex-col justify-between">
+          <p class="text-[.58rem] tracking-[.28em] uppercase text-purple-400/80 font-semibold mb-4">Global Footprint</p>
+          <div class="flex flex-col gap-3 flex-1 justify-center">
+            <div class="flex items-center gap-3">
+              <div class="relative flex-shrink-0">
+                <div class="w-2.5 h-2.5 rounded-full bg-purple-400"></div>
+                <div class="absolute inset-0 rounded-full bg-purple-400 animate-ping opacity-40"></div>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-white/90">Philippines</p>
+                <p class="text-[.68rem] text-white/40">Adamson University, Manila</p>
+              </div>
+            </div>
+            <div class="w-px h-5 bg-white/10 ml-[5px]"></div>
+            <div class="flex items-center gap-3">
+              <div class="relative flex-shrink-0">
+                <div class="w-2.5 h-2.5 rounded-full bg-sky-400"></div>
+                <div class="absolute inset-0 rounded-full bg-sky-400 animate-ping opacity-40" style="animation-delay:.5s"></div>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-white/90">Taiwan</p>
+                <p class="text-[.68rem] text-white/40">Ming Hsin University, Hsinchu</p>
+              </div>
+            </div>
+          </div>
+          <p class="text-[.62rem] text-white/25 tracking-wide mt-4">Dual-degree student</p>
+        </div>
+
+        <!-- Card 3: Toolkit (2 cols) -->
+        <div class="bento-card md:col-span-2 p-7 text-left">
+          <p class="text-[.58rem] tracking-[.28em] uppercase text-purple-400/80 font-semibold mb-4">My Toolkit</p>
+          <div class="grid grid-cols-4 sm:grid-cols-6 gap-3">
+            <div class="tool-chip">
+              <svg class="w-5 h-5 text-yellow-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+              <span class="text-[.6rem] text-white/50">Python</span>
+            </div>
+            <div class="tool-chip">
+              <svg class="w-5 h-5 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4.03 3-9 3S3 13.66 3 12M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/></svg>
+              <span class="text-[.6rem] text-white/50">SQL</span>
+            </div>
+            <div class="tool-chip">
+              <svg class="w-5 h-5 text-orange-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+              <span class="text-[.6rem] text-white/50">HTML/CSS</span>
+            </div>
+            <div class="tool-chip">
+              <svg class="w-5 h-5 text-yellow-300" viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h18v18H3V3zm16 16V5H5v14h14zM9 17V11l3 3 3-3v6h-1.5v-3L12 15l-1.5 1.5V17H9z"/></svg>
+              <span class="text-[.6rem] text-white/50">JavaScript</span>
+            </div>
+            <div class="tool-chip">
+              <svg class="w-5 h-5 text-orange-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+              <span class="text-[.6rem] text-white/50">AWS</span>
+            </div>
+            <div class="tool-chip">
+              <svg class="w-5 h-5 text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+              <span class="text-[.6rem] text-white/50">Linux</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: Credentials (1 col) -->
+        <div class="bento-card p-7 text-left flex flex-col justify-between" style="background:linear-gradient(135deg,rgba(124,58,237,0.07),rgba(96,165,250,0.04));">
+          <p class="text-[.58rem] tracking-[.28em] uppercase text-purple-400/80 font-semibold mb-4">Credentials</p>
+          <div class="space-y-3 flex-1">
+            <div class="flex items-start gap-2.5">
+              <div class="w-1.5 h-1.5 rounded-full bg-purple-400 mt-1.5 flex-shrink-0"></div>
+              <div>
+                <p class="text-[.78rem] font-medium text-white/85">ITS Python</p>
+                <p class="text-[.62rem] text-white/35">Certiport · Nov 2025</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-2.5">
+              <div class="w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5 flex-shrink-0"></div>
+              <div>
+                <p class="text-[.78rem] font-medium text-white/85">ITS Databases</p>
+                <p class="text-[.62rem] text-white/35">Certiport · May 2025</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-2.5">
+              <div class="w-1.5 h-1.5 rounded-full bg-orange-400 mt-1.5 flex-shrink-0"></div>
+              <div>
+                <p class="text-[.78rem] font-medium text-white/85">GenAI Camp</p>
+                <p class="text-[.62rem] text-white/35">AWS Cloud Club · 2024</p>
+              </div>
+            </div>
+          </div>
+          <p class="text-[.6rem] text-white/20 tracking-wide mt-4 pt-3" style="border-top:1px solid rgba(255,255,255,0.06);">Verified by Certiport &amp; AWS</p>
+        </div>
+
+      </div><!-- /bento -->
     </div>
   </section>
 
   <!-- ════ MARQUEE ═════════════════════════════ -->
-  <div class="marquee-wrap">
+  <div class="relative z-10 overflow-hidden py-3.5" style="background:rgba(255,255,255,0.025); border-top:1px solid rgba(255,255,255,0.06); border-bottom:1px solid rgba(255,255,255,0.06);">
     <div class="marquee-track">
-      <span class="marquee-item">Python</span><span class="marquee-dot">✦</span>
-      <span class="marquee-item">Database Administration</span><span class="marquee-dot">✦</span>
-      <span class="marquee-item">MySQL</span><span class="marquee-dot">✦</span>
-      <span class="marquee-item">Microsoft SQL Server</span><span class="marquee-dot">✦</span>
-      <span class="marquee-item">Amazon Web Services</span><span class="marquee-dot">✦</span>
-      <span class="marquee-item">Generative AI</span><span class="marquee-dot">✦</span>
-      <span class="marquee-item">Web Development</span><span class="marquee-dot">✦</span>
-      <span class="marquee-item">Cybersecurity</span><span class="marquee-dot">✦</span>
-      <span class="marquee-item">Python</span><span class="marquee-dot">✦</span>
-      <span class="marquee-item">Database Administration</span><span class="marquee-dot">✦</span>
-      <span class="marquee-item">MySQL</span><span class="marquee-dot">✦</span>
-      <span class="marquee-item">Microsoft SQL Server</span><span class="marquee-dot">✦</span>
-      <span class="marquee-item">Amazon Web Services</span><span class="marquee-dot">✦</span>
-      <span class="marquee-item">Generative AI</span><span class="marquee-dot">✦</span>
-      <span class="marquee-item">Web Development</span><span class="marquee-dot">✦</span>
-      <span class="marquee-item">Cybersecurity</span><span class="marquee-dot">✦</span>
+      <span class="font-bebas text-base tracking-widest text-white/40 px-7">Python</span><span class="text-purple-500 text-xs px-2">✦</span>
+      <span class="font-bebas text-base tracking-widest text-white/40 px-7">Database Administration</span><span class="text-purple-500 text-xs px-2">✦</span>
+      <span class="font-bebas text-base tracking-widest text-white/40 px-7">MySQL</span><span class="text-purple-500 text-xs px-2">✦</span>
+      <span class="font-bebas text-base tracking-widest text-white/40 px-7">Microsoft SQL Server</span><span class="text-purple-500 text-xs px-2">✦</span>
+      <span class="font-bebas text-base tracking-widest text-white/40 px-7">Amazon Web Services</span><span class="text-purple-500 text-xs px-2">✦</span>
+      <span class="font-bebas text-base tracking-widest text-white/40 px-7">Generative AI</span><span class="text-purple-500 text-xs px-2">✦</span>
+      <span class="font-bebas text-base tracking-widest text-white/40 px-7">Cybersecurity</span><span class="text-purple-500 text-xs px-2">✦</span>
+      <span class="font-bebas text-base tracking-widest text-white/40 px-7">Web Development</span><span class="text-purple-500 text-xs px-2">✦</span>
+      <span class="font-bebas text-base tracking-widest text-white/40 px-7">Python</span><span class="text-purple-500 text-xs px-2">✦</span>
+      <span class="font-bebas text-base tracking-widest text-white/40 px-7">Database Administration</span><span class="text-purple-500 text-xs px-2">✦</span>
+      <span class="font-bebas text-base tracking-widest text-white/40 px-7">MySQL</span><span class="text-purple-500 text-xs px-2">✦</span>
+      <span class="font-bebas text-base tracking-widest text-white/40 px-7">Microsoft SQL Server</span><span class="text-purple-500 text-xs px-2">✦</span>
+      <span class="font-bebas text-base tracking-widest text-white/40 px-7">Amazon Web Services</span><span class="text-purple-500 text-xs px-2">✦</span>
+      <span class="font-bebas text-base tracking-widest text-white/40 px-7">Generative AI</span><span class="text-purple-500 text-xs px-2">✦</span>
+      <span class="font-bebas text-base tracking-widest text-white/40 px-7">Cybersecurity</span><span class="text-purple-500 text-xs px-2">✦</span>
+      <span class="font-bebas text-base tracking-widest text-white/40 px-7">Web Development</span><span class="text-purple-500 text-xs px-2">✦</span>
     </div>
   </div>
 
   <!-- ════ ABOUT ════════════════════════════════ -->
-  <section id="about">
+  <section id="about" class="relative z-10 max-w-7xl mx-auto px-8 py-24 grid md:grid-cols-2 gap-20 items-start" style="border-top:1px solid rgba(255,255,255,0.06);">
     <div class="reveal">
       <p class="section-label">01 — About</p>
-      <div class="about-big">
-        WHO<br/>I <span class="ghost">AM</span>
+      <div class="font-bebas text-[clamp(3rem,6vw,5rem)] leading-none tracking-wide text-white mb-10">
+        WHO<br/><span class="text-white/15">I AM</span>
       </div>
-      <div class="stats-row">
-        <div class="stat"><span class="stat-num">6</span><span class="stat-label">Certifications</span></div>
-        <div class="stat"><span class="stat-num">16</span><span class="stat-label">Skills</span></div>
-        <div class="stat"><span class="stat-num">2</span><span class="stat-label">Universities</span></div>
-        <div class="stat"><span class="stat-num">3rd</span><span class="stat-label">Year Student</span></div>
+      <div class="grid grid-cols-2 gap-5">
+        <div class="stat">
+          <span class="font-bebas text-[2.8rem] leading-none text-white block">6</span>
+          <span class="text-[.66rem] tracking-[.16em] uppercase text-white/40 mt-1 block">Certifications</span>
+        </div>
+        <div class="stat">
+          <span class="font-bebas text-[2.8rem] leading-none text-white block">16</span>
+          <span class="text-[.66rem] tracking-[.16em] uppercase text-white/40 mt-1 block">Skills</span>
+        </div>
+        <div class="stat">
+          <span class="font-bebas text-[2.8rem] leading-none text-white block">2</span>
+          <span class="text-[.66rem] tracking-[.16em] uppercase text-white/40 mt-1 block">Universities</span>
+        </div>
+        <div class="stat">
+          <span class="font-bebas text-[2.8rem] leading-none text-white block">3rd</span>
+          <span class="text-[.66rem] tracking-[.16em] uppercase text-white/40 mt-1 block">Year Student</span>
+        </div>
       </div>
     </div>
-    <div class="reveal" style="transition-delay:0.12s; padding-top: 80px;">
-      <p class="about-text">
-        Data is the most valuable thing organisations protect — and the most targeted. Growing up in Manila and now studying in Taiwan, I've seen how digital infrastructure shapes real life, and I want to work on the systems that keep it safe.
-      </p>
-      <p class="about-text">
-        I'm a third-year CSIE student on a dual degree between Adamson University and Ming Hsin University of Science &amp; Technology, holding ITS certifications in Python and Databases from Certiport. I care about building things that are not just functional, but defensible.
-      </p>
-      <p class="about-text">
-        I'm actively hunting for an internship in cybersecurity or IT where I can stop purely practicing and start doing — for real.
-      </p>
-      <div class="about-photo-wrap">
-        <div class="about-photo">
-          <!-- <img src="[YOUR-PHOTO.jpg]" alt="Althea Zoe Anasco" /> -->
-          <span class="photo-initials">AZ</span>
-        </div>
+    <div class="reveal pt-16" style="transition-delay:.12s">
+      <p class="text-[.92rem] leading-[1.95] text-white/50 mb-5">Data is the most valuable thing organisations protect — and the most targeted. Growing up in Manila and now studying in Taiwan, I've seen how digital infrastructure shapes real life, and I want to work on the systems that keep it safe.</p>
+      <p class="text-[.92rem] leading-[1.95] text-white/50 mb-5">I'm a third-year CSIE student on a dual degree between Adamson University and Ming Hsin University of Science &amp; Technology, holding ITS certifications in Python and Databases from Certiport.</p>
+      <p class="text-[.92rem] leading-[1.95] text-white/50 mb-8">I'm actively hunting for an internship in cybersecurity or IT where I can stop purely practicing and start doing — for real.</p>
+      <div class="flex items-center gap-4 mb-8">
+        <div class="w-14 h-14 rounded-full flex-shrink-0 flex items-center justify-center font-bebas text-xl text-white/40" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08);">AZ</div>
         <div>
-          <div class="about-photo-name">Althea Zoe Anasco</div>
-          <div class="about-photo-role">CSIE Student · Aspiring Security Engineer</div>
+          <p class="text-[.88rem] font-medium text-white/85">Althea Zoe Anasco</p>
+          <p class="text-[.7rem] text-white/35 mt-0.5">CSIE Student · Aspiring Security Engineer</p>
         </div>
       </div>
-      <a href="mailto:aaltheazoe@gmail.com" class="about-cta magnetic">Get in touch</a>
+      <a href="mailto:aaltheazoe@gmail.com"
+         class="magnetic inline-flex items-center px-7 py-3 rounded-full text-[.7rem] font-semibold tracking-[.16em] uppercase text-white/80 hover:text-white transition-all duration-300"
+         style="height:46px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12);">
+        Get in touch
+      </a>
     </div>
   </section>
 
   <!-- ════ EDUCATION ═══════════════════════════ -->
-  <section id="education">
+  <section id="education" class="relative z-10 max-w-7xl mx-auto px-8 py-24" style="border-top:1px solid rgba(255,255,255,0.06);">
     <p class="section-label reveal">02 — Education</p>
-    <h2 class="section-heading reveal">ACADEMIC<br/>PATH</h2>
-    <div class="edu-grid">
-      <div class="edu-card reveal">
-        <p class="edu-period">Sep 2025 – Jul 2027</p>
-        <h3 class="edu-school">明新科技大學<br/>Ming Hsin</h3>
-        <p class="edu-degree">B.S. Computer Science &amp; Information Engineering<br/>Hsinchu, Taiwan</p>
+    <h2 class="font-bebas text-[clamp(2.8rem,6vw,5rem)] leading-none tracking-wide text-white mb-14 reveal">ACADEMIC<br/>PATH</h2>
+    <div class="grid md:grid-cols-2 gap-5">
+      <div class="content-card p-11 reveal" style="position:relative; overflow:hidden;">
+        <div class="absolute top-0 right-0 w-32 h-32 rounded-full" style="background:radial-gradient(circle,rgba(96,165,250,0.08),transparent 70%); transform:translate(40%,-40%);"></div>
+        <p class="text-[.62rem] tracking-[.22em] uppercase text-sky-400/70 mb-3">Sep 2025 – Jul 2027</p>
+        <h3 class="font-bebas text-[1.8rem] leading-tight text-white mb-2">明新科技大學<br/>Ming Hsin</h3>
+        <p class="text-[.8rem] text-white/45 leading-relaxed">B.S. Computer Science &amp; Information Engineering<br/>Hsinchu, Taiwan</p>
       </div>
-      <div class="edu-card reveal" style="transition-delay:0.12s">
-        <p class="edu-period">Aug 2023 – Dec 2027</p>
-        <h3 class="edu-school">Adamson<br/>University</h3>
-        <p class="edu-degree">Dual Degree – B.S. Computer Science &amp; Information Engineering<br/>Manila, Philippines</p>
+      <div class="content-card p-11 reveal" style="transition-delay:.12s; position:relative; overflow:hidden;">
+        <div class="absolute top-0 right-0 w-32 h-32 rounded-full" style="background:radial-gradient(circle,rgba(167,139,250,0.08),transparent 70%); transform:translate(40%,-40%);"></div>
+        <p class="text-[.62rem] tracking-[.22em] uppercase text-purple-400/70 mb-3">Aug 2023 – Dec 2027</p>
+        <h3 class="font-bebas text-[1.8rem] leading-tight text-white mb-2">Adamson<br/>University</h3>
+        <p class="text-[.8rem] text-white/45 leading-relaxed">Dual Degree – B.S. Computer Science &amp; Information Engineering<br/>Manila, Philippines</p>
       </div>
     </div>
   </section>
 
   <!-- ════ PROJECTS ════════════════════════════ -->
-  <section id="projects">
+  <section id="projects" class="relative z-10 max-w-7xl mx-auto px-8 py-24" style="border-top:1px solid rgba(255,255,255,0.06);">
     <p class="section-label reveal">03 — Work</p>
-    <h2 class="section-heading reveal">PROJECTS &amp;<br/>BUILDS</h2>
-    <div class="projects-grid">
+    <h2 class="font-bebas text-[clamp(2.8rem,6vw,5rem)] leading-none tracking-wide text-white mb-14 reveal">PROJECTS &amp;<br/>BUILDS</h2>
+    <div class="grid md:grid-cols-2 gap-5">
 
-      <!-- Project 1 — This Portfolio -->
-      <div class="project-card reveal" style="transition-delay:0s">
-        <p class="project-type">Personal · Web Dev</p>
-        <h3 class="project-title">This Portfolio</h3>
-        <p class="project-desc">
-          Designed and built this portfolio from scratch — no frameworks, no templates. Features a spring-physics card system, CSS 3D flip animations, scroll-driven contact reveal, a frosted-glass lightbox, and a custom cursor. Deployed on GitHub Pages.
-        </p>
-        <div class="project-tags">
-          <span class="project-tag">HTML</span>
-          <span class="project-tag">CSS</span>
-          <span class="project-tag">JavaScript</span>
-          <span class="project-tag">GitHub Pages</span>
+      <!-- Portfolio -->
+      <div class="content-card p-9 flex flex-col gap-4 reveal" style="transition-delay:0s; position:relative; overflow:hidden;">
+        <div class="absolute top-0 right-0 w-40 h-40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" style="background:radial-gradient(circle,rgba(96,165,250,0.07),transparent 70%); transform:translate(40%,-40%);"></div>
+        <p class="text-[.58rem] tracking-[.26em] uppercase text-white/30">Personal · Web Dev</p>
+        <h3 class="font-serif text-[1.2rem] text-white leading-snug">This Portfolio</h3>
+        <p class="text-[.84rem] leading-[1.8] text-white/45 flex-1">Designed and built from scratch — no frameworks, no templates. Features a glassmorphic bento grid, animated gradient borders, scroll-driven contact reveal, and a custom cursor.</p>
+        <div class="flex flex-wrap gap-2 mt-1">
+          <span class="proj-tag">HTML</span><span class="proj-tag">CSS</span><span class="proj-tag">JavaScript</span><span class="proj-tag">GitHub Pages</span>
         </div>
-        <div class="project-footer">
-          <a href="https://github.com/zooeeem/zooeeem.github.io" class="project-link" target="_blank">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        <div class="flex items-center justify-between pt-4 mt-1" style="border-top:1px solid rgba(255,255,255,0.06);">
+          <a href="https://github.com/zooeeem/zooeeem.github.io" target="_blank" class="flex items-center gap-2 text-[.66rem] tracking-[.14em] uppercase text-white/50 hover:text-purple-400 transition-colors font-medium">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
             View on GitHub
           </a>
-          <span class="project-status">Live</span>
+          <span class="text-[.58rem] tracking-[.12em] uppercase px-3 py-1.5 rounded-full" style="background:rgba(52,211,153,0.08); border:1px solid rgba(52,211,153,0.2); color:#6ee7b7;">Live</span>
         </div>
       </div>
 
-      <!-- Project 2 — Was My Password Leaked? -->
-      <div class="project-card password-card reveal" style="transition-delay:0.1s">
-        <p class="project-type">Personal · Cybersecurity</p>
-        <h3 class="project-title">Was My Password Leaked?</h3>
-        <p class="project-desc">
-          A lightweight Flask web app that checks passwords against known data-breach databases (HaveIBeenPwned API), computes an entropy score, and returns hardening recommendations — all without sending the real password over the network, using k-anonymity.
-        </p>
-        <div class="project-tags">
-          <span class="project-tag">Python</span>
-          <span class="project-tag">Flask</span>
-          <span class="project-tag">HIBP API</span>
-          <span class="project-tag">Cybersecurity</span>
+      <!-- Password project -->
+      <div class="content-card password-card p-9 flex flex-col gap-4 reveal" style="transition-delay:.1s; position:relative; overflow:hidden;">
+        <div class="absolute top-0 right-0 w-40 h-40 rounded-full opacity-0" style="background:radial-gradient(circle,rgba(167,139,250,0.07),transparent 70%); transform:translate(40%,-40%);"></div>
+        <p class="text-[.58rem] tracking-[.26em] uppercase text-white/30">Personal · Cybersecurity</p>
+        <h3 class="font-serif text-[1.2rem] text-white leading-snug">Was My Password Leaked?</h3>
+        <p class="text-[.84rem] leading-[1.8] text-white/45 flex-1">Flask app that checks passwords against HaveIBeenPwned using k-anonymity — entropy scoring and hardening recommendations without sending the real password over the network.</p>
+        <div class="flex flex-wrap gap-2 mt-1">
+          <span class="proj-tag">Python</span><span class="proj-tag">Flask</span><span class="proj-tag">HIBP API</span><span class="proj-tag">Cybersecurity</span>
         </div>
-        <!-- Terminal preview — slides in on hover -->
-        <div class="project-terminal">
-          <div class="term-header">
-            <span class="term-dot r"></span>
-            <span class="term-dot y"></span>
-            <span class="term-dot g"></span>
-            <span class="term-title">breach-scan.py</span>
+        <!-- Terminal preview -->
+        <div class="proj-terminal">
+          <div class="flex items-center gap-1.5 px-3.5 py-2.5" style="background:rgba(255,255,255,0.04);">
+            <span class="w-2.5 h-2.5 rounded-full bg-red-500/70"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/70"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-green-500/70"></span>
+            <span class="text-[.58rem] text-white/25 ml-2 tracking-wide">breach-scan.py</span>
           </div>
-          <div class="term-body">
-            <div class="term-line"><span class="t-dim">$</span> python check.py <span class="t-dim">"••••••••"</span></div>
-            <div class="term-line"><span class="t-dim">→</span> Hashing locally… sending prefix <span class="t-cyan">5BAA6</span></div>
-            <div class="term-line"><span class="t-dim">→</span> Querying HIBP k-anonymity API…</div>
-            <div class="term-line"><span class="t-green">✓ 0 breaches found</span> <span class="t-dim">— you're safe</span></div>
-            <div class="term-entropy">
-              <span class="term-e-label">Entropy</span>
+          <div class="px-4 py-3 space-y-1 font-mono">
+            <p class="text-[.68rem] text-white/40">$ python check.py <span class="text-white/20">"••••••••"</span></p>
+            <p class="text-[.68rem] text-white/40">→ Hashing locally… prefix <span class="text-sky-400">5BAA6</span></p>
+            <p class="text-[.68rem] text-green-400">✓ 0 breaches found <span class="text-white/25">— you're safe</span></p>
+            <div class="flex items-center gap-2.5 pt-1">
+              <span class="text-[.6rem] text-white/25 w-12 font-mono">Entropy</span>
               <div class="term-e-track"><div class="term-e-fill"></div></div>
-              <span class="term-e-val">87.2 bits</span>
+              <span class="text-[.6rem] text-purple-400 font-mono">87.2 bits</span>
             </div>
           </div>
         </div>
-        <div class="project-footer">
-          <a href="https://github.com/zooeeem/wasmypasswordleaked" class="project-link" target="_blank">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        <div class="flex items-center justify-between pt-4 mt-1" style="border-top:1px solid rgba(255,255,255,0.06);">
+          <a href="https://github.com/zooeeem/wasmypasswordleaked" target="_blank" class="flex items-center gap-2 text-[.66rem] tracking-[.14em] uppercase text-white/50 hover:text-purple-400 transition-colors font-medium">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
             View on GitHub
           </a>
-          <a href="https://wasmypasswordleaked.onrender.com" class="project-status" target="_blank" style="text-decoration:none;">Live</a>
+          <a href="https://wasmypasswordleaked.onrender.com" target="_blank"
+             class="text-[.58rem] tracking-[.12em] uppercase px-3 py-1.5 rounded-full no-underline transition-all"
+             style="background:rgba(52,211,153,0.08); border:1px solid rgba(52,211,153,0.2); color:#6ee7b7;">Live</a>
         </div>
       </div>
-
     </div>
   </section>
 
   <!-- ════ CERTIFICATIONS ══════════════════════ -->
-  <section id="certifications">
+  <section id="certifications" class="relative z-10 max-w-7xl mx-auto px-8 py-24" style="border-top:1px solid rgba(255,255,255,0.06);">
     <p class="section-label reveal">04 — Credentials</p>
-    <h2 class="section-heading reveal">LICENSES &amp;<br/>CERTIFICATIONS</h2>
-    <div class="cert-grid">
+    <h2 class="font-bebas text-[clamp(2.8rem,6vw,5rem)] leading-none tracking-wide text-white mb-14 reveal">LICENSES &amp;<br/>CERTIFICATIONS</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
 
       <div class="cert-card reveal">
         <div class="cert-card-inner">
-          <div class="cert-front">
+          <div class="cert-front" style="position:relative;overflow:hidden;">
+            <div class="absolute top-0 right-0 w-24 h-24 rounded-full" style="background:radial-gradient(circle,rgba(96,165,250,0.1),transparent 70%);transform:translate(40%,-40%);"></div>
             <div>
-              <p class="cert-issuer">Certiport · Pearson VUE</p>
-              <p class="cert-name">IT Specialist — Python</p>
-              <p class="cert-desc">Validates ability to write, debug, and execute Python programs — covering data types, control flow, functions, and file I/O.</p>
+              <p class="text-[.58rem] tracking-[.22em] uppercase text-sky-400/80 mb-2">Certiport · Pearson VUE</p>
+              <p class="font-serif text-[.98rem] text-white mb-2 leading-snug">IT Specialist — Python</p>
+              <p class="text-[.75rem] text-white/40 leading-relaxed">Validates ability to write, debug, and execute Python programs — covering data types, control flow, functions, and file I/O.</p>
             </div>
-            <div class="cert-footer">
-              <p class="cert-meta">Nov 2025 · Expires Nov 2030</p>
-              <span class="cert-badge">Python</span>
+            <div class="flex items-center justify-between mt-auto pt-3">
+              <p class="text-[.65rem] text-white/30">Nov 2025 · Expires Nov 2030</p>
+              <span class="text-[.58rem] tracking-wide uppercase px-2.5 py-1 rounded-full" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.4);">Python</span>
             </div>
-            <p class="cert-hint">Hover to flip</p>
+            <p class="text-[.56rem] text-white/20 tracking-wide uppercase mt-3">Hover to flip</p>
           </div>
           <div class="cert-back">
-            <img src="python certificate.jpg" alt="IT Specialist Python Certificate" />
+            <img src="python certificate.jpg" alt="IT Specialist Python" />
             <div class="cert-glass">
-              <p class="cert-glass-issuer">Certiport</p>
-              <p class="cert-glass-name">IT Specialist — Python</p>
+              <p class="text-[.54rem] tracking-[.22em] uppercase text-white/45 mb-1">Certiport</p>
+              <p class="font-serif text-[.85rem] text-white">IT Specialist — Python</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="cert-card reveal" style="transition-delay:0.06s">
+      <div class="cert-card reveal" style="transition-delay:.06s">
         <div class="cert-card-inner">
-          <div class="cert-front">
+          <div class="cert-front" style="position:relative;overflow:hidden;">
+            <div class="absolute top-0 right-0 w-24 h-24 rounded-full" style="background:radial-gradient(circle,rgba(52,211,153,0.1),transparent 70%);transform:translate(40%,-40%);"></div>
             <div>
-              <p class="cert-issuer">Certiport · Pearson VUE</p>
-              <p class="cert-name">IT Specialist — Databases</p>
-              <p class="cert-desc">Validates core database skills: creating and managing relational schemas, writing SQL queries, and working with stored procedures and constraints.</p>
+              <p class="text-[.58rem] tracking-[.22em] uppercase text-emerald-400/80 mb-2">Certiport · Pearson VUE</p>
+              <p class="font-serif text-[.98rem] text-white mb-2 leading-snug">IT Specialist — Databases</p>
+              <p class="text-[.75rem] text-white/40 leading-relaxed">Validates core database skills: creating and managing relational schemas, writing SQL queries, and working with stored procedures.</p>
             </div>
-            <div class="cert-footer">
-              <p class="cert-meta">May 2025</p>
-              <span class="cert-badge">Database Admin</span>
+            <div class="flex items-center justify-between mt-auto pt-3">
+              <p class="text-[.65rem] text-white/30">May 2025</p>
+              <span class="text-[.58rem] tracking-wide uppercase px-2.5 py-1 rounded-full" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.4);">DB Admin</span>
             </div>
-            <p class="cert-hint">Hover to flip</p>
+            <p class="text-[.56rem] text-white/20 tracking-wide uppercase mt-3">Hover to flip</p>
           </div>
           <div class="cert-back">
-            <img src="databases certificate.jpg" alt="IT Specialist Databases Certificate" />
+            <img src="databases certificate.jpg" alt="IT Specialist Databases" />
             <div class="cert-glass">
-              <p class="cert-glass-issuer">Certiport</p>
-              <p class="cert-glass-name">IT Specialist — Databases</p>
+              <p class="text-[.54rem] tracking-[.22em] uppercase text-white/45 mb-1">Certiport</p>
+              <p class="font-serif text-[.85rem] text-white">IT Specialist — Databases</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="cert-card reveal" style="transition-delay:0.12s">
+      <div class="cert-card reveal" style="transition-delay:.12s">
         <div class="cert-card-inner">
-          <div class="cert-front">
+          <div class="cert-front" style="position:relative;overflow:hidden;">
+            <div class="absolute top-0 right-0 w-24 h-24 rounded-full" style="background:radial-gradient(circle,rgba(251,146,60,0.1),transparent 70%);transform:translate(40%,-40%);"></div>
             <div>
-              <p class="cert-issuer">AWS Cloud Club</p>
-              <p class="cert-name">Generative AI Camp</p>
-              <p class="cert-desc">Hands-on industry training covering large language models, prompt engineering, and practical GenAI application development on AWS infrastructure.</p>
+              <p class="text-[.58rem] tracking-[.22em] uppercase text-orange-400/80 mb-2">AWS Cloud Club</p>
+              <p class="font-serif text-[.98rem] text-white mb-2 leading-snug">Generative AI Camp</p>
+              <p class="text-[.75rem] text-white/40 leading-relaxed">Hands-on training covering large language models, prompt engineering, and GenAI application development on AWS.</p>
             </div>
-            <div class="cert-footer">
-              <p class="cert-meta">Oct 2024 · T.I.P. Manila</p>
-              <span class="cert-badge">Gen AI</span>
+            <div class="flex items-center justify-between mt-auto pt-3">
+              <p class="text-[.65rem] text-white/30">Oct 2024 · T.I.P. Manila</p>
+              <span class="text-[.58rem] tracking-wide uppercase px-2.5 py-1 rounded-full" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.4);">Gen AI</span>
             </div>
-            <p class="cert-hint">Hover to flip</p>
+            <p class="text-[.56rem] text-white/20 tracking-wide uppercase mt-3">Hover to flip</p>
           </div>
           <div class="cert-back">
-            <img src="generative ai camp.jpg" alt="Generative AI Camp Certificate" />
+            <img src="generative ai camp.jpg" alt="Generative AI Camp" />
             <div class="cert-glass">
-              <p class="cert-glass-issuer">AWS Cloud Club</p>
-              <p class="cert-glass-name">Generative AI Camp</p>
+              <p class="text-[.54rem] tracking-[.22em] uppercase text-white/45 mb-1">AWS Cloud Club</p>
+              <p class="font-serif text-[.85rem] text-white">Generative AI Camp</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="cert-card reveal" style="transition-delay:0.18s">
+      <div class="cert-card reveal" style="transition-delay:.18s">
         <div class="cert-card-inner">
-          <div class="cert-front">
+          <div class="cert-front" style="position:relative;overflow:hidden;">
+            <div class="absolute top-0 right-0 w-24 h-24 rounded-full" style="background:radial-gradient(circle,rgba(167,139,250,0.1),transparent 70%);transform:translate(40%,-40%);"></div>
             <div>
-              <p class="cert-issuer">Xaltius</p>
-              <p class="cert-name">Web Development 101</p>
-              <p class="cert-desc">Foundational front-end training covering semantic HTML, CSS layout and styling, and basic JavaScript interactivity for building modern web pages.</p>
+              <p class="text-[.58rem] tracking-[.22em] uppercase text-purple-400/80 mb-2">Xaltius</p>
+              <p class="font-serif text-[.98rem] text-white mb-2 leading-snug">Web Development 101</p>
+              <p class="text-[.75rem] text-white/40 leading-relaxed">Foundational front-end training covering semantic HTML, CSS layout and styling, and basic JavaScript interactivity.</p>
             </div>
-            <div class="cert-footer">
-              <p class="cert-meta">Jan 2024</p>
-              <span class="cert-badge">Web Dev</span>
+            <div class="flex items-center justify-between mt-auto pt-3">
+              <p class="text-[.65rem] text-white/30">Jan 2024</p>
+              <span class="text-[.58rem] tracking-wide uppercase px-2.5 py-1 rounded-full" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.4);">Web Dev</span>
             </div>
-            <p class="cert-hint">Hover to flip</p>
+            <p class="text-[.56rem] text-white/20 tracking-wide uppercase mt-3">Hover to flip</p>
           </div>
           <div class="cert-back">
             <img src="webdev certificate.jpg" alt="Web Development Certificate" />
             <div class="cert-glass">
-              <p class="cert-glass-issuer">Xaltius</p>
-              <p class="cert-glass-name">Web Development 101</p>
+              <p class="text-[.54rem] tracking-[.22em] uppercase text-white/45 mb-1">Xaltius</p>
+              <p class="font-serif text-[.85rem] text-white">Web Development 101</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="cert-card reveal" style="transition-delay:0.24s">
+      <div class="cert-card reveal" style="transition-delay:.24s">
         <div class="cert-card-inner">
-          <div class="cert-front">
+          <div class="cert-front" style="position:relative;overflow:hidden;">
+            <div class="absolute top-0 right-0 w-24 h-24 rounded-full" style="background:radial-gradient(circle,rgba(96,165,250,0.1),transparent 70%);transform:translate(40%,-40%);"></div>
             <div>
-              <p class="cert-issuer">DOST-NCR</p>
-              <p class="cert-name">NCR TBI Summit 2024</p>
-              <p class="cert-desc">Industry exposure event connecting students and startups in the Philippine tech ecosystem, with sessions on innovation, technology transfer, and incubation.</p>
+              <p class="text-[.58rem] tracking-[.22em] uppercase text-sky-400/80 mb-2">DOST-NCR</p>
+              <p class="font-serif text-[.98rem] text-white mb-2 leading-snug">NCR TBI Summit 2024</p>
+              <p class="text-[.75rem] text-white/40 leading-relaxed">Industry exposure event connecting students and startups in the Philippine tech ecosystem.</p>
             </div>
-            <div class="cert-footer">
-              <p class="cert-meta">Oct 2024 · Novotel Manila</p>
-              <span class="cert-badge">Tech Industry</span>
+            <div class="flex items-center justify-between mt-auto pt-3">
+              <p class="text-[.65rem] text-white/30">Oct 2024 · Novotel Manila</p>
+              <span class="text-[.58rem] tracking-wide uppercase px-2.5 py-1 rounded-full" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.4);">Industry</span>
             </div>
-            <p class="cert-hint">Hover to flip</p>
+            <p class="text-[.56rem] text-white/20 tracking-wide uppercase mt-3">Hover to flip</p>
           </div>
           <div class="cert-back">
             <img src="tbiNCR summit.jpg" alt="NCR TBI Summit 2024" />
             <div class="cert-glass">
-              <p class="cert-glass-issuer">DOST-NCR</p>
-              <p class="cert-glass-name">NCR TBI Summit 2024</p>
+              <p class="text-[.54rem] tracking-[.22em] uppercase text-white/45 mb-1">DOST-NCR</p>
+              <p class="font-serif text-[.85rem] text-white">NCR TBI Summit 2024</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="cert-card reveal" style="transition-delay:0.30s">
+      <div class="cert-card reveal" style="transition-delay:.30s">
         <div class="cert-card-inner">
-          <div class="cert-front">
+          <div class="cert-front" style="position:relative;overflow:hidden;">
+            <div class="absolute top-0 right-0 w-24 h-24 rounded-full" style="background:radial-gradient(circle,rgba(52,211,153,0.1),transparent 70%);transform:translate(40%,-40%);"></div>
             <div>
-              <p class="cert-issuer">AdU GAME</p>
-              <p class="cert-name">3D Game: Design, Develop, Deploy</p>
-              <p class="cert-desc">Workshop covering the full 3D game development pipeline — concept, asset creation, scripting, and deployment — using industry-standard tools and workflows.</p>
+              <p class="text-[.58rem] tracking-[.22em] uppercase text-emerald-400/80 mb-2">AdU GAME</p>
+              <p class="font-serif text-[.98rem] text-white mb-2 leading-snug">3D Game: Design, Develop, Deploy</p>
+              <p class="text-[.75rem] text-white/40 leading-relaxed">Workshop covering the full 3D game development pipeline — concept, asset creation, scripting, and deployment.</p>
             </div>
-            <div class="cert-footer">
-              <p class="cert-meta">Oct 2024</p>
-              <span class="cert-badge">Game Dev</span>
+            <div class="flex items-center justify-between mt-auto pt-3">
+              <p class="text-[.65rem] text-white/30">Oct 2024</p>
+              <span class="text-[.58rem] tracking-wide uppercase px-2.5 py-1 rounded-full" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.4);">Game Dev</span>
             </div>
-            <p class="cert-hint">Hover to flip</p>
+            <p class="text-[.56rem] text-white/20 tracking-wide uppercase mt-3">Hover to flip</p>
           </div>
           <div class="cert-back">
             <img src="game design.jpg" alt="3D Game Design Certificate" />
             <div class="cert-glass">
-              <p class="cert-glass-issuer">AdU GAME</p>
-              <p class="cert-glass-name">3D Game: Design, Develop, Deploy</p>
+              <p class="text-[.54rem] tracking-[.22em] uppercase text-white/45 mb-1">AdU GAME</p>
+              <p class="font-serif text-[.85rem] text-white">3D Game: Design, Develop, Deploy</p>
             </div>
           </div>
         </div>
@@ -1405,65 +797,63 @@
   </section>
 
   <!-- ════ TIMELINE ════════════════════════════ -->
-  <section id="timeline">
+  <section id="timeline" class="relative z-10 max-w-7xl mx-auto px-8 py-24" style="border-top:1px solid rgba(255,255,255,0.06);">
     <p class="section-label reveal">05 — Path</p>
-    <h2 class="section-heading reveal">WHERE I'M<br/>HEADED</h2>
-    <div class="timeline-list reveal">
+    <h2 class="font-bebas text-[clamp(2.8rem,6vw,5rem)] leading-none tracking-wide text-white mb-14 reveal">WHERE I'M<br/>HEADED</h2>
+    <div class="relative pl-9 max-w-2xl reveal">
+      <div class="tl-line"></div>
 
-      <div class="timeline-item active">
-        <div class="timeline-dot"></div>
-        <p class="timeline-date">Aug 2023 — Present</p>
-        <h3 class="timeline-title">Dual-Degree CSIE Student</h3>
-        <p class="timeline-body">Studying at Adamson University (Manila) and Ming Hsin University of Science &amp; Technology (Taiwan), with a focus on databases, networking, and cybersecurity fundamentals.</p>
-        <span class="timeline-tag">In Progress</span>
+      <div class="tl-item active mb-12">
+        <div class="tl-dot"></div>
+        <p class="text-[.6rem] tracking-[.22em] uppercase text-purple-400 font-semibold mb-2">Aug 2023 — Present</p>
+        <h3 class="font-serif text-[1.1rem] text-white mb-2">Dual-Degree CSIE Student</h3>
+        <p class="text-[.84rem] text-white/40 leading-relaxed">Studying at Adamson University (Manila) and Ming Hsin (Taiwan), focused on databases, networking, and cybersecurity.</p>
+        <span class="inline-block mt-3 px-3 py-1 text-[.58rem] tracking-[.12em] uppercase rounded-full font-medium" style="background:rgba(124,58,237,0.12);border:1px solid rgba(124,58,237,0.25);color:#c4b5fd;">In Progress</span>
       </div>
 
-      <div class="timeline-item active">
-        <div class="timeline-dot"></div>
-        <p class="timeline-date">2024 — 2025</p>
-        <h3 class="timeline-title">Certiport ITS Certifications × 2</h3>
-        <p class="timeline-body">Earned IT Specialist certifications in both Python (Nov 2025) and Databases (May 2025) through Certiport / Pearson VUE — validating core programming and relational database skills.</p>
-        <span class="timeline-tag">Completed</span>
+      <div class="tl-item active mb-12">
+        <div class="tl-dot"></div>
+        <p class="text-[.6rem] tracking-[.22em] uppercase text-purple-400 font-semibold mb-2">2024 — 2025</p>
+        <h3 class="font-serif text-[1.1rem] text-white mb-2">Certiport ITS Certifications × 2</h3>
+        <p class="text-[.84rem] text-white/40 leading-relaxed">Earned IT Specialist certifications in Python (Nov 2025) and Databases (May 2025) through Certiport / Pearson VUE.</p>
+        <span class="inline-block mt-3 px-3 py-1 text-[.58rem] tracking-[.12em] uppercase rounded-full font-medium" style="background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.22);color:#6ee7b7;">Completed</span>
       </div>
 
-      <div class="timeline-item">
-        <div class="timeline-dot"></div>
-        <p class="timeline-date">2026 — Targeting</p>
-        <h3 class="timeline-title">AWS Certified Cloud Practitioner</h3>
-        <p class="timeline-body">Working through AWS Skill Builder and practice exams to earn the Cloud Practitioner cert — the natural next step given my AWS Cloud Club experience and cloud computing focus.</p>
-        <span class="timeline-tag">In Preparation</span>
+      <div class="tl-item mb-12">
+        <div class="tl-dot"></div>
+        <p class="text-[.6rem] tracking-[.22em] uppercase text-white/30 font-semibold mb-2">2026 — Targeting</p>
+        <h3 class="font-serif text-[1.1rem] text-white mb-2">AWS Certified Cloud Practitioner</h3>
+        <p class="text-[.84rem] text-white/40 leading-relaxed">Working through AWS Skill Builder to earn the Cloud Practitioner cert — natural next step given AWS Cloud Club experience.</p>
+        <span class="inline-block mt-3 px-3 py-1 text-[.58rem] tracking-[.12em] uppercase rounded-full font-medium" style="background:rgba(251,146,60,0.1);border:1px solid rgba(251,146,60,0.22);color:#fdba74;">In Preparation</span>
       </div>
 
-      <div class="timeline-item upcoming">
-        <div class="timeline-dot"></div>
-        <p class="timeline-date">2026 — Goal</p>
-        <h3 class="timeline-title">Cybersecurity or IT Internship</h3>
-        <p class="timeline-body">Actively seeking internship opportunities in cybersecurity, database administration, or IT infrastructure — open to remote or on-site in Manila or Taiwan. If you're hiring, let's talk.</p>
-        <span class="timeline-tag">Open to Opportunities</span>
+      <div class="tl-item">
+        <div class="tl-dot" style="border-style:dashed;border-color:rgba(255,255,255,0.12);"></div>
+        <p class="text-[.6rem] tracking-[.22em] uppercase text-white/25 font-semibold mb-2">2026 — Goal</p>
+        <h3 class="font-serif text-[1.1rem] text-white/70 mb-2">Cybersecurity or IT Internship</h3>
+        <p class="text-[.84rem] text-white/35 leading-relaxed">Seeking internship opportunities in cybersecurity, database administration, or IT — open to remote or on-site in Manila or Taiwan.</p>
+        <span class="inline-block mt-3 px-3 py-1 text-[.58rem] tracking-[.12em] uppercase rounded-full font-medium" style="background:rgba(96,165,250,0.1);border:1px solid rgba(96,165,250,0.22);color:#93c5fd;">Open to Opportunities</span>
       </div>
-
     </div>
   </section>
 
   <!-- ════ SKILLS ══════════════════════════════ -->
-  <section id="skills">
+  <section id="skills" class="relative z-10 max-w-7xl mx-auto px-8 py-24" style="border-top:1px solid rgba(255,255,255,0.06);">
     <p class="section-label reveal">06 — Skills</p>
-    <div class="skills-ghost reveal">WHAT I<br/>BRING</div>
-    <div class="skills-groups reveal">
-
+    <div class="font-bebas text-[clamp(3rem,7vw,6rem)] leading-none text-white/[0.06] mb-14 reveal tracking-wide">WHAT I<br/>BRING</div>
+    <div class="grid md:grid-cols-2 gap-12 reveal">
       <div class="skill-group">
-        <p class="skill-group-label">Languages &amp; Programming</p>
-        <div class="skills-tiles">
+        <p class="text-[.58rem] tracking-[.28em] uppercase text-white/30 mb-4 pb-2.5" style="border-bottom:1px solid rgba(255,255,255,0.06);">Languages &amp; Programming</p>
+        <div class="flex flex-wrap gap-2">
           <div class="skill-tile">Python</div>
           <div class="skill-tile">Python Programming</div>
           <div class="skill-tile">HTML &amp; CSS</div>
           <div class="skill-tile">JavaScript</div>
         </div>
       </div>
-
       <div class="skill-group">
-        <p class="skill-group-label">Databases</p>
-        <div class="skills-tiles">
+        <p class="text-[.58rem] tracking-[.28em] uppercase text-white/30 mb-4 pb-2.5" style="border-bottom:1px solid rgba(255,255,255,0.06);">Databases</p>
+        <div class="flex flex-wrap gap-2">
           <div class="skill-tile">Database Administration</div>
           <div class="skill-tile">SQL Server</div>
           <div class="skill-tile">MySQL</div>
@@ -1471,49 +861,42 @@
           <div class="skill-tile">Data Manipulation</div>
           <div class="skill-tile">Data Storage</div>
           <div class="skill-tile">Core Database Concepts</div>
-          <div class="skill-tile">Creating Database Objects</div>
         </div>
       </div>
-
       <div class="skill-group">
-        <p class="skill-group-label">Cloud &amp; AI</p>
-        <div class="skills-tiles">
+        <p class="text-[.58rem] tracking-[.28em] uppercase text-white/30 mb-4 pb-2.5" style="border-bottom:1px solid rgba(255,255,255,0.06);">Cloud &amp; AI</p>
+        <div class="flex flex-wrap gap-2">
           <div class="skill-tile">Amazon Web Services</div>
           <div class="skill-tile">Generative AI</div>
           <div class="skill-tile">Artificial Intelligence</div>
         </div>
       </div>
-
       <div class="skill-group">
-        <p class="skill-group-label">Communication &amp; Languages</p>
-        <div class="skills-tiles">
+        <p class="text-[.58rem] tracking-[.28em] uppercase text-white/30 mb-4 pb-2.5" style="border-bottom:1px solid rgba(255,255,255,0.06);">Communication</p>
+        <div class="flex flex-wrap gap-2">
           <div class="skill-tile">Communication</div>
           <div class="skill-tile">English</div>
           <div class="skill-tile">Filipino</div>
         </div>
       </div>
-
     </div>
   </section>
 
   <!-- ════ CONTACT ═════════════════════════════ -->
-  <!-- Contact section: EXACTLY PRESERVED — scroll scale interaction intact -->
   <section id="contact">
     <div class="contact-scale-wrap" id="contactScaleWrap">
       <span class="contact-big">CONTACT</span>
     </div>
     <div class="contact-details">
-      <div class="contact-photo">
-        <!-- <img src="[YOUR-PHOTO.jpg]" alt="Althea Zoe Anasco" /> -->
-        <span class="photo-initials">AZ</span>
+      <div class="w-14 h-14 rounded-full mx-auto mb-5 flex items-center justify-center font-bebas text-lg text-white/30"
+           style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);">AZ</div>
+      <a href="mailto:aaltheazoe@gmail.com" class="block text-[.68rem] tracking-[.24em] uppercase text-white/40 hover:text-white/80 transition-colors mb-4 no-underline">aaltheazoe@gmail.com</a>
+      <div class="flex justify-center gap-7">
+        <a href="https://github.com/zooeeem" target="_blank" class="text-[.64rem] tracking-[.2em] uppercase text-white/30 hover:text-white/70 transition-colors no-underline">GitHub</a>
+        <a href="https://linkedin.com/in/[YOUR-LINKEDIN-URL]" target="_blank" class="text-[.64rem] tracking-[.2em] uppercase text-white/30 hover:text-white/70 transition-colors no-underline">LinkedIn</a>
+        <a href="mailto:aaltheazoe@gmail.com" class="text-[.64rem] tracking-[.2em] uppercase text-white/30 hover:text-white/70 transition-colors no-underline">Email</a>
       </div>
-      <a href="mailto:aaltheazoe@gmail.com" class="contact-email">aaltheazoe@gmail.com</a>
-      <div class="contact-socials">
-        <a href="https://github.com/zooeeem" target="_blank">GitHub</a>
-        <a href="https://linkedin.com/in/[YOUR-LINKEDIN-URL]" target="_blank">LinkedIn</a>
-        <a href="mailto:aaltheazoe@gmail.com">Email</a>
-      </div>
-      <p style="margin-top:26px; font-size:0.58rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--dim);">© 2026 Althea Zoe Anasco</p>
+      <p class="text-[.56rem] tracking-[.18em] uppercase text-white/15 mt-7">© 2026 Althea Zoe Anasco</p>
     </div>
   </section>
 
@@ -1523,203 +906,126 @@
       <img id="lightboxImg" src="" alt="" />
       <div class="lightbox-footer">
         <div>
-          <p class="lightbox-issuer" id="lightboxIssuer"></p>
-          <p class="lightbox-label" id="lightboxLabel"></p>
+          <p class="text-[.6rem] tracking-[.18em] uppercase text-purple-400 mb-1" id="lightboxIssuer"></p>
+          <p class="font-serif text-[.95rem] text-white" id="lightboxLabel"></p>
         </div>
-        <button class="lightbox-close" id="lightboxClose">&#x2715;</button>
+        <button class="lb-close" id="lightboxClose">&#x2715;</button>
       </div>
     </div>
   </div>
 
+  <style>
+    @keyframes heroFadeDown { from{opacity:0;transform:translateY(-22px)}to{opacity:1;transform:translateY(0)} }
+    @keyframes heroFadeUp   { from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)} }
+  </style>
+
   <script>
     // ── CURSOR GLOW ──────────────────────────────
     const glowEl = document.getElementById('cursorGlow');
-    let glowX = window.innerWidth/2, glowY = window.innerHeight/2;
     document.addEventListener('mousemove', e => {
-      glowX = e.clientX; glowY = e.clientY;
-      glowEl.style.left = glowX + 'px';
-      glowEl.style.top  = glowY + 'px';
+      glowEl.style.left = e.clientX+'px'; glowEl.style.top = e.clientY+'px';
     });
 
     // ── CURSOR ───────────────────────────────────
     const cursor = document.getElementById('cursor');
     const ring   = document.getElementById('cursorRing');
-    let mx=0, my=0, rx=0, ry=0;
+    let mx=0,my=0,rx=0,ry=0,shown=false;
     document.addEventListener('mousemove', e => {
-      mx = e.clientX; my = e.clientY;
-      cursor.style.left = mx+'px'; cursor.style.top = my+'px';
+      mx=e.clientX; my=e.clientY;
+      cursor.style.left=mx+'px'; cursor.style.top=my+'px';
+      if(!shown){ shown=true; cursor.style.opacity='1'; ring.style.opacity='1'; }
     });
-    (function animRing() {
-      rx += (mx-rx)*0.13; ry += (my-ry)*0.13;
-      ring.style.left = rx+'px'; ring.style.top = ry+'px';
+    (function animRing(){
+      rx+=(mx-rx)*.13; ry+=(my-ry)*.13;
+      ring.style.left=rx+'px'; ring.style.top=ry+'px';
       requestAnimationFrame(animRing);
     })();
-    document.querySelectorAll('a, button, .skill-tile, .cert-card, .edu-card, .project-card, .hero-card').forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        cursor.style.width='6px'; cursor.style.height='6px';
-        ring.style.width='58px'; ring.style.height='58px'; ring.style.opacity='0.22';
-      });
-      el.addEventListener('mouseleave', () => {
-        cursor.style.width='10px'; cursor.style.height='10px';
-        ring.style.width='38px'; ring.style.height='38px'; ring.style.opacity='1';
-      });
+    document.querySelectorAll('a,button,.skill-tile,.cert-card,.content-card,.bento-card').forEach(el=>{
+      el.addEventListener('mouseenter',()=>{ cursor.style.width='5px'; cursor.style.height='5px'; ring.style.width='52px'; ring.style.height='52px'; });
+      el.addEventListener('mouseleave',()=>{ cursor.style.width='8px'; cursor.style.height='8px'; ring.style.width='32px'; ring.style.height='32px'; });
     });
 
     // ── SCROLL NAV ───────────────────────────────
     const nav = document.getElementById('mainNav');
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 40);
-    }, {passive:true});
+    window.addEventListener('scroll',()=>{
+      if(window.scrollY>40){ nav.style.background='rgba(3,0,20,0.96)'; nav.style.padding='12px 48px'; }
+      else{ nav.style.background='rgba(3,0,20,0.82)'; nav.style.padding='16px 48px'; }
+    },{passive:true});
 
     // ── SCROLL REVEAL ────────────────────────────
-    const revObs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.07 });
-    document.querySelectorAll('.reveal, .reveal-scale').forEach(el => revObs.observe(el));
+    const revObs = new IntersectionObserver(entries=>{
+      entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+    },{threshold:.07});
+    document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
 
     // ── ACTIVE NAV ───────────────────────────────
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-links a');
-    const navObs = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting) {
-          navLinks.forEach(a => a.classList.remove('active'));
-          const link = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
-          if(link) link.classList.add('active');
+    const secs = document.querySelectorAll('section[id]');
+    const navAs = document.querySelectorAll('.nav-link');
+    const navObs = new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          navAs.forEach(a=>a.classList.remove('active'));
+          const l=document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+          if(l) l.classList.add('active');
         }
       });
-    }, {threshold:0.3});
-    sections.forEach(s => navObs.observe(s));
+    },{threshold:.3});
+    secs.forEach(s=>navObs.observe(s));
 
     // ── HERO PARALLAX ────────────────────────────
-    const heroName    = document.getElementById('heroName');
-    const heroTagline = document.getElementById('heroTagline');
-    document.addEventListener('mousemove', e => {
-      const x = (e.clientX / window.innerWidth  - 0.5) * 2;
-      const y = (e.clientY / window.innerHeight - 0.5) * 2;
-      heroName.style.transform    = `translate(${x*-7}px, ${y*-3.5}px)`;
-      heroTagline.style.transform = `translate(${x*-4}px, ${y*-2}px)`;
+    const heroName = document.getElementById('heroName');
+    document.addEventListener('mousemove',e=>{
+      const x=(e.clientX/window.innerWidth-.5)*2;
+      const y=(e.clientY/window.innerHeight-.5)*2;
+      heroName.style.transform=`translate(${x*-6}px,${y*-3}px)`;
     });
 
-    // ── MAGNETIC BUTTONS ────────────────────────
-    document.querySelectorAll('.magnetic').forEach(btn => {
-      btn.addEventListener('mousemove', e => {
-        const r  = btn.getBoundingClientRect();
-        const cx = r.left + r.width  / 2;
-        const cy = r.top  + r.height / 2;
-        const dx = (e.clientX - cx) * 0.38;
-        const dy = (e.clientY - cy) * 0.38;
-        btn.style.transition = 'transform 0.1s linear, background 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.3s';
-        btn.style.transform  = `translate(${dx}px, ${dy}px)`;
+    // ── MAGNETIC ────────────────────────────────
+    document.querySelectorAll('.magnetic').forEach(btn=>{
+      btn.addEventListener('mousemove',e=>{
+        const r=btn.getBoundingClientRect();
+        const dx=(e.clientX-r.left-r.width/2)*.38;
+        const dy=(e.clientY-r.top-r.height/2)*.38;
+        btn.style.transition='transform .1s linear';
+        btn.style.transform=`translate(${dx}px,${dy}px)`;
       });
-      btn.addEventListener('mouseleave', () => {
-        btn.style.transition = 'transform 0.5s cubic-bezier(0.34,1.56,0.64,1), background 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.3s';
-        btn.style.transform  = '';
+      btn.addEventListener('mouseleave',()=>{
+        btn.style.transition='transform .5s cubic-bezier(.34,1.56,.64,1)';
+        btn.style.transform='';
       });
     });
 
-    // ── HERO CARD SPRING PHYSICS ─────────────────
-    const exitDirections = [
-      {x:-120, y:-80,  rot:-25},
-      {x:-40,  y:-120, rot:-10},
-      {x: 40,  y:-120, rot: 10},
-      {x: 120, y:-80,  rot: 25},
-    ];
-    let scrollProgress = 0;
-    const heroEl = document.getElementById('hero');
-    window.addEventListener('scroll', () => {
-      scrollProgress = Math.min(window.scrollY / (heroEl.offsetHeight * 0.5), 1);
-    }, {passive:true});
-    const cards = document.querySelectorAll('.hero-card');
-    const baseTransforms = [
-      {rotate:-8, tx:-180}, {rotate:-3, tx:-60},
-      {rotate: 2, tx:  60}, {rotate: 7, tx: 180},
-    ];
-    const spring = Array.from(cards).map(() => ({rotX:0,rotY:0,ty:0,scale:1,vRotX:0,vRotY:0,vTy:0,vScale:0}));
-    const target = Array.from(cards).map(() => ({rotX:0,rotY:0,ty:0,scale:1}));
-    const STIFFNESS=0.18, DAMPING=0.72;
-
-    function applyTransform(card, i, s) {
-      const b=baseTransforms[i], d=exitDirections[i];
-      card.style.opacity = Math.max(1-scrollProgress*1.6, 0);
-      card.style.transform =
-        `translateX(${b.tx + d.x*scrollProgress}px) translateY(${s.ty + d.y*scrollProgress}px) ` +
-        `rotate(${b.rotate + d.rot*scrollProgress}deg) ` +
-        `rotateX(${s.rotX}deg) rotateY(${s.rotY}deg) ` +
-        `scale(${s.scale * (1-scrollProgress*0.15)})`;
+    // ── CONTACT SCROLL SCALE ─────────────────────
+    const cs = document.getElementById('contact');
+    const cw = document.getElementById('contactScaleWrap');
+    function updateContactScale(){
+      const p=Math.max(0,Math.min(1,(window.innerHeight-cs.getBoundingClientRect().top)/window.innerHeight));
+      cw.style.transform=`scale(${.55+p*.45})`;
     }
-    (function animate() {
-      cards.forEach((card, i) => {
-        const s=spring[i], t=target[i];
-        s.vRotX = s.vRotX*DAMPING + (t.rotX-s.rotX)*STIFFNESS;
-        s.vRotY = s.vRotY*DAMPING + (t.rotY-s.rotY)*STIFFNESS;
-        s.vTy   = s.vTy  *DAMPING + (t.ty  -s.ty)  *STIFFNESS;
-        s.vScale= s.vScale*DAMPING+ (t.scale-s.scale)*STIFFNESS;
-        s.rotX+=s.vRotX; s.rotY+=s.vRotY; s.ty+=s.vTy; s.scale+=s.vScale;
-        applyTransform(card, i, s);
-        const lift = Math.max(0,-s.ty);
-        const sc=['rgba(201,79,66,','rgba(74,157,194,','rgba(91,170,147,','rgba(212,165,67,'];
-        card.style.boxShadow = `0 ${18+lift*0.6}px ${44+lift*1.2}px ${sc[i]}${Math.min(0.38+lift*0.003,0.7)})`;
-      });
-      requestAnimationFrame(animate);
-    })();
-
-    cards.forEach((card, i) => {
-      card.addEventListener('mouseenter', () => {
-        card.classList.add('is-hovered');
-        cards.forEach((c,j) => { if(j!==i) c.classList.add('is-neighbor'); });
-        target[i].ty=-28; target[i].scale=1.07;
-        cards.forEach((_,j) => { if(j!==i) target[j].ty=6; });
-      });
-      card.addEventListener('mouseleave', () => {
-        card.classList.remove('is-hovered');
-        cards.forEach(c => c.classList.remove('is-neighbor'));
-        cards.forEach((_,j) => { target[j].ty=0; target[j].scale=1; target[j].rotX=0; target[j].rotY=0; });
-      });
-      card.addEventListener('mousemove', e => {
-        const r=card.getBoundingClientRect();
-        target[i].rotY = ((e.clientX-r.left)/r.width  -0.5)*2 * 14;
-        target[i].rotX = ((e.clientY-r.top) /r.height -0.5)*2 * -10;
-      });
-    });
-
-    // ── CONTACT SCROLL SCALE (PRESERVED EXACTLY) ─
-    const contactSection = document.getElementById('contact');
-    const contactWrap    = document.getElementById('contactScaleWrap');
-    function updateContactScale() {
-      const rect     = contactSection.getBoundingClientRect();
-      const progress = Math.max(0, Math.min(1, (window.innerHeight - rect.top) / window.innerHeight));
-      contactWrap.style.transform = `scale(${0.55 + progress * 0.45})`;
-    }
-    window.addEventListener('scroll', updateContactScale, {passive:true});
+    window.addEventListener('scroll',updateContactScale,{passive:true});
     updateContactScale();
 
     // ── LIGHTBOX ─────────────────────────────────
-    const lightbox       = document.getElementById('lightbox');
-    const lightboxImg    = document.getElementById('lightboxImg');
-    const lightboxLabel  = document.getElementById('lightboxLabel');
-    const lightboxIssuer = document.getElementById('lightboxIssuer');
-    const lightboxClose  = document.getElementById('lightboxClose');
-
-    document.querySelectorAll('.cert-card').forEach(card => {
-      card.addEventListener('click', () => {
-        const img    = card.querySelector('.cert-back img');
-        const name   = card.querySelector('.cert-glass-name')?.textContent || '';
-        const issuer = card.querySelector('.cert-glass-issuer')?.textContent || '';
-        lightboxImg.src = img.src; lightboxImg.alt = img.alt;
-        lightboxLabel.textContent  = name;
-        lightboxIssuer.textContent = issuer;
-        lightbox.classList.add('open');
-        document.body.style.overflow = 'hidden';
+    const lb=document.getElementById('lightbox');
+    const lbImg=document.getElementById('lightboxImg');
+    const lbLabel=document.getElementById('lightboxLabel');
+    const lbIssuer=document.getElementById('lightboxIssuer');
+    const lbClose=document.getElementById('lightboxClose');
+    document.querySelectorAll('.cert-card').forEach(card=>{
+      card.addEventListener('click',()=>{
+        const img=card.querySelector('.cert-back img');
+        const name=card.querySelector('.cert-glass p:last-child')?.textContent||'';
+        const issuer=card.querySelector('.cert-glass p:first-child')?.textContent||'';
+        lbImg.src=img.src; lbImg.alt=img.alt;
+        lbLabel.textContent=name; lbIssuer.textContent=issuer;
+        lb.classList.add('open'); document.body.style.overflow='hidden';
       });
     });
-    const closeLightbox = () => {
-      lightbox.classList.remove('open');
-      document.body.style.overflow = '';
-    };
-    lightboxClose.addEventListener('click', closeLightbox);
-    lightbox.addEventListener('click', e => { if(e.target===lightbox) closeLightbox(); });
-    document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox(); });
+    const closeLb=()=>{ lb.classList.remove('open'); document.body.style.overflow=''; };
+    lbClose.addEventListener('click',closeLb);
+    lb.addEventListener('click',e=>{ if(e.target===lb) closeLb(); });
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeLb(); });
   </script>
 </body>
 </html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
