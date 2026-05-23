@@ -271,6 +271,17 @@
     .nav-link::after { content:''; position:absolute; bottom:-3px; left:0; width:0; height:1px; background:#a78bfa; transition:width .3s ease; }
     .nav-link:hover::after, .nav-link.active::after { width:100%; }
 
+
+    /* ─── PROJECT PHOTO PREVIEW ─────────────────── */
+    .proj-preview { border-radius: 12px; overflow: hidden; max-height: 0; opacity: 0; transition: max-height .55s cubic-bezier(.22,1,.36,1), opacity .4s, margin-top .3s; }
+    .proj-preview img { width: 100%; height: 160px; object-fit: cover; display: block; }
+    .content-card:hover .proj-preview { max-height: 200px; opacity: 1; margin-top: 12px; }
+
+    /* ─── LAST RESORT STRIP ─────────────────────── */
+    .lr-strip { display: flex; gap: 6px; max-height: 0; opacity: 0; transition: max-height .55s cubic-bezier(.22,1,.36,1), opacity .4s, margin-top .3s; overflow: hidden; border-radius: 12px; }
+    .lr-strip img { flex: 1; min-width: 0; height: 140px; object-fit: cover; object-position: center; border-radius: 8px; }
+    .content-card:hover .lr-strip { max-height: 180px; opacity: 1; margin-top: 12px; }
+
     /* ─── PASSWORD TERMINAL ─────────────────── */
     .proj-terminal { background:rgba(0,0,0,.7); border-radius:12px; overflow:hidden; max-height:0; opacity:0; transition:max-height .5s cubic-bezier(.22,1,.36,1), opacity .35s, margin-top .3s; }
     .password-card:hover .proj-terminal { max-height:180px; opacity:1; margin-top:12px; }
@@ -602,6 +613,9 @@
         <p class="text-[.58rem] tracking-[.26em] uppercase text-white/30">Personal · Cybersecurity</p>
         <h3 class="font-serif text-[1.2rem] text-white leading-snug">Was My Password Leaked?</h3>
         <p class="text-[.84rem] leading-[1.8] text-white/45 flex-1">Flask app that checks passwords against HaveIBeenPwned using k-anonymity · entropy scoring and hardening recommendations without sending the real password over the network.</p>
+        <div class="proj-preview">
+          <img src="photo/wasmypasswordleaked.png" alt="Was My Password Leaked screenshot" style="object-position:top;" />
+        </div>
         <div class="flex flex-wrap gap-2 mt-1">
           <span class="proj-tag">Python</span><span class="proj-tag">Flask</span><span class="proj-tag">HIBP API</span><span class="proj-tag">Cybersecurity</span>
         </div>
@@ -650,6 +664,9 @@
           <span class="text-[.58rem] tracking-[.12em] uppercase px-3 py-1.5 rounded-full flex-shrink-0 mt-1" style="background:rgba(251,146,60,0.1); border:1px solid rgba(251,146,60,0.25); color:#fdba74;">Lead Frontend</span>
         </div>
         <p class="text-[.84rem] leading-[1.8] text-white/45 flex-1">A personal finance desktop app built in .NET MAUI — Pinterest-style spending journal, budget tracker, grocery lists, and dream board, all wrapped in six switchable themes. I led the full UI/UX: component design, visual polish, and the theming system.</p>
+        <div class="proj-preview">
+          <img src="photo/tally.png" alt="Tally app screenshot" style="object-position:top;" />
+        </div>
         <div class="flex flex-wrap gap-2 mt-1">
           <span class="proj-tag">C#</span><span class="proj-tag">.NET MAUI</span><span class="proj-tag">SQLite</span><span class="proj-tag">MVVM</span><span class="proj-tag">Windows</span>
         </div>
@@ -664,6 +681,7 @@
             In Progress
           </span>
         </div>
+      </div>
 
       <!-- Snake Game -->
       <div class="content-card p-9 flex flex-col gap-4 reveal" style="transition-delay:.3s; position:relative; overflow:hidden;">
@@ -679,6 +697,9 @@
           <span class="text-[.58rem] tracking-[.12em] uppercase px-3 py-1.5 rounded-full flex-shrink-0 mt-1" style="background:rgba(52,211,153,0.08); border:1px solid rgba(52,211,153,0.2); color:#6ee7b7;">Collaborator</span>
         </div>
         <p class="text-[.84rem] leading-[1.8] text-white/45 flex-1">Classic browser-based Snake built as a course project — vanilla JS game loop with a fully custom frontend. Contributed across both UI and game logic as a full-stack collaborator.</p>
+        <div class="proj-preview">
+          <img src="photo/snake-game.jpg" alt="Snake game screenshot" />
+        </div>
         <div class="flex flex-wrap gap-2 mt-1">
           <span class="proj-tag">HTML</span><span class="proj-tag">CSS</span><span class="proj-tag">JavaScript</span>
         </div>
@@ -716,6 +737,37 @@
           </span>
         </div>
       </div>
+
+      <!-- Last Resort -->
+      <div class="content-card p-9 flex flex-col gap-4 reveal md:col-span-2" style="transition-delay:.5s; position:relative; overflow:hidden;">
+        <div class="absolute top-0 right-0 w-56 h-56 rounded-full" style="background:radial-gradient(circle,rgba(239,68,68,0.06),transparent 70%); transform:translate(40%,-40%);"></div>
+        <div class="flex items-start justify-between gap-4 flex-wrap">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <p class="text-[.58rem] tracking-[.26em] uppercase text-white/30">Collaborative · Game</p>
+              <span class="text-[.52rem] tracking-[.1em] uppercase px-2 py-0.5 rounded-full" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.25);">Academic</span>
+            </div>
+            <h3 class="font-serif text-[1.2rem] text-white leading-snug">Last Resort</h3>
+          </div>
+          <span class="text-[.58rem] tracking-[.12em] uppercase px-3 py-1.5 rounded-full flex-shrink-0 mt-1" style="background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.28); color:#fca5a5;">Lead Frontend</span>
+        </div>
+        <p class="text-[.84rem] leading-[1.8] text-white/45 flex-1">Top-down pixel art shooter with visual novel cutscenes and hand-drawn comic panels — built as a Computer Programming finals project. I led the entire frontend: pixel art character sprites, scene backgrounds, UI, and the comic-panel storytelling sequences.</p>
+        <div class="lr-strip">
+          <img src="photo/last-resort-2.jpg" alt="Last Resort gameplay" />
+          <img src="photo/last-resort-3.jpg" alt="Last Resort cutscene" />
+          <img src="photo/last-resort-4.jpg" alt="Last Resort comic panels" />
+        </div>
+        <div class="flex flex-wrap gap-2 mt-1">
+          <span class="proj-tag">Python</span><span class="proj-tag">pygame</span><span class="proj-tag">Pixel Art</span><span class="proj-tag">Game Dev</span>
+        </div>
+        <div class="flex items-center justify-between pt-4 mt-1" style="border-top:1px solid rgba(255,255,255,0.06);">
+          <span class="text-[.64rem] text-white/25 tracking-wide">2nd Year · Computer Programming</span>
+          <span class="flex items-center gap-1.5 text-[.62rem] tracking-[.12em] uppercase px-3 py-1.5 rounded-full cursor-default" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.3);">
+            <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            Coursework
+          </span>
+        </div>
+      </div>
       </div>
     </div>
   </section>
@@ -739,17 +791,18 @@
               <p class="text-[.65rem] text-white/30">Nov 2025 · Expires Nov 2030</p>
               <span class="text-[.58rem] tracking-wide uppercase px-2.5 py-1 rounded-full" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.4);">Python</span>
             </div>
-            <a href="https://www.credly.com/badges/892a80c0-39ce-49af-93b8-5a6679934b8b/public_url" target="_blank"
-               class="flex items-center gap-1.5 text-[.56rem] tracking-[.14em] uppercase text-sky-400/60 hover:text-sky-300 transition-colors mt-3 no-underline w-fit">
-              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
-              View on Credly
-            </a>
           </div>
           <div class="cert-back">
             <img src="python certificate.jpg" alt="IT Specialist Python" />
             <div class="cert-glass">
               <p class="text-[.54rem] tracking-[.22em] uppercase text-white/45 mb-1">Certiport</p>
               <p class="font-serif text-[.85rem] text-white">IT Specialist · Python</p>
+              <a href="https://www.credly.com/badges/892a80c0-39ce-49af-93b8-5a6679934b8b/public_url" target="_blank"
+                 onclick="event.stopPropagation()"
+                 class="flex items-center gap-1.5 no-underline mt-2 w-fit text-[.54rem] tracking-[.14em] uppercase text-sky-300/70 hover:text-sky-200 transition-colors">
+                <svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+                View on Credly
+              </a>
             </div>
           </div>
         </div>
@@ -768,17 +821,18 @@
               <p class="text-[.65rem] text-white/30">May 2025</p>
               <span class="text-[.58rem] tracking-wide uppercase px-2.5 py-1 rounded-full" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.4);">DB Admin</span>
             </div>
-            <a href="https://www.credly.com/badges/547ac2d1-1e51-4f3f-811c-3c83bdf4cc80/public_url" target="_blank"
-               class="flex items-center gap-1.5 text-[.56rem] tracking-[.14em] uppercase text-emerald-400/60 hover:text-emerald-300 transition-colors mt-3 no-underline w-fit">
-              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
-              View on Credly
-            </a>
           </div>
           <div class="cert-back">
             <img src="databases certificate.jpg" alt="IT Specialist Databases" />
             <div class="cert-glass">
               <p class="text-[.54rem] tracking-[.22em] uppercase text-white/45 mb-1">Certiport</p>
               <p class="font-serif text-[.85rem] text-white">IT Specialist · Databases</p>
+              <a href="https://www.credly.com/badges/547ac2d1-1e51-4f3f-811c-3c83bdf4cc80/public_url" target="_blank"
+                 onclick="event.stopPropagation()"
+                 class="flex items-center gap-1.5 no-underline mt-2 w-fit text-[.54rem] tracking-[.14em] uppercase text-emerald-300/70 hover:text-emerald-200 transition-colors">
+                <svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+                View on Credly
+              </a>
             </div>
           </div>
         </div>
@@ -797,17 +851,18 @@
               <p class="text-[.65rem] text-white/30">Oct 2024 · T.I.P. Manila</p>
               <span class="text-[.58rem] tracking-wide uppercase px-2.5 py-1 rounded-full" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.4);">Gen AI</span>
             </div>
-            <a href="https://www.credly.com/badges/575edf9d-0095-447b-aa81-9428a526b181/public_url" target="_blank"
-               class="flex items-center gap-1.5 text-[.56rem] tracking-[.14em] uppercase text-orange-400/60 hover:text-orange-300 transition-colors mt-3 no-underline w-fit">
-              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
-              View on Credly
-            </a>
           </div>
           <div class="cert-back">
             <img src="generative ai camp.jpg" alt="Generative AI Camp" />
             <div class="cert-glass">
               <p class="text-[.54rem] tracking-[.22em] uppercase text-white/45 mb-1">AWS Cloud Club</p>
               <p class="font-serif text-[.85rem] text-white">Generative AI Camp</p>
+              <a href="https://www.credly.com/badges/575edf9d-0095-447b-aa81-9428a526b181/public_url" target="_blank"
+                 onclick="event.stopPropagation()"
+                 class="flex items-center gap-1.5 no-underline mt-2 w-fit text-[.54rem] tracking-[.14em] uppercase text-orange-300/70 hover:text-orange-200 transition-colors">
+                <svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+                View on Credly
+              </a>
             </div>
           </div>
         </div>
