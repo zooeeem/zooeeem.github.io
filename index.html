@@ -55,7 +55,7 @@
       transition: all .12s ease;
       opacity: 0;
     }
-    #cursor-layer { position: fixed; top:0; left:0; width:0; height:0; zoom:1.25; z-index:9999; }
+    #cursor-layer { position: fixed; top:0; left:0; width:0; height:0; z-index:9999; }
 
     /* ─── ANIMATED GRADIENT BORDER BUTTON ───── */
     .btn-glow {
@@ -297,13 +297,18 @@
       transition:left 1.1s cubic-bezier(.25,.46,.45,.94), top 1.1s cubic-bezier(.25,.46,.45,.94);
     }
 
-    @media (max-width:768px) {
-      .nav-links-wrap { display:none; }
-      section { padding:64px 20px !important; }
+    @media (max-width:767px) {
+      body { cursor: auto; }
+      .cursor-dot, .cursor-ring, #cursorGlow { display:none !important; }
+      .contact-big { font-size: 22vw; }
+    }
+    @media (pointer: coarse) {
+      body { cursor: auto; }
+      .cursor-dot, .cursor-ring, #cursorGlow { display:none !important; }
     }
   </style>
 </head>
-<body class="bg-[#030014] text-white font-inter overflow-x-hidden cursor-none" style="zoom:0.8">
+<body class="bg-[#030014] text-white font-inter overflow-x-hidden">
 
   <!-- Cursor glow -->
   <div id="cursorGlow"></div>
@@ -319,11 +324,13 @@
   <div class="fixed inset-0 ambient-glow pointer-events-none z-0"></div>
 
   <!-- ════ NAV ════════════════════════════════ -->
-  <nav id="mainNav" class="fixed top-0 left-0 right-0 z-[200] px-12 py-4 flex justify-between items-center transition-all duration-300"
+  <nav id="mainNav" class="fixed top-0 left-0 right-0 z-[200] px-4 md:px-12 py-4 flex justify-between items-center transition-all duration-300"
        style="background:rgba(3,0,20,0.82); backdrop-filter:blur(20px); border-bottom:1px solid rgba(255,255,255,0.06);">
     <div class="font-bebas text-xl tracking-widest text-white">Althea Zoe</div>
-    <div class="nav-links-wrap flex items-center gap-8">
-      <ul class="flex gap-6 list-none">
+
+    <!-- Desktop: links + divider + pill -->
+    <div class="hidden md:flex items-center gap-8">
+      <ul class="flex gap-6 list-none m-0 p-0">
         <li><a href="#about"          class="nav-link text-white/60 hover:text-white text-[0.68rem] tracking-[.18em] uppercase transition-colors duration-200">About</a></li>
         <li><a href="#education"      class="nav-link text-white/60 hover:text-white text-[0.68rem] tracking-[.18em] uppercase transition-colors duration-200">Education</a></li>
         <li><a href="#projects"       class="nav-link text-white/60 hover:text-white text-[0.68rem] tracking-[.18em] uppercase transition-colors duration-200">Projects</a></li>
@@ -337,48 +344,53 @@
         <span class="pulse-dot"></span>Available for internship
       </span>
     </div>
+
+    <!-- Mobile: pill only -->
+    <span class="flex md:hidden items-center gap-2 text-[0.55rem] tracking-[.12em] uppercase text-emerald-400 px-2.5 py-1.5 rounded-full"
+          style="background:rgba(52,211,153,0.08); border:1px solid rgba(52,211,153,0.22);">
+      <span class="pulse-dot"></span>Available
+    </span>
   </nav>
 
   <!-- ════ HERO ════════════════════════════════ -->
-  <section id="hero" class="relative min-h-screen flex flex-col items-center justify-center text-center pt-24 pb-8 px-6 overflow-hidden z-[2]">
+  <section id="hero" class="relative min-h-screen flex flex-col items-center justify-center text-center pt-24 pb-8 px-4 md:px-6 overflow-hidden z-[2]">
     <div class="max-w-5xl mx-auto w-full">
 
       <!-- Context label -->
-      <p class="text-[0.65rem] tracking-[.32em] uppercase text-purple-400 font-semibold mb-5 opacity-0 animate-[fadeUp_.8s_.1s_ease_forwards]"
+      <p class="text-[0.6rem] tracking-[.24em] md:tracking-[.32em] uppercase text-purple-400 font-semibold mb-4 md:mb-5 opacity-0"
          style="animation:heroFadeUp .8s .1s ease forwards;">
         Computing &amp; Networks
       </p>
 
       <!-- Main name -->
-      <h1 class="font-bebas text-[clamp(3.2rem,10vw,8.5rem)] leading-[.9] tracking-tight text-white mb-5"
+      <h1 class="font-bebas text-3xl sm:text-5xl md:text-7xl lg:text-[8.5rem] leading-[.9] tracking-tight text-white mb-4 md:mb-5"
           id="heroName"
           style="animation:heroFadeDown 1s cubic-bezier(.22,1,.36,1) forwards;">
         Althea Zoe Anasco
       </h1>
 
       <!-- Subtitle -->
-      <p class="text-[clamp(.8rem,1.4vw,.95rem)] text-white/55 font-light tracking-wide max-w-xl mx-auto mb-10 leading-relaxed"
+      <p class="text-sm md:text-[clamp(.8rem,1.4vw,.95rem)] text-white/55 font-light tracking-wide max-w-xl mx-auto mb-8 md:mb-10 leading-relaxed px-2 md:px-0"
          style="animation:heroFadeUp .9s .2s ease both;">
         Aspiring Cybersecurity &amp; Cloud Engineer<br/>
         <span class="text-white/35">Computer Science &amp; Information Engineering Student</span>
       </p>
 
       <!-- CTA Buttons -->
-      <div class="flex items-center justify-center gap-4 mb-16" style="animation:heroFadeUp .9s .3s ease both;">
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-10 md:mb-16 w-full sm:w-auto px-2 sm:px-0" style="animation:heroFadeUp .9s .3s ease both;">
         <a href="#projects"
-           class="btn-glow magnetic inline-flex items-center justify-content-center px-7 py-3 rounded-full text-[.7rem] font-semibold tracking-[.16em] uppercase text-white transition-all duration-300 hover:scale-105"
-           style="height:46px;">
+           class="btn-glow magnetic w-full sm:w-auto inline-flex items-center justify-center px-6 py-3.5 sm:py-3 rounded-full text-[.7rem] font-semibold tracking-[.16em] uppercase text-white transition-all duration-300 hover:scale-105">
           View Work
         </a>
         <a href="#contact"
-           class="magnetic inline-flex items-center justify-center px-7 py-3 rounded-full text-[.7rem] font-semibold tracking-[.16em] uppercase text-white/80 hover:text-white transition-all duration-300 hover:scale-105"
-           style="height:46px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); backdrop-filter:blur(12px);">
+           class="magnetic w-full sm:w-auto inline-flex items-center justify-center px-6 py-3.5 sm:py-3 rounded-full text-[.7rem] font-semibold tracking-[.16em] uppercase text-white/80 hover:text-white transition-all duration-300 hover:scale-105"
+           style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); backdrop-filter:blur(12px);">
           Get in Touch
         </a>
       </div>
 
       <!-- ── BENTO GRID ── -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-5" style="animation:heroFadeUp .9s .42s ease both;">
+      <div class="grid grid-cols-1 gap-4 mt-2 px-0 md:grid-cols-3 md:gap-5 md:mt-0" style="animation:heroFadeUp .9s .42s ease both;">
 
         <!-- Card 1: Core Specializations (2 cols) -->
         <div class="bento-card md:col-span-2 p-7 text-left">
@@ -497,7 +509,7 @@
   </section>
 
   <!-- ════ MARQUEE ═════════════════════════════ -->
-  <div class="relative z-10 overflow-hidden py-3.5" style="background:rgba(255,255,255,0.025); border-top:1px solid rgba(255,255,255,0.06); border-bottom:1px solid rgba(255,255,255,0.06);">
+  <div class="relative z-10 overflow-hidden py-3" style="background:rgba(255,255,255,0.025); border-top:1px solid rgba(255,255,255,0.06); border-bottom:1px solid rgba(255,255,255,0.06);">
     <div class="marquee-track">
       <span class="font-bebas text-base tracking-widest text-white/40 px-7">Python</span><span class="text-purple-500 text-xs px-2">✦</span>
       <span class="font-bebas text-base tracking-widest text-white/40 px-7">Database Administration</span><span class="text-purple-500 text-xs px-2">✦</span>
@@ -519,7 +531,7 @@
   </div>
 
   <!-- ════ ABOUT ════════════════════════════════ -->
-  <section id="about" class="relative z-10 max-w-7xl mx-auto px-8 py-24 grid md:grid-cols-2 gap-20 items-start" style="border-top:1px solid rgba(255,255,255,0.06);">
+  <section id="about" class="relative z-10 max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-24 grid md:grid-cols-2 gap-10 md:gap-20 items-start" style="border-top:1px solid rgba(255,255,255,0.06);">
     <div class="reveal">
       <p class="section-label">01 · About</p>
       <div class="font-bebas text-[clamp(3rem,6vw,5rem)] leading-none tracking-wide text-white mb-10">
@@ -544,7 +556,7 @@
         </div>
       </div>
     </div>
-    <div class="reveal pt-16" style="transition-delay:.12s">
+    <div class="reveal pt-0 md:pt-16" style="transition-delay:.12s">
       <p class="text-[.92rem] leading-[1.95] text-white/50 mb-5">Third-year Computer Science &amp; Information Engineering student on a dual-degree program between Adamson University (Manila) and Ming Hsin University of Science &amp; Technology (Taiwan), with a focus on cybersecurity and cloud computing.</p>
       <p class="text-[.92rem] leading-[1.95] text-white/50 mb-5">I hold Certiport ITS certifications in Python and Databases, and I'm building toward a career in security engineering or cloud infrastructure · understanding how systems are built, and how they can be hardened against real threats.</p>
       <p class="text-[.92rem] leading-[1.95] text-white/50 mb-8">Currently seeking an internship where I can contribute to a real security or cloud environment · open to remote or on-site roles in Manila or Taiwan.</p>
@@ -564,17 +576,17 @@
   </section>
 
   <!-- ════ EDUCATION ═══════════════════════════ -->
-  <section id="education" class="relative z-10 max-w-7xl mx-auto px-8 py-24" style="border-top:1px solid rgba(255,255,255,0.06);">
+  <section id="education" class="relative z-10 max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-24" style="border-top:1px solid rgba(255,255,255,0.06);">
     <p class="section-label reveal">02 · Education</p>
     <h2 class="font-bebas text-[clamp(2.8rem,6vw,5rem)] leading-none tracking-wide text-white mb-14 reveal">ACADEMIC<br/>PATH</h2>
     <div class="grid md:grid-cols-2 gap-5">
-      <div class="content-card p-11 reveal" style="position:relative; overflow:hidden;">
+      <div class="content-card p-7 md:p-11 reveal" style="position:relative; overflow:hidden;">
         <div class="absolute top-0 right-0 w-32 h-32 rounded-full" style="background:radial-gradient(circle,rgba(96,165,250,0.08),transparent 70%); transform:translate(40%,-40%);"></div>
         <p class="text-[.62rem] tracking-[.22em] uppercase text-sky-400/70 mb-3">Sep 2025 – Jul 2027</p>
         <a href="https://www.must.edu.tw/" target="_blank" class="no-underline group/school"><h3 class="font-bebas text-[1.8rem] leading-tight text-white mb-2 group-hover/school:text-sky-300 transition-colors">明新科技大學<br/>Ming Hsin <svg class="inline w-4 h-4 mb-1 opacity-40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></h3></a>
         <p class="text-[.8rem] text-white/45 leading-relaxed">B.S. Computer Science &amp; Information Engineering<br/>Hsinchu, Taiwan</p>
       </div>
-      <div class="content-card p-11 reveal" style="transition-delay:.12s; position:relative; overflow:hidden;">
+      <div class="content-card p-7 md:p-11 reveal" style="transition-delay:.12s; position:relative; overflow:hidden;">
         <div class="absolute top-0 right-0 w-32 h-32 rounded-full" style="background:radial-gradient(circle,rgba(167,139,250,0.08),transparent 70%); transform:translate(40%,-40%);"></div>
         <p class="text-[.62rem] tracking-[.22em] uppercase text-purple-400/70 mb-3">Aug 2023 – Dec 2027</p>
         <a href="https://www.adamson.edu.ph/2018/" target="_blank" class="no-underline group/school"><h3 class="font-bebas text-[1.8rem] leading-tight text-white mb-2 group-hover/school:text-purple-300 transition-colors">Adamson<br/>University <svg class="inline w-4 h-4 mb-1 opacity-40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></h3></a>
@@ -590,13 +602,13 @@
   </section>
 
   <!-- ════ PROJECTS ════════════════════════════ -->
-  <section id="projects" class="relative z-10 max-w-7xl mx-auto px-8 py-24" style="border-top:1px solid rgba(255,255,255,0.06);">
+  <section id="projects" class="relative z-10 max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-24" style="border-top:1px solid rgba(255,255,255,0.06);">
     <p class="section-label reveal">03 · Work</p>
     <h2 class="font-bebas text-[clamp(2.8rem,6vw,5rem)] leading-none tracking-wide text-white mb-14 reveal">PROJECTS &amp;<br/>BUILDS</h2>
     <div class="grid md:grid-cols-2 gap-5">
 
       <!-- Portfolio -->
-      <div class="content-card p-9 flex flex-col gap-4 reveal" style="transition-delay:0s; position:relative; overflow:hidden;">
+      <div class="content-card p-6 md:p-9 flex flex-col gap-4 reveal" style="transition-delay:0s; position:relative; overflow:hidden;">
         <div class="absolute top-0 right-0 w-40 h-40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" style="background:radial-gradient(circle,rgba(96,165,250,0.07),transparent 70%); transform:translate(40%,-40%);"></div>
         <p class="text-[.58rem] tracking-[.26em] uppercase text-white/30">Personal · Web Dev</p>
         <h3 class="font-serif text-[1.2rem] text-white leading-snug">This Portfolio</h3>
@@ -660,7 +672,7 @@
       </div>
 
       <!-- Tally -->
-      <div class="content-card p-9 flex flex-col gap-4 reveal md:col-span-2" style="transition-delay:.2s; position:relative; overflow:hidden;">
+      <div class="content-card p-6 md:p-9 flex flex-col gap-4 reveal md:col-span-2" style="transition-delay:.2s; position:relative; overflow:hidden;">
         <div class="absolute top-0 right-0 w-56 h-56 rounded-full" style="background:radial-gradient(circle,rgba(251,146,60,0.06),transparent 70%); transform:translate(40%,-40%);"></div>
         <div class="flex items-start justify-between gap-4 flex-wrap">
           <div>
@@ -690,7 +702,7 @@
       </div>
 
       <!-- Snake Game -->
-      <div class="content-card p-9 flex flex-col gap-4 reveal" style="transition-delay:.3s; position:relative; overflow:hidden;">
+      <div class="content-card p-6 md:p-9 flex flex-col gap-4 reveal" style="transition-delay:.3s; position:relative; overflow:hidden;">
         <div class="absolute top-0 right-0 w-40 h-40 rounded-full" style="background:radial-gradient(circle,rgba(52,211,153,0.06),transparent 70%); transform:translate(40%,-40%);"></div>
         <div class="flex items-start justify-between gap-4">
           <div>
@@ -719,7 +731,7 @@
       </div>
 
       <!-- Online Store -->
-      <div class="content-card p-9 flex flex-col gap-4 reveal" style="transition-delay:.4s; position:relative; overflow:hidden;">
+      <div class="content-card p-6 md:p-9 flex flex-col gap-4 reveal" style="transition-delay:.4s; position:relative; overflow:hidden;">
         <div class="absolute top-0 right-0 w-40 h-40 rounded-full" style="background:radial-gradient(circle,rgba(96,165,250,0.06),transparent 70%); transform:translate(40%,-40%);"></div>
         <div class="flex items-start justify-between gap-4">
           <div>
@@ -745,7 +757,7 @@
       </div>
 
       <!-- Last Resort -->
-      <div class="content-card p-9 flex flex-col gap-4 reveal md:col-span-2" style="transition-delay:.5s; position:relative; overflow:hidden;">
+      <div class="content-card p-6 md:p-9 flex flex-col gap-4 reveal md:col-span-2" style="transition-delay:.5s; position:relative; overflow:hidden;">
         <div class="absolute top-0 right-0 w-56 h-56 rounded-full" style="background:radial-gradient(circle,rgba(239,68,68,0.06),transparent 70%); transform:translate(40%,-40%);"></div>
         <div class="flex items-start justify-between gap-4 flex-wrap">
           <div>
@@ -779,7 +791,7 @@
   </section>
 
   <!-- ════ CERTIFICATIONS ══════════════════════ -->
-  <section id="certifications" class="relative z-10 max-w-7xl mx-auto px-8 py-24" style="border-top:1px solid rgba(255,255,255,0.06);">
+  <section id="certifications" class="relative z-10 max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-24" style="border-top:1px solid rgba(255,255,255,0.06);">
     <p class="section-label reveal">04 · Credentials</p>
     <h2 class="font-bebas text-[clamp(2.8rem,6vw,5rem)] leading-none tracking-wide text-white mb-14 reveal">LICENSES &amp;<br/>CERTIFICATIONS</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -953,7 +965,7 @@
   </section>
 
   <!-- ════ TIMELINE ════════════════════════════ -->
-  <section id="timeline" class="relative z-10 max-w-7xl mx-auto px-8 py-24" style="border-top:1px solid rgba(255,255,255,0.06);">
+  <section id="timeline" class="relative z-10 max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-24" style="border-top:1px solid rgba(255,255,255,0.06);">
     <p class="section-label reveal">05 · Path</p>
     <h2 class="font-bebas text-[clamp(2.8rem,6vw,5rem)] leading-none tracking-wide text-white mb-14 reveal">MY PATH<br/>&amp; GOALS</h2>
     <div class="relative pl-9 max-w-2xl reveal">
@@ -994,7 +1006,7 @@
   </section>
 
   <!-- ════ SKILLS ══════════════════════════════ -->
-  <section id="skills" class="relative z-10 max-w-7xl mx-auto px-8 py-24" style="border-top:1px solid rgba(255,255,255,0.06);">
+  <section id="skills" class="relative z-10 max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-24" style="border-top:1px solid rgba(255,255,255,0.06);">
     <p class="section-label reveal">06 · Skills</p>
     <div class="font-bebas text-[clamp(3rem,7vw,6rem)] leading-none text-white/[0.18] mb-14 reveal tracking-wide">WHAT I<br/>BRING</div>
     <div class="grid md:grid-cols-2 gap-12 reveal">
@@ -1115,8 +1127,10 @@
     // ── SCROLL NAV ───────────────────────────────
     const nav = document.getElementById('mainNav');
     window.addEventListener('scroll',()=>{
-      if(window.scrollY>40){ nav.style.background='rgba(3,0,20,0.96)'; nav.style.padding='12px 48px'; }
-      else{ nav.style.background='rgba(3,0,20,0.82)'; nav.style.padding='16px 48px'; }
+      const isMobile=window.innerWidth<768;
+      const px=isMobile?'16px':'48px';
+      if(window.scrollY>40){ nav.style.background='rgba(3,0,20,0.96)'; nav.style.padding='12px '+px; }
+      else{ nav.style.background='rgba(3,0,20,0.82)'; nav.style.padding='16px '+px; }
     },{passive:true});
 
     // ── SCROLL REVEAL ────────────────────────────
