@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
@@ -8,6 +8,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           fontFamily: { bebas: ['Bebas Neue', 'sans-serif'], inter: ['Inter', 'sans-serif'], serif: ['DM Serif Display', 'serif'] },
@@ -306,6 +307,209 @@
       body { cursor: auto; }
       .cursor-dot, .cursor-ring, #cursorGlow { display:none !important; }
     }
+
+    /* ══════════════════════════════════════════
+       LIGHT MODE — html:not(.dark)
+    ══════════════════════════════════════════ */
+    html:not(.dark) body {
+      background-color: #f8fafc !important;
+      color: #18181b;
+    }
+    html:not(.dark) .grid-bg {
+      background-image:
+        linear-gradient(rgba(0,0,0,0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.045) 1px, transparent 1px) !important;
+    }
+    html:not(.dark) .ambient-glow {
+      background: radial-gradient(ellipse 90% 55% at 50% -5%, rgba(99,102,241,0.07) 0%, transparent 70%) !important;
+    }
+    /* Scrollbar */
+    html:not(.dark) ::-webkit-scrollbar-track { background: #f8fafc !important; }
+    html:not(.dark) ::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.3) !important; }
+    html:not(.dark) ::-webkit-scrollbar-thumb:hover { background: rgba(99,102,241,0.55) !important; }
+    /* Nav */
+    html:not(.dark) #mainNav {
+      background: rgba(248,250,252,0.92) !important;
+      border-bottom-color: rgba(0,0,0,0.08) !important;
+    }
+    /* Toggle button */
+    html:not(.dark) #themeToggle {
+      background: rgba(0,0,0,0.05) !important;
+      border-color: rgba(0,0,0,0.12) !important;
+    }
+    /* Text overrides */
+    html:not(.dark) .text-white         { color: #18181b !important; }
+    html:not(.dark) .text-white\/85     { color: #27272a !important; }
+    html:not(.dark) .text-white\/80     { color: #3f3f46 !important; }
+    html:not(.dark) .text-white\/70     { color: #52525b !important; }
+    html:not(.dark) .text-white\/60     { color: #52525b !important; }
+    html:not(.dark) .text-white\/55     { color: #52525b !important; }
+    html:not(.dark) .text-white\/50     { color: #71717a !important; }
+    html:not(.dark) .text-white\/45     { color: #71717a !important; }
+    html:not(.dark) .text-white\/40     { color: #71717a !important; }
+    html:not(.dark) .text-white\/35     { color: #71717a !important; }
+    html:not(.dark) .text-white\/30     { color: #71717a !important; }
+    html:not(.dark) .text-white\/25     { color: #71717a !important; }
+    html:not(.dark) .text-white\/20     { color: #94a3b8 !important; }
+    html:not(.dark) .text-white\/15     { color: #94a3b8 !important; }
+    html:not(.dark) .text-white\/10     { color: #cbd5e1 !important; }
+    /* Arbitrary-opacity decorative text e.g. text-white/[0.18] (MY TOOLKIT, section watermarks) */
+    html:not(.dark) .text-white\/\[0\.18\] { color: rgba(99,102,241,0.25) !important; }
+    /* Bento cards */
+    html:not(.dark) .bento-card {
+      background: #ffffff !important;
+      border-color: #e2e8f0 !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06) !important;
+    }
+    html:not(.dark) .bento-card:hover {
+      border-color: #c7d2fe !important;
+      background: #fafafa !important;
+      box-shadow: 0 4px 24px rgba(99,102,241,0.08) !important;
+    }
+    /* Content cards (projects, education) */
+    html:not(.dark) .content-card {
+      background: #ffffff !important;
+      border-color: #e2e8f0 !important;
+    }
+    html:not(.dark) .content-card:hover {
+      transform: translateY(-6px);
+      border-color: #c7d2fe !important;
+      background: #fafafa !important;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.09) !important;
+    }
+    /* Spec pills */
+    html:not(.dark) .spec-pill {
+      background: #f8fafc !important;
+      border-color: #e2e8f0 !important;
+      color: #3f3f46 !important;
+    }
+    html:not(.dark) .spec-pill:hover {
+      background: rgba(99,102,241,0.07) !important;
+      border-color: rgba(99,102,241,0.28) !important;
+    }
+    /* Tool chips */
+    html:not(.dark) .tool-chip {
+      background: #f8fafc !important;
+      border-color: #e4e4e7 !important;
+    }
+    html:not(.dark) .tool-chip:hover {
+      background: #f1f5f9 !important;
+      border-color: #cbd5e1 !important;
+    }
+    html:not(.dark) .tool-chip svg { opacity: 0.85 !important; }
+    /* Skill tiles */
+    html:not(.dark) .skill-tile {
+      background: #f4f4f5 !important;
+      border-color: #e4e4e7 !important;
+      color: #52525b !important;
+    }
+    /* Project tags */
+    html:not(.dark) .proj-tag {
+      background: #f4f4f5 !important;
+      border-color: #e4e4e7 !important;
+      color: #71717a !important;
+    }
+    html:not(.dark) .proj-tag:hover { background: rgba(99,102,241,0.08) !important; border-color: rgba(99,102,241,0.25) !important; color: #4f46e5 !important; }
+    /* Cert cards */
+    html:not(.dark) .cert-front {
+      background: #ffffff !important;
+      border-color: #e2e8f0 !important;
+    }
+    html:not(.dark) .cert-back { background: #f1f5f9 !important; }
+    html:not(.dark) .cert-glass {
+      background: rgba(255,255,255,0.92) !important;
+      border-color: rgba(0,0,0,0.1) !important;
+      backdrop-filter: blur(16px) !important;
+    }
+    /* All inline rgba-white text/bg badges (cert fronts, project role chips, Academic tags) */
+    html:not(.dark) [style*="color:rgba(255,255,255"] { color: #52525b !important; }
+    html:not(.dark) .cert-front span[style*="rgba(255,255,255"],
+    html:not(.dark) .content-card span[style*="rgba(255,255,255"] {
+      background: #f1f5f9 !important;
+      border-color: #e2e8f0 !important;
+      color: #52525b !important;
+    }
+    /* Cert-glass text overrides (text-white/45, text-white inline) */
+    html:not(.dark) .cert-glass p { color: #3f3f46 !important; }
+    html:not(.dark) .cert-glass a { color: #4f46e5 !important; }
+    html:not(.dark) .cert-glass a:hover { color: #4338ca !important; }
+    html:not(.dark) .cert-glass svg { stroke: #4f46e5 !important; }
+    /* "Hover to flip" — text-white/20 is too faint on light bg */
+    html:not(.dark) .text-white\/20 { color: #a1a1aa !important; }
+    /* Timeline */
+    html:not(.dark) .tl-line {
+      background: linear-gradient(to bottom, #7c3aed 0%, rgba(124,58,237,0.1) 100%) !important;
+    }
+    html:not(.dark) .tl-dot {
+      background: #f8fafc !important;
+      border-color: #cbd5e1 !important;
+    }
+    /* Stat borders */
+    html:not(.dark) .stat { border-top-color: #e4e4e7 !important; }
+    /* Section borders via inline style attr */
+    html:not(.dark) [style*="border-top:1px solid rgba(255,255,255,0.06)"] {
+      border-top-color: rgba(0,0,0,0.07) !important;
+    }
+    html:not(.dark) [style*="border-bottom:1px solid rgba(255,255,255,0.06)"] {
+      border-bottom-color: rgba(0,0,0,0.07) !important;
+    }
+    html:not(.dark) [style*="border:1px solid rgba(255,255,255,0.06)"] {
+      border-color: rgba(0,0,0,0.07) !important;
+    }
+    html:not(.dark) [style*="border:1px solid rgba(255,255,255,0.08)"] {
+      border-color: #e4e4e7 !important;
+    }
+    html:not(.dark) [style*="border:1px solid rgba(255,255,255,0.12)"] {
+      border-color: #cbd5e1 !important;
+    }
+    html:not(.dark) [style*="border:1px solid rgba(255,255,255,0.1)"] {
+      border-color: #e2e8f0 !important;
+    }
+    /* Marquee bar */
+    html:not(.dark) .marquee-track .font-bebas { color: #71717a !important; }
+    html:not(.dark) [style*="background:rgba(255,255,255,0.025)"] {
+      background: rgba(0,0,0,0.04) !important;
+    }
+    /* Contact section */
+    html:not(.dark) #contact { background: #eef2f7 !important; }
+    html:not(.dark) .contact-big { color: rgba(99,102,241,0.22) !important; }
+    /* Contact links / email — override the near-invisible white/30 */
+    html:not(.dark) .contact-details a { color: #52525b !important; }
+    html:not(.dark) .contact-details a:hover { color: #4f46e5 !important; }
+    html:not(.dark) .contact-details p { color: #94a3b8 !important; }
+    html:not(.dark) .contact-details img[style] { border-color: rgba(0,0,0,0.1) !important; }
+    /* CTA primary button dark interior */
+    html:not(.dark) .btn-glow::after { background: #1e293b !important; }
+    html:not(.dark) .btn-glow { color: #ffffff !important; }
+    /* Secondary ghost button */
+    html:not(.dark) a[style*="background:rgba(255,255,255,0.05)"] {
+      background: #ffffff !important;
+      border-color: #cbd5e1 !important;
+      color: #3f3f46 !important;
+    }
+    /* Lightbox */
+    html:not(.dark) .lightbox-card { background: #ffffff !important; border-color: #e2e8f0 !important; }
+    html:not(.dark) .lightbox-footer { border-top-color: #f1f5f9 !important; }
+    html:not(.dark) .lb-close { border-color: #e4e4e7 !important; background: #f8fafc !important; color: #52525b !important; }
+    html:not(.dark) .lightbox-overlay.open { background: rgba(0,0,0,0.4) !important; }
+    /* Cursor */
+    html:not(.dark) .cursor-dot { background: #6366f1 !important; }
+    html:not(.dark) .cursor-ring { border-color: rgba(99,102,241,0.45) !important; }
+    html:not(.dark) #cursorGlow {
+      background: radial-gradient(circle, rgba(99,102,241,0.14) 0%, rgba(124,58,237,0.07) 40%, transparent 70%) !important;
+    }
+    /* Section label stays purple — fine */
+    /* Nav links in light */
+    html:not(.dark) .nav-link { color: #52525b !important; }
+    html:not(.dark) .nav-link:hover { color: #18181b !important; }
+    /* Proj terminal */
+    html:not(.dark) .proj-terminal { background: rgba(15,15,35,0.92) !important; }
+    /* Skill group dividers */
+    html:not(.dark) .skill-group p[style] { border-bottom-color: rgba(0,0,0,0.07) !important; }
+    /* Grain overlay — lighten in light mode */
+    html:not(.dark) body::after { opacity: 0.008 !important; }
   </style>
 </head>
 <body class="bg-[#030014] text-white font-inter overflow-x-hidden">
@@ -350,6 +554,31 @@
           style="background:rgba(52,211,153,0.08); border:1px solid rgba(52,211,153,0.22);">
       <span class="pulse-dot"></span>Available
     </span>
+
+    <!-- Theme toggle — always visible -->
+    <button id="themeToggle" aria-label="Toggle light/dark mode"
+      class="ml-3 flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full transition-all duration-300 focus:outline-none"
+      style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);">
+      <!-- Sun (shown in dark mode) -->
+      <svg id="iconSun" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"
+           fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1"  x2="12" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22"  x2="5.64" y2="5.64"/>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1"  y1="12" x2="3"  y2="12"/>
+        <line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+      <!-- Moon (shown in light mode) -->
+      <svg id="iconMoon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+           fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+           style="display:none;">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
   </nav>
 
   <!-- ════ HERO ════════════════════════════════ -->
@@ -1099,6 +1328,36 @@
   </style>
 
   <script>
+    // ── THEME TOGGLE ─────────────────────────────
+    (function(){
+      const html = document.documentElement;
+      const btn  = document.getElementById('themeToggle');
+      const sun  = document.getElementById('iconSun');
+      const moon = document.getElementById('iconMoon');
+
+      function applyTheme(dark){
+        if(dark){
+          html.classList.add('dark');
+          sun.style.display  = '';
+          moon.style.display = 'none';
+        } else {
+          html.classList.remove('dark');
+          sun.style.display  = 'none';
+          moon.style.display = '';
+        }
+      }
+
+      // Default: dark. Restore saved pref if any.
+      const saved = localStorage.getItem('theme');
+      applyTheme(saved ? saved === 'dark' : true);
+
+      btn.addEventListener('click', function(){
+        const isDark = html.classList.contains('dark');
+        applyTheme(!isDark);
+        localStorage.setItem('theme', isDark ? 'light' : 'dark');
+      });
+    })();
+
     // ── CURSOR GLOW ──────────────────────────────
     const glowEl = document.getElementById('cursorGlow');
     document.addEventListener('mousemove', e => {
@@ -1213,4 +1472,4 @@
   </script>
 </body>
 </html>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
